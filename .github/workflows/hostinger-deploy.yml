@@ -1,0 +1,40 @@
+name: Deploy to Hostinger
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'public_html/**'
+      - '.github/workflows/hostinger-deploy.yml'
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Upload public_html to Hostinger
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    concurrency:
+      group: hostinger-deploy-${{ github.ref }}
+      cancel-in-progress: true
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Deploy via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.HOSTINGER_FTP_SERVER }}
+          username: ${{ secrets.HOSTINGER_FTP_USERNAME }}
+          password: ${{ secrets.HOSTINGER_FTP_PASSWORD }}
+          protocol: ftps
+          server-dir: public_html
+          local-dir: public_html
+          state-name: .ftp-deploy-sync-state.json
+          exclude: |
+            **/.git*
+            **/.github*
+            **/.DS_Store

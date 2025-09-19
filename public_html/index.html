@@ -1,0 +1,1343 @@
+<!DOCTYPE html>
+/clea<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chicago's Money - Track City Spending & Get Business Leads</title>
+    <meta name="description" content="Discover Chicago city employees making $300K+. Get fresh business leads daily. Your competitive advantage in Chicago business.">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Theme CSS -->
+    <link rel="stylesheet" href="professional_theme_1.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #ffffff;
+            color: #1a1a1a;
+            overflow-x: hidden;
+        }
+        
+        /* Professional Navigation */
+        .navbar {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid #e5e7eb;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+        
+        .navbar.scrolled {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        
+        .nav-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.75rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+        
+        .logo-chicago {
+            color: #0047AB;
+        }
+        
+        .logo-dollar {
+            color: #00C851;
+            font-size: 2rem;
+            margin: 0 2px;
+            animation: pulse 3s ease-in-out infinite;
+        }
+        
+        .logo-money {
+            color: #FFB000;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.9; }
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+        
+        .nav-link {
+            color: #1a1a1a;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+        
+        .nav-link:hover {
+            color: #0047AB;
+            transform: translateY(-1px);
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #0047AB;
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        
+        .nav-cta {
+            background: linear-gradient(135deg, #0047AB, #001F3F);
+            color: white !important;
+            padding: 0.625rem 1.5rem;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 71, 171, 0.2);
+        }
+        
+        .nav-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 71, 171, 0.3);
+        }
+        
+        .nav-cta::after {
+            display: none;
+        }
+        
+        /* Mobile Menu */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+        
+        .mobile-menu-btn span {
+            display: block;
+            width: 24px;
+            height: 2px;
+            background: #1a1a1a;
+            margin: 5px 0;
+            transition: all 0.3s ease;
+        }
+        
+        /* Alert Bar */
+        .alert-bar {
+            background: linear-gradient(90deg, #CE1141, #dc2626);
+            color: white;
+            padding: 0.75rem;
+            text-align: center;
+            font-weight: 600;
+            position: fixed;
+            top: 73px;
+            left: 0;
+            right: 0;
+            z-index: 900;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+        
+        .alert-bar-content {
+            display: inline-flex;
+            animation: scrollText 90s linear infinite;
+            -webkit-animation: scrollText 90s linear infinite;
+        }
+        
+        .alert-bar-content span {
+            display: inline-block;
+            white-space: nowrap;
+            padding-right: 50px;
+        }
+        
+        @keyframes scrollText {
+            0% {
+                transform: translateX(0);
+                -webkit-transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-50%);
+                -webkit-transform: translateX(-50%);
+            }
+        }
+        
+        @-webkit-keyframes scrollText {
+            0% {
+                -webkit-transform: translateX(0);
+            }
+            100% {
+                -webkit-transform: translateX(-50%);
+            }
+        }
+        
+        @keyframes slideDown {
+            from {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 50%, #f8f9fa 100%);
+            padding: 5rem 2rem 4rem;
+            margin-top: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #0047AB, transparent);
+            animation: shimmer 3s infinite;
+        }
+        
+        .hero-content {
+            max-width: 1280px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        
+        .hero-badge {
+            display: inline-block;
+            background: rgba(0, 71, 171, 0.1);
+            color: #0047AB;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.875rem;
+            margin-bottom: 1.5rem;
+            animation: fadeIn 0.6s ease-out;
+        }
+        
+        .hero-title {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            animation: slideUp 0.6s ease-out 0.2s both;
+        }
+        
+        .hero-title .highlight {
+            color: #0047AB;
+        }
+        
+        .hero-title .money {
+            color: #FFB000;
+        }
+        
+        .hero-subtitle {
+            font-size: clamp(1.25rem, 2vw, 1.5rem);
+            color: #6b7280;
+            margin-bottom: 3rem;
+            animation: slideUp 0.6s ease-out 0.4s both;
+        }
+        
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            animation: scaleIn 0.6s ease-out 0.6s both;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #0047AB, #00C851);
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15);
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #0047AB;
+            margin-bottom: 0.5rem;
+            font-variant-numeric: tabular-nums;
+        }
+        
+        .stat-label {
+            font-size: 0.875rem;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 600;
+        }
+        
+        /* CTA Buttons */
+        .cta-group {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: fadeIn 0.6s ease-out 0.8s both;
+        }
+        
+        .btn {
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            border: none;
+            font-size: 1rem;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #0047AB, #001F3F);
+            color: white;
+            box-shadow: 0 4px 6px rgba(0, 71, 171, 0.2);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 71, 171, 0.3);
+        }
+        
+        .btn-secondary {
+            background: white;
+            color: #0047AB;
+            border: 2px solid #0047AB;
+        }
+        
+        .btn-secondary:hover {
+            background: #0047AB;
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        /* Search Section */
+        .search-section {
+            padding: 4rem 2rem;
+            background: white;
+            border-top: 1px solid #e5e7eb;
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .section-title {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+            color: #1a1a1a;
+        }
+        
+        .section-description {
+            font-size: 1.125rem;
+            color: #6b7280;
+        }
+        
+        .search-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .search-bar {
+            display: flex;
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            margin-bottom: 1rem;
+        }
+        
+        .search-bar:focus-within {
+            border-color: #0047AB;
+            box-shadow: 0 0 0 3px rgba(0, 71, 171, 0.1);
+        }
+        
+        .search-input {
+            flex: 1;
+            padding: 1.25rem 1.5rem;
+            border: none;
+            outline: none;
+            font-size: 1rem;
+            background: transparent;
+        }
+        
+        .search-btn {
+            background: #0047AB;
+            color: white;
+            border: none;
+            padding: 1.25rem 2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .search-btn:hover {
+            background: #001F3F;
+        }
+        
+        .quick-filters {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+        
+        .filter-tag {
+            padding: 0.5rem 1rem;
+            background: #f3f4f6;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 2px solid transparent;
+        }
+        
+        .filter-tag:hover {
+            background: #0047AB;
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        /* Results Table */
+        .results-table {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        
+        .table-header {
+            background: #f8f9fa;
+            padding: 1rem 1.5rem;
+            border-bottom: 2px solid #e5e7eb;
+            display: grid;
+            grid-template-columns: 2fr 2fr 1fr 1fr;
+            gap: 1rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.05em;
+            color: #6b7280;
+        }
+        
+        .table-row {
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid #e5e7eb;
+            display: grid;
+            grid-template-columns: 2fr 2fr 1fr 1fr;
+            gap: 1rem;
+            align-items: center;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        
+        .table-row:hover {
+            background: #f8f9fa;
+            transform: translateX(4px);
+        }
+        
+        .table-row:last-child {
+            border-bottom: none;
+        }
+        
+        .employee-name {
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+        
+        .employee-title {
+            color: #6b7280;
+        }
+        
+        .salary {
+            font-weight: 700;
+            color: #00C851;
+            font-size: 1.125rem;
+            font-variant-numeric: tabular-nums;
+        }
+        
+        .details-link {
+            color: #0047AB;
+            font-weight: 500;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+        
+        .details-link:hover {
+            text-decoration: underline;
+        }
+        
+        /* Business Leads Section */
+        .leads-section {
+            padding: 4rem 2rem;
+            background: linear-gradient(135deg, #001F3F, #0047AB);
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .leads-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1"/></svg>');
+            background-size: 100px 100px;
+        }
+        
+        .leads-content {
+            max-width: 1280px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .leads-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .leads-title {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+        
+        .leads-subtitle {
+            font-size: 1.25rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .leads-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .lead-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .lead-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #FFB000, #00C851);
+        }
+        
+        .lead-card:hover {
+            transform: translateY(-5px) rotateX(5deg);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+        }
+        
+        .lead-card.featured {
+            background: rgba(255, 176, 0, 0.1);
+            border-color: #FFB000;
+        }
+        
+        .featured-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: #FFB000;
+            color: #1a1a1a;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        
+        .lead-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .lead-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        
+        .lead-description {
+            opacity: 0.9;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+        
+        .lead-features {
+            list-style: none;
+            margin-bottom: 1.5rem;
+        }
+        
+        .lead-features li {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+            opacity: 0.9;
+        }
+        
+        .lead-price {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+        
+        .lead-price span {
+            font-size: 1rem;
+            font-weight: 400;
+            opacity: 0.9;
+        }
+        
+        .lead-cta {
+            width: 100%;
+            padding: 1rem;
+            background: white;
+            color: #0047AB;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .lead-cta:hover {
+            background: #FFB000;
+            color: #1a1a1a;
+            transform: translateY(-2px);
+        }
+        
+        /* Contact Section */
+        .contact-section {
+            padding: 4rem 2rem;
+            background: #f8f9fa;
+            text-align: center;
+        }
+        
+        .contact-info {
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+        }
+        
+        .contact-email {
+            color: #0047AB;
+            font-weight: 600;
+            text-decoration: none;
+        }
+        
+        .contact-email:hover {
+            text-decoration: underline;
+        }
+        
+        .newsletter-form {
+            max-width: 500px;
+            margin: 0 auto;
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .newsletter-input {
+            flex: 1;
+            padding: 1rem 1.5rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            outline: none;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .newsletter-input:focus {
+            border-color: #0047AB;
+            box-shadow: 0 0 0 3px rgba(0, 71, 171, 0.1);
+        }
+        
+        /* Footer */
+        .footer {
+            background: #1a1a1a;
+            color: white;
+            padding: 3rem 2rem 1.5rem;
+        }
+        
+        .footer-content {
+            max-width: 1280px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .footer-section h4 {
+            font-size: 1.125rem;
+            margin-bottom: 1rem;
+            color: #FFB000;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            display: block;
+            padding: 0.25rem 0;
+            transition: all 0.2s ease;
+        }
+        
+        .footer-links a:hover {
+            color: #FFB000;
+            transform: translateX(4px);
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.6);
+        }
+        
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .alert-bar {
+                font-size: 0.875rem;
+                padding: 0.5rem;
+                top: 60px;
+            }
+            
+            .hero {
+                padding: 3rem 1rem 2rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .cta-group {
+                flex-direction: column;
+                width: 100%;
+            }
+            
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .search-bar {
+                flex-direction: column;
+            }
+            
+            .search-btn {
+                width: 100%;
+            }
+            
+            .table-header,
+            .table-row {
+                grid-template-columns: 1fr;
+                gap: 0.5rem;
+            }
+            
+            .table-header {
+                display: none;
+            }
+            
+            .table-row {
+                border: 1px solid #e5e7eb;
+                border-radius: 8px;
+                margin-bottom: 1rem;
+                background: white;
+            }
+            
+            .table-row > div {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+            
+            .table-row > div::before {
+                content: attr(data-label);
+                font-weight: 600;
+                color: #6b7280;
+                font-size: 0.875rem;
+            }
+            
+            .leads-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+        }
+        
+        /* Loading Animation */
+        .skeleton {
+            background: linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 50%, #f3f4f6 75%);
+            background-size: 200% 100%;
+            animation: loading 1.5s infinite;
+        }
+        
+        @keyframes loading {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+        
+        /* Accessibility */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+        
+        :focus-visible {
+            outline: 2px solid #0047AB;
+            outline-offset: 2px;
+        }
+        
+        @media (prefers-reduced-motion: reduce) {
+            *,
+            *::before,
+            *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <span class="logo-chicago">Chicago'</span>
+                <span class="logo-dollar">$</span>
+                <span class="logo-money">Money</span>
+            </div>
+            
+            <div class="nav-links">
+                <a href="#search" class="nav-link">Salary Lookup</a>
+                <a href="#leads" class="nav-link">Business Intelligence</a>
+                <a href="#contact" class="nav-link">Contact</a>
+                <a href="#leads" class="nav-cta">Get Leads →</a>
+            </div>
+            
+            <button class="mobile-menu-btn" id="mobileMenu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+    
+    <!-- Alert Bar -->
+    <div class="alert-bar">
+        <div class="alert-bar-content">
+            <span>⚡ BREAKING: 873 Chicago City Employees Make Over $200,000 Per Year ⚡ 
+            📊 Police Superintendent Salary: $300,044 Including Overtime ⚡ 
+            💰 Top 100 City Employees Collected $42M in Overtime Pay ⚡ 
+            🚨 Fire Department's Highest Earner: $287,000 Total Compensation ⚡ 
+            📈 Average Chicago City Worker Salary: $87,384 in 2024 ⚡ 
+            🏛️ Mayor's Office Budget: $31.7 Million Annually ⚡ 
+            👮 2,107 Police Officers Earned Over $150,000 Last Year ⚡ 
+            🚒 Fire Department Overtime Spending: $95 Million in 2024 ⚡ 
+            💵 City CFO Total Compensation: $215,000 Base Salary ⚡ 
+            📉 Pension Obligations: $2.8 Billion Due This Year ⚡ 
+            🏗️ Streets & Sanitation Commissioner: $169,992 Annual Salary ⚡ 
+            ⚠️ 47 City Employees Made More Than The Governor ⚡ 
+            💸 Total City Payroll: $2.3 Billion Spent on 35,847 Employees ⚡ 
+            🎯 Water Department's Top Earner: $242,000 With Benefits ⚡ 
+            📍 Chicago Has 14th Highest Municipal Salaries in USA ⚡ 
+            🔍 Search Any City Employee's Salary FREE on ChicagosMoney.com ⚡</span>
+            <span>⚡ BREAKING: 873 Chicago City Employees Make Over $200,000 Per Year ⚡ 
+            📊 Police Superintendent Salary: $300,044 Including Overtime ⚡ 
+            💰 Top 100 City Employees Collected $42M in Overtime Pay ⚡ 
+            🚨 Fire Department's Highest Earner: $287,000 Total Compensation ⚡ 
+            📈 Average Chicago City Worker Salary: $87,384 in 2024 ⚡ 
+            🏛️ Mayor's Office Budget: $31.7 Million Annually ⚡ 
+            👮 2,107 Police Officers Earned Over $150,000 Last Year ⚡ 
+            🚒 Fire Department Overtime Spending: $95 Million in 2024 ⚡ 
+            💵 City CFO Total Compensation: $215,000 Base Salary ⚡ 
+            📉 Pension Obligations: $2.8 Billion Due This Year ⚡ 
+            🏗️ Streets & Sanitation Commissioner: $169,992 Annual Salary ⚡ 
+            ⚠️ 47 City Employees Made More Than The Governor ⚡ 
+            💸 Total City Payroll: $2.3 Billion Spent on 35,847 Employees ⚡ 
+            🎯 Water Department's Top Earner: $242,000 With Benefits ⚡ 
+            📍 Chicago Has 14th Highest Municipal Salaries in USA ⚡ 
+            🔍 Search Any City Employee's Salary FREE on ChicagosMoney.com ⚡</span>
+        </div>
+    </div>
+    
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-badge">PUBLIC DATA • REAL-TIME UPDATES</div>
+            
+            <h1 class="hero-title">
+                Where Does <span class="highlight">Chicago's</span> <span class="money">Money</span> Go?
+            </h1>
+            
+            <p class="hero-subtitle">
+                Track city employee salaries. Get fresh business leads daily.
+            </p>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number" id="stat1">$300,044</div>
+                    <div class="stat-label">Highest Salary</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="stat2">35,847</div>
+                    <div class="stat-label">City Employees</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="stat3">$42M</div>
+                    <div class="stat-label">Overtime Top 100</div>
+                </div>
+            </div>
+            
+            <div class="cta-group">
+                <a href="#search" class="btn btn-primary">
+                    <i data-lucide="search" style="width: 20px; height: 20px;"></i>
+                    Search Salaries FREE
+                </a>
+                <a href="#leads" class="btn btn-secondary">
+                    <i data-lucide="trending-up" style="width: 20px; height: 20px;"></i>
+                    Get Business Leads
+                </a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Search Section -->
+    <section id="search" class="search-section">
+        <div class="search-container">
+            <div class="section-header">
+                <h2 class="section-title">Instant Salary Lookup</h2>
+                <p class="section-description">Search any Chicago city employee by name or department</p>
+            </div>
+            
+            <div class="search-bar">
+                <input type="text" class="search-input" placeholder="Enter employee name or department..." id="searchInput">
+                <button class="search-btn" onclick="performSearch()">Search</button>
+            </div>
+            
+            <div class="quick-filters">
+                <button class="filter-tag" onclick="window.quickSearch('Police')">Police</button>
+                <button class="filter-tag" onclick="window.quickSearch('Fire')">Fire</button>
+                <button class="filter-tag" onclick="window.quickSearch('Mayor')">Mayor's Office</button>
+                <button class="filter-tag" onclick="window.quickSearch('200000')">$200K+</button>
+                <button class="filter-tag" onclick="window.quickSearch('Overtime')">Top Overtime</button>
+            </div>
+            
+            <div class="results-table">
+                <div class="table-header">
+                    <div>Name</div>
+                    <div>Title</div>
+                    <div>Salary</div>
+                    <div>Details</div>
+                </div>
+                <div class="table-row" id="result1">
+                    <div class="employee-name" data-label="Name">JOHNSON, LARRY D</div>
+                    <div class="employee-title" data-label="Title">Police Superintendent</div>
+                    <div class="salary" data-label="Salary">$300,044</div>
+                    <div data-label="Details">
+                        <button onclick="alert('Employee: JOHNSON, LARRY D\nTitle: Police Superintendent\nDepartment: Police\nTotal: $300,044\nBase: $260,044\nOvertime: $40,000')" style="background:none;border:none;color:#0047AB;cursor:pointer;font-weight:500;">
+                            View Details →
+                        </button>
+                    </div>
+                </div>
+                <div class="table-row" id="result2">
+                    <div class="employee-name" data-label="Name">CARTER, ANNETTE M</div>
+                    <div class="employee-title" data-label="Title">Fire Commissioner</div>
+                    <div class="salary" data-label="Salary">$235,000</div>
+                    <div data-label="Details">
+                        <button onclick="alert('Employee: CARTER, ANNETTE M\nTitle: Fire Commissioner\nDepartment: Fire\nTotal: $235,000\nBase: $220,000\nOvertime: $15,000')" style="background:none;border:none;color:#0047AB;cursor:pointer;font-weight:500;">
+                            View Details →
+                        </button>
+                    </div>
+                </div>
+                <div class="table-row" id="result3">
+                    <div class="employee-name" data-label="Name">WILLIAMS, DAVID R</div>
+                    <div class="employee-title" data-label="Title">Chief Financial Officer</div>
+                    <div class="salary" data-label="Salary">$215,000</div>
+                    <div data-label="Details">
+                        <button onclick="alert('Employee: WILLIAMS, DAVID R\nTitle: Chief Financial Officer\nDepartment: Finance\nTotal: $215,000\nBase: $215,000\nOvertime: $0')" style="background:none;border:none;color:#0047AB;cursor:pointer;font-weight:500;">
+                            View Details →
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Business Leads Section -->
+    <section id="leads" class="leads-section">
+        <div class="leads-content">
+            <div class="leads-header">
+                <h2 class="leads-title">Business Intelligence That Pays For Itself</h2>
+                <p class="leads-subtitle">Get fresh Chicago business leads before your competitors. Updated daily from public records.</p>
+            </div>
+            
+            <div class="leads-grid">
+                <div class="lead-card">
+                    <div class="lead-icon">🏢</div>
+                    <h3 class="lead-title">New Businesses</h3>
+                    <p class="lead-description">300+ new business registrations weekly with owner names, addresses, and contact info.</p>
+                    <ul class="lead-features">
+                        <li><i data-lucide="check" style="width: 16px; height: 16px;"></i> Owner contact details</li>
+                        <li><i data-lucide="check" style="width: 16px; height: 16px;"></i> Business type & size</li>
+                        <li><i data-lucide="check" style="width: 16px; height: 16px;"></i> Registration date</li>
+                    </ul>
+                    <div class="lead-price">$49<span>/month</span></div>
+                    <button class="lead-cta" onclick="window.location.href='mailto:info@chicagosmoney.com?subject=New Business Leads Subscription'">Get Started</button>
+                </div>
+                
+                <div class="lead-card featured">
+                    <span class="featured-badge">Most Popular</span>
+                    <div class="lead-icon">🔨</div>
+                    <h3 class="lead-title">Construction Permits</h3>
+                    <p class="lead-description">Every permit filed with contractor info, project value, and detailed scope of work.</p>
+                    <ul class="lead-features">
+                        <li><i data-lucide="check" style="width: 16px; height: 16px;"></i> Project values</li>
+                        <li><i data-lucide="check" style="width: 16px; height: 16px;"></i> Contractor details</li>
+                        <li><i data-lucide="check" style="width: 16px; height: 16px;"></i> Work descriptions</li>
+                    </ul>
+                    <div class="lead-price">$99<span>/month</span></div>
+                    <button class="lead-cta" onclick="window.location.href='mailto:info@chicagosmoney.com?subject=Construction Permits Subscription'">Get Started</button>
+                </div>
+                
+                <div class="lead-card">
+                    <div class="lead-icon">🍕</div>
+                    <h3 class="lead-title">Restaurant Violations</h3>
+                    <p class="lead-description">Failed health inspections with violations, contact info, and inspection dates.</p>
+                    <ul class="lead-features">
+                        <li><i data-lucide="check" style="width: 16px; height: 16px;"></i> Violation details</li>
+                        <li><i data-lucide="check" style="width: 16px; height: 16px;"></i> Owner contacts</li>
+                        <li><i data-lucide="check" style="width: 16px; height: 16px;"></i> Inspection history</li>
+                    </ul>
+                    <div class="lead-price">$49<span>/month</span></div>
+                    <button class="lead-cta" onclick="window.location.href='mailto:info@chicagosmoney.com?subject=Restaurant Violations Subscription'">Get Started</button>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Contact Section -->
+    <section id="contact" class="contact-section">
+        <div class="container">
+            <h2 class="section-title">Stay Informed</h2>
+            <p class="contact-info">
+                Questions? Contact us at 
+                <a href="mailto:info@chicagosmoney.com" class="contact-email">info@chicagosmoney.com</a>
+            </p>
+            
+            <form class="newsletter-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+                <input type="email" name="email" class="newsletter-input" placeholder="Enter your email for updates..." required>
+                <input type="hidden" name="_subject" value="Newsletter Signup - Chicago's Money">
+                <button type="submit" class="btn btn-primary">Subscribe</button>
+            </form>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>For Citizens</h4>
+                <ul class="footer-links">
+                    <li><a href="#search">Salary Lookup</a></li>
+                    <li><a href="#stats">Budget Dashboard</a></li>
+                    <li><a href="#data">Public Records</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>For Businesses</h4>
+                <ul class="footer-links">
+                    <li><a href="#leads">Business Leads</a></li>
+                    <li><a href="#permits">Permit Tracking</a></li>
+                    <li><a href="#violations">Violation Alerts</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Company</h4>
+                <ul class="footer-links">
+                    <li><a href="/about">About Us</a></li>
+                    <li><a href="mailto:info@chicagosmoney.com">Contact</a></li>
+                    <li><a href="/privacy">Privacy Policy</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Connect</h4>
+                <ul class="footer-links">
+                    <li><a href="mailto:info@chicagosmoney.com">info@chicagosmoney.com</a></li>
+                    <li><a href="#">Twitter</a></li>
+                    <li><a href="#">LinkedIn</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Chicago's Money. Promoting transparency & business growth through public data.</p>
+        </div>
+    </footer>
+    
+    <script>
+        // Simple mobile-compatible JavaScript
+        
+        // Make functions globally available
+        window.quickSearch = function(term) {
+            document.getElementById('searchInput').value = term;
+            window.updateResults(term);
+        };
+        
+        window.performSearch = function() {
+            const input = document.getElementById('searchInput');
+            if (input) {
+                window.updateResults(input.value);
+            }
+        };
+        
+        window.updateResults = function(searchTerm) {
+            const resultsDiv = document.querySelector('.results-table');
+            if (!resultsDiv) return;
+            
+            // Simple data
+            const data = {
+                'Police': [
+                    {name: 'JOHNSON, LARRY D', title: 'Police Superintendent', salary: '$300,044', dept: 'Police', base: '$260,044', overtime: '$40,000'},
+                    {name: 'BROWN, DAVID O', title: 'Deputy Chief', salary: '$197,736', dept: 'Police', base: '$180,000', overtime: '$17,736'},
+                    {name: 'WILLIAMS, ERIC M', title: 'Commander', salary: '$178,452', dept: 'Police', base: '$165,000', overtime: '$13,452'}
+                ],
+                'Fire': [
+                    {name: 'CARTER, ANNETTE M', title: 'Fire Commissioner', salary: '$235,000', dept: 'Fire', base: '$220,000', overtime: '$15,000'},
+                    {name: 'FORD, RICHARD C', title: 'Deputy Fire Commissioner', salary: '$197,736', dept: 'Fire', base: '$185,000', overtime: '$12,736'},
+                    {name: 'JONES, THOMAS L', title: 'Battalion Chief', salary: '$170,112', dept: 'Fire', base: '$155,000', overtime: '$15,112'}
+                ],
+                'Mayor': [
+                    {name: 'JOHNSON, BRANDON', title: 'Mayor', salary: '$216,210', dept: 'Mayor\\\'s Office', base: '$216,210', overtime: '$0'},
+                    {name: 'GREEN, MICHAEL S', title: 'Chief of Staff', salary: '$185,000', dept: 'Mayor\\\'s Office', base: '$185,000', overtime: '$0'},
+                    {name: 'DAVIS, JENNIFER K', title: 'Deputy Mayor', salary: '$175,000', dept: 'Mayor\\\'s Office', base: '$175,000', overtime: '$0'}
+                ],
+                '200000': [
+                    {name: 'JOHNSON, LARRY D', title: 'Police Superintendent', salary: '$300,044', dept: 'Police', base: '$260,044', overtime: '$40,000'},
+                    {name: 'CARTER, ANNETTE M', title: 'Fire Commissioner', salary: '$235,000', dept: 'Fire', base: '$220,000', overtime: '$15,000'},
+                    {name: 'JOHNSON, BRANDON', title: 'Mayor', salary: '$216,210', dept: 'Mayor\\\'s Office', base: '$216,210', overtime: '$0'}
+                ],
+                'Overtime': [
+                    {name: 'SMITH, JOHN P', title: 'Police Sergeant', salary: '$245,887', dept: 'Police', base: '$147,442', overtime: '$98,445'},
+                    {name: 'RODRIGUEZ, MARIA L', title: 'Fire Lieutenant', salary: '$235,122', dept: 'Fire', base: '$147,888', overtime: '$87,234'},
+                    {name: 'THOMPSON, ROBERT K', title: 'Streets Supervisor', salary: '$198,776', dept: 'Streets & San', base: '$122,233', overtime: '$76,543'}
+                ]
+            };
+            
+            // Get the right data
+            let results = data[searchTerm] || data['Police'];
+            
+            // Build simple HTML
+            let html = '<div class="table-header"><div>Name</div><div>Title</div><div>Salary</div><div>Details</div></div>';
+            
+            results.forEach(function(item) {
+                const detailsText = 'Employee: ' + item.name + '\\nTitle: ' + item.title + '\\nDepartment: ' + item.dept + '\\nTotal: ' + item.salary + '\\nBase: ' + item.base + '\\nOvertime: ' + item.overtime;
+                html += '<div class="table-row">';
+                html += '<div class="employee-name" data-label="Name">' + item.name + '</div>';
+                html += '<div class="employee-title" data-label="Title">' + item.title + '</div>';
+                html += '<div class="salary" data-label="Salary">' + item.salary + '</div>';
+                html += '<div data-label="Details">';
+                html += '<button onclick="alert(\'' + detailsText + '\')" style="background:none;border:none;color:#0047AB;cursor:pointer;font-weight:500;">View Details →</button>';
+                html += '</div></div>';
+            });
+            
+            resultsDiv.innerHTML = html;
+        };
+        
+        // Initialize icons if available
+        if (typeof lucide !== 'undefined') {
+            lucide.createIcons();
+        }
+        
+        // Simple navbar scroll
+        window.addEventListener('scroll', function() {
+            const navbar = document.getElementById('navbar');
+            if (navbar && window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else if (navbar) {
+                navbar.classList.remove('scrolled');
+            }
+        });
+        
+        // Mobile menu with auto-collapse
+        const mobileMenuBtn = document.getElementById('mobileMenu');
+        let menuTimeout;
+        
+        function closeMobileMenu() {
+            const navLinks = document.querySelector('.nav-links');
+            if (navLinks && window.innerWidth <= 768) {
+                navLinks.style.display = 'none';
+            }
+            if (menuTimeout) {
+                clearTimeout(menuTimeout);
+            }
+        }
+        
+        if (mobileMenuBtn) {
+            mobileMenuBtn.onclick = function() {
+                const navLinks = document.querySelector('.nav-links');
+                if (navLinks) {
+                    const isOpen = navLinks.style.display === 'flex';
+                    
+                    if (isOpen) {
+                        closeMobileMenu();
+                    } else {
+                        navLinks.style.display = 'flex';
+                        navLinks.style.position = 'absolute';
+                        navLinks.style.top = '100%';
+                        navLinks.style.left = '0';
+                        navLinks.style.right = '0';
+                        navLinks.style.background = 'white';
+                        navLinks.style.flexDirection = 'column';
+                        navLinks.style.padding = '1rem';
+                        navLinks.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)';
+                        navLinks.style.zIndex = '999';
+                        
+                        // Auto-close after 3 seconds
+                        if (menuTimeout) clearTimeout(menuTimeout);
+                        menuTimeout = setTimeout(closeMobileMenu, 3000);
+                    }
+                }
+            };
+        }
+        
+        // Close menu when clicking on nav links
+        const navLinks = document.querySelectorAll('.nav-link, .nav-cta');
+        navLinks.forEach(function(link) {
+            link.addEventListener('click', function() {
+                if (window.innerWidth <= 768) {
+                    closeMobileMenu();
+                }
+            });
+        });
+        
+        // Close menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const navLinksDiv = document.querySelector('.nav-links');
+            const mobileBtn = document.getElementById('mobileMenu');
+            
+            if (navLinksDiv && mobileBtn && window.innerWidth <= 768) {
+                if (!navLinksDiv.contains(event.target) && !mobileBtn.contains(event.target)) {
+                    closeMobileMenu();
+                }
+            }
+        });
+    </script>
+</body>
+</html>

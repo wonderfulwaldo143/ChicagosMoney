@@ -1,0 +1,55 @@
+# Chicago's Money - Authorized Digital Sellers
+# https://chicagosmoney.com/ads.txt
+# Last Updated: 2025-09-10
+
+# Google AdSense (when approved)
+# google.com, pub-XXXXXXXXXXXXXXXX, DIRECT, f08c47fec0942fa0
+
+# Google Ad Manager
+# google.com, pub-XXXXXXXXXXXXXXXX, RESELLER, f08c47fec0942fa0
+
+# Media.net (when approved)
+# media.net, XXXXXXXXXX, DIRECT
+
+# Amazon Associates (when approved)
+# amazon-adsystem.com, XXXXXX-XX, DIRECT
+
+# Taboola (when approved)
+# taboola.com, XXXXXXXX, DIRECT, c228e6794e811952
+
+# Outbrain (when approved)
+# outbrain.com, XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX, DIRECT
+
+# Carbon Ads (for tech-savvy audience)
+# carbonads.net, XXXXXXXXXXXXX, DIRECT
+
+# BuySellAds
+# buysellads.com, XXXXX, DIRECT
+
+# Ezoic (when approved)
+# ezoic.com, XXXXX, DIRECT
+
+# AdThrive (when traffic requirements met)
+# adthrive.com, XXXXXXXXXXXXX, DIRECT
+
+# Mediavine (when traffic requirements met)
+# mediavine.com, XXXXX, DIRECT
+
+# Local Chicago Advertisers (Direct Sales)
+# chicagosmoney.com, direct-sales, DIRECT
+
+# Placeholder for future ad networks
+# Update this file when you join advertising programs
+
+# Contact for direct advertising opportunities:
+# advertising@chicagosmoney.com
+
+# Note: This file is prepared for future monetization.
+# Replace XXXXX placeholders with actual publisher IDs when approved.
+
+# Benefits of ads.txt:
+# - Prevents ad fraud
+# - Ensures authorized sellers only
+# - Improves advertiser confidence
+# - Better CPM rates
+# - Transparency in programmatic advertising
