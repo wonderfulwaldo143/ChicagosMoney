@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-/clea<html lang="en">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -1746,7 +1746,7 @@
                 <a href="mailto:info@chicagosmoney.com" class="contact-email">info@chicagosmoney.com</a>
             </p>
             
-            <form class="newsletter-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
+            <form class="newsletter-form" action="https://formspree.io/f/xqadnqlb" method="POST">
                 <input type="email" name="email" class="newsletter-input" placeholder="Enter your email for updates..." required>
                 <input type="hidden" name="_subject" value="Newsletter Signup - Chicago's Money">
                 <button type="submit" class="btn btn-primary">Subscribe</button>
@@ -1761,24 +1761,24 @@
                 <h4>For Citizens</h4>
                 <ul class="footer-links">
                     <li><a href="#search">Salary Lookup</a></li>
-                    <li><a href="#stats">Budget Dashboard</a></li>
-                    <li><a href="#data">Public Records</a></li>
+                    <li><a href="/budget-dashboard.html">Budget Dashboard</a></li>
+                    <li><a href="#contact">Contact</a></li>
                 </ul>
             </div>
             <div class="footer-section">
                 <h4>For Businesses</h4>
                 <ul class="footer-links">
                     <li><a href="#leads">Business Leads</a></li>
-                    <li><a href="#permits">Permit Tracking</a></li>
-                    <li><a href="#violations">Violation Alerts</a></li>
+                    <li><a href="#leads">Construction Permits</a></li>
+                    <li><a href="#leads">Violation Alerts</a></li>
                 </ul>
             </div>
             <div class="footer-section">
                 <h4>Company</h4>
                 <ul class="footer-links">
-                    <li><a href="/about">About Us</a></li>
+                    <li><a href="#contact">About Us</a></li>
                     <li><a href="mailto:info@chicagosmoney.com">Contact</a></li>
-                    <li><a href="/privacy">Privacy Policy</a></li>
+                    <li><a href="mailto:info@chicagosmoney.com?subject=Privacy%20Policy">Privacy Policy</a></li>
                 </ul>
             </div>
             <div class="footer-section">
@@ -1944,25 +1944,64 @@
                 tbody.innerHTML = '';
                 rows.forEach((row) => {
                     const tr = document.createElement('tr');
+
                     const status = row.full_or_part_time === 'F'
                         ? 'Full-time'
                         : row.full_or_part_time === 'P'
                             ? 'Part-time'
                             : (row.full_or_part_time || '');
-                    const statusBadge = status ? `<span class="salary-badge">${status}</span>` : '';
-                    tr.innerHTML = `
-                        <td class="col-name" data-label="Name">
-                            <div class="salary-cell">
-                                <strong>${row.name || ''}</strong>
-                                ${statusBadge}
-                            </div>
-                        </td>
-                        <td class="col-title" data-label="Job Title">${row.job_titles || ''}</td>
-                        <td class="col-dept" data-label="Department">${row.department || ''}</td>
-                        <td class="col-pay" data-label="Pay Type">${row.salary_or_hourly || ''}</td>
-                        <td class="col-annual salary-num" data-label="Annual Salary">${row.annual_salary ? fmtAnnual.format(Number(row.annual_salary)) : ''}</td>
-                        <td class="col-hourly salary-num" data-label="Hourly Rate">${row.hourly_rate ? fmtHourly.format(Number(row.hourly_rate)) : ''}</td>
-                    `;
+
+                    const nameCell = document.createElement('td');
+                    nameCell.className = 'col-name';
+                    nameCell.setAttribute('data-label', 'Name');
+
+                    const nameWrap = document.createElement('div');
+                    nameWrap.className = 'salary-cell';
+
+                    const nameStrong = document.createElement('strong');
+                    nameStrong.textContent = row.name || '';
+                    nameWrap.appendChild(nameStrong);
+
+                    if (status) {
+                        const badge = document.createElement('span');
+                        badge.className = 'salary-badge';
+                        badge.textContent = status;
+                        nameWrap.appendChild(badge);
+                    }
+
+                    nameCell.appendChild(nameWrap);
+                    tr.appendChild(nameCell);
+
+                    const titleCell = document.createElement('td');
+                    titleCell.className = 'col-title';
+                    titleCell.setAttribute('data-label', 'Job Title');
+                    titleCell.textContent = row.job_titles || '';
+                    tr.appendChild(titleCell);
+
+                    const deptCell = document.createElement('td');
+                    deptCell.className = 'col-dept';
+                    deptCell.setAttribute('data-label', 'Department');
+                    deptCell.textContent = row.department || '';
+                    tr.appendChild(deptCell);
+
+                    const payCell = document.createElement('td');
+                    payCell.className = 'col-pay';
+                    payCell.setAttribute('data-label', 'Pay Type');
+                    payCell.textContent = row.salary_or_hourly || '';
+                    tr.appendChild(payCell);
+
+                    const annualCell = document.createElement('td');
+                    annualCell.className = 'col-annual salary-num';
+                    annualCell.setAttribute('data-label', 'Annual Salary');
+                    annualCell.textContent = row.annual_salary ? fmtAnnual.format(Number(row.annual_salary)) : '';
+                    tr.appendChild(annualCell);
+
+                    const hourlyCell = document.createElement('td');
+                    hourlyCell.className = 'col-hourly salary-num';
+                    hourlyCell.setAttribute('data-label', 'Hourly Rate');
+                    hourlyCell.textContent = row.hourly_rate ? fmtHourly.format(Number(row.hourly_rate)) : '';
+                    tr.appendChild(hourlyCell);
+
                     tbody.appendChild(tr);
                 });
                 els.table.hidden = rows.length === 0;

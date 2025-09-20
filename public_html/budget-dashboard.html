@@ -1085,18 +1085,40 @@
     function renderBadges(data, metric) {
       const container = document.getElementById('insightBadges');
       if (!container) return;
+      container.replaceChildren();
       if (!data.length) {
-        container.innerHTML = '<div class="insight-badge"><span>No data</span><strong>—</strong><span>Try another filter</span></div>';
+        const badge = document.createElement('div');
+        badge.className = 'insight-badge';
+
+        const emptyLabel = document.createElement('span');
+        emptyLabel.textContent = 'No data';
+        const dash = document.createElement('strong');
+        dash.textContent = '—';
+        const hint = document.createElement('span');
+        hint.textContent = 'Try another filter';
+
+        badge.append(emptyLabel, dash, hint);
+        container.appendChild(badge);
         return;
       }
       const label = metricLabel(metric);
-      container.innerHTML = data.slice(0, 3).map((row, index) => `
-        <div class="insight-badge">
-          <span>${label} • #${index + 1}</span>
-          <strong>${row.department}</strong>
-          <span>${metric === 'headcount' ? row.metric.toLocaleString() + ' employees' : formatCurrencyCompact(row.metric)}</span>
-        </div>
-      `).join('');
+      data.slice(0, 3).forEach((row, index) => {
+        const badge = document.createElement('div');
+        badge.className = 'insight-badge';
+
+        const position = document.createElement('span');
+        position.textContent = `${label} • #${index + 1}`;
+        const department = document.createElement('strong');
+        department.textContent = row.department || '—';
+        const metricSpan = document.createElement('span');
+        const metricValue = metric === 'headcount'
+          ? `${Number(row.metric || 0).toLocaleString()} employees`
+          : formatCurrencyCompact(row.metric);
+        metricSpan.textContent = metricValue;
+
+        badge.append(position, department, metricSpan);
+        container.appendChild(badge);
+      });
     }
 
     function renderDepartmentTable(data, metric) {
@@ -1104,14 +1126,28 @@
       if (!table) return;
       const header = document.querySelector('.insight-table th.metric');
       if (header) header.textContent = metricLabel(metric);
+      table.replaceChildren();
       if (!data.length) {
-        table.innerHTML = '<tr><td colspan="2">No department data available.</td></tr>';
+        const tr = document.createElement('tr');
+        const td = document.createElement('td');
+        td.colSpan = 2;
+        td.textContent = 'No department data available.';
+        tr.appendChild(td);
+        table.appendChild(tr);
         return;
       }
-      table.innerHTML = data.map((row) => {
-        const value = metric === 'headcount' ? `${row.metric.toLocaleString()} staff` : formatCurrencyCompact(row.metric);
-        return `<tr><td>${row.department}</td><td class="metric">${value}</td></tr>`;
-      }).join('');
+      data.forEach((row) => {
+        const tr = document.createElement('tr');
+        const deptCell = document.createElement('td');
+        deptCell.textContent = row.department || '—';
+        const metricCell = document.createElement('td');
+        metricCell.className = 'metric';
+        metricCell.textContent = metric === 'headcount'
+          ? `${Number(row.metric || 0).toLocaleString()} staff`
+          : formatCurrencyCompact(row.metric);
+        tr.append(deptCell, metricCell);
+        table.appendChild(tr);
+      });
     }
 
     const metricLabel = (metric) => ({
@@ -1124,8 +1160,16 @@
       const insightList = document.getElementById('insightList');
       if (!insightList) return;
 
+      insightList.replaceChildren();
+
       if (!data.length) {
-        insightList.innerHTML = '<li><span>No recent movers</span><span></span></li>';
+        const item = document.createElement('li');
+        const label = document.createElement('span');
+        label.textContent = 'No recent movers';
+        const value = document.createElement('span');
+        value.textContent = '';
+        item.append(label, value);
+        insightList.appendChild(item);
         return;
       }
 
@@ -1134,9 +1178,15 @@
         ? `${Number(value || 0).toLocaleString()} staff`
         : formatCurrencyCompact(value));
 
-      insightList.innerHTML = topEntries
-        .map((row) => `<li><span>${row.department}</span><span>${formatValue(row.metric)}</span></li>`)
-        .join('');
+      topEntries.forEach((row) => {
+        const item = document.createElement('li');
+        const dept = document.createElement('span');
+        dept.textContent = row.department || '—';
+        const valueSpan = document.createElement('span');
+        valueSpan.textContent = formatValue(row.metric);
+        item.append(dept, valueSpan);
+        insightList.appendChild(item);
+      });
     }
 
     function renderHighlights({ topPayroll, topOvertime } = {}) {
@@ -1190,13 +1240,26 @@
         meta: metaParts.length ? metaParts.join(' • ') : 'Department rankings refresh once the data loads.'
       });
 
-      container.innerHTML = items.map((item) => `
-        <article class="highlight-card">
-          <span class="label">${item.label}</span>
-          <span class="value">${item.value}</span>
-          <span class="meta">${item.meta}</span>
-        </article>
-      `).join('');
+      container.replaceChildren();
+      items.forEach((item) => {
+        const card = document.createElement('article');
+        card.className = 'highlight-card';
+
+        const labelEl = document.createElement('span');
+        labelEl.className = 'label';
+        labelEl.textContent = item.label;
+
+        const valueEl = document.createElement('span');
+        valueEl.className = 'value';
+        valueEl.textContent = item.value;
+
+        const metaEl = document.createElement('span');
+        metaEl.className = 'meta';
+        metaEl.textContent = item.meta;
+
+        card.append(labelEl, valueEl, metaEl);
+        container.appendChild(card);
+      });
     }
 
     function renderStories(data, metric) {
@@ -1204,12 +1267,19 @@
       if (!deck) return;
       const top = data.slice(0, 3);
       const label = metricLabel(metric);
+      deck.replaceChildren();
       if (!top.length) {
-        deck.innerHTML = '<article class="story-card"><div class="story-chip">No data</div><p>All quiet for now. Try another view.</p></article>';
+        const article = document.createElement('article');
+        article.className = 'story-card';
+        const chip = document.createElement('div');
+        chip.className = 'story-chip';
+        chip.textContent = 'No data';
+        const message = document.createElement('p');
+        message.textContent = 'All quiet for now. Try another view.';
+        article.append(chip, message);
+        deck.appendChild(article);
         return;
       }
-
-      const escapeAttr = (value = '') => String(value).replace(/"/g, '&quot;');
 
       const formatStoryValue = (value) => (metric === 'headcount'
         ? `${Number(value || 0).toLocaleString()} staff`
@@ -1217,21 +1287,68 @@
 
       const metricSubtitle = metric === 'headcount' ? 'Headcount' : label;
 
-      deck.innerHTML = top.map((row, index) => `
-        <article class="story-card" tabindex="0" aria-label="${escapeAttr(label)} spotlight for ${escapeAttr(row.department)}" data-department="${encodeURIComponent(row.department)}" data-metric="${metric}" data-value="${row.metric}">
-          <div class="story-chip">Top ${index + 1}</div>
-          <h4>${row.department}</h4>
-          <div class="story-metric">
-            <span class="story-metric__value">${formatStoryValue(row.metric)}</span>
-            <span class="story-metric__label">${metricSubtitle}</span>
-          </div>
-          <p>${label} is currently <strong>${formatStoryValue(row.metric)}</strong>, putting this department in the spotlight.</p>
-          <div class="story-actions">
-            <a class="story-share" data-share="link" href="#" data-department="${encodeURIComponent(row.department)}" data-metric="${metric}">Share link</a>
-            <a class="story-share" data-share="image" href="#" data-department="${encodeURIComponent(row.department)}" data-metric="${metric}" data-value="${row.metric}">Share image</a>
-          </div>
-        </article>
-      `).join('');
+      top.forEach((row, index) => {
+        const article = document.createElement('article');
+        article.className = 'story-card';
+        article.tabIndex = 0;
+        article.setAttribute('aria-label', `${label} spotlight for ${row.department || 'department'}`);
+        article.dataset.department = encodeURIComponent(row.department || '');
+        article.dataset.metric = metric;
+        article.dataset.value = String(row.metric ?? '');
+
+        const chip = document.createElement('div');
+        chip.className = 'story-chip';
+        chip.textContent = `Top ${index + 1}`;
+        article.appendChild(chip);
+
+        const heading = document.createElement('h4');
+        heading.textContent = row.department || '—';
+        article.appendChild(heading);
+
+        const metricWrap = document.createElement('div');
+        metricWrap.className = 'story-metric';
+        const metricValue = document.createElement('span');
+        metricValue.className = 'story-metric__value';
+        metricValue.textContent = formatStoryValue(row.metric);
+        const metricLabelEl = document.createElement('span');
+        metricLabelEl.className = 'story-metric__label';
+        metricLabelEl.textContent = metricSubtitle;
+        metricWrap.append(metricValue, metricLabelEl);
+        article.appendChild(metricWrap);
+
+        const paragraph = document.createElement('p');
+        paragraph.append(`${label} is currently `);
+        const strong = document.createElement('strong');
+        strong.textContent = formatStoryValue(row.metric);
+        paragraph.appendChild(strong);
+        paragraph.append(', putting this department in the spotlight.');
+        article.appendChild(paragraph);
+
+        const actions = document.createElement('div');
+        actions.className = 'story-actions';
+
+        const linkShare = document.createElement('a');
+        linkShare.className = 'story-share';
+        linkShare.dataset.share = 'link';
+        linkShare.href = '#';
+        linkShare.dataset.department = encodeURIComponent(row.department || '');
+        linkShare.dataset.metric = metric;
+        linkShare.textContent = 'Share link';
+
+        const imageShare = document.createElement('a');
+        imageShare.className = 'story-share';
+        imageShare.dataset.share = 'image';
+        imageShare.href = '#';
+        imageShare.dataset.department = encodeURIComponent(row.department || '');
+        imageShare.dataset.metric = metric;
+        imageShare.dataset.value = String(row.metric ?? '');
+        imageShare.textContent = 'Share image';
+
+        actions.append(linkShare, imageShare);
+        article.appendChild(actions);
+
+        deck.appendChild(article);
+      });
       attachStoryShareHandlers();
     }
 
