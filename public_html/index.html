@@ -16,9 +16,11 @@
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@motionone/dom/dist/motion.min.js"></script>
     
     <!-- Theme CSS -->
-    <link rel="stylesheet" href="professional_theme_1.css">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" href="/IMG/chicagos_money_logo_variant_1.png" type="image/png">
     
     <style>
         * {
@@ -218,45 +220,92 @@
                 opacity: 1;
             }
         }
+
+        @keyframes pulseGlow {
+            0% {
+                opacity: 0.6;
+                transform: scale(1) rotate(6deg);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1.08) rotate(10deg);
+            }
+        }
         
         /* Hero Section */
         .hero {
-            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 50%, #f8f9fa 100%);
-            padding: 5rem 2rem 4rem;
+            background: radial-gradient(140% 120% at 10% 10%, rgba(0, 71, 171, 0.22), transparent),
+                        radial-gradient(120% 100% at 90% 30%, rgba(0, 200, 81, 0.2), transparent),
+                        #05060f;
+            padding: 5.5rem 2rem 4.5rem;
             margin-top: 40px;
             position: relative;
             overflow: hidden;
+            color: rgba(232, 235, 255, 0.92);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
-        
-        .hero::before {
+
+        .hero::before,
+        .hero::after {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, #0047AB, transparent);
-            animation: shimmer 3s infinite;
+            inset: -40% -10% auto;
+            height: 75%;
+            background: radial-gradient(ellipse at center, rgba(0, 174, 255, 0.2), transparent 70%);
+            filter: blur(60px);
+            opacity: 0.9;
+            transform: rotate(8deg);
+            animation: pulseGlow 8s ease-in-out infinite alternate;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .hero::after {
+            inset: auto -30% -50% -30%;
+            background: radial-gradient(circle at center, rgba(255, 176, 0, 0.18), transparent 70%);
+            filter: blur(80px);
+            transform: rotate(-12deg);
+            animation-delay: 2s;
         }
         
         .hero-content {
             max-width: 1280px;
             margin: 0 auto;
             text-align: center;
+            position: relative;
+            z-index: 1;
         }
         
         .hero-badge {
-            display: inline-block;
-            background: rgba(0, 71, 171, 0.1);
-            color: #0047AB;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(0, 174, 255, 0.12);
+            color: #7cd0ff;
             padding: 0.5rem 1rem;
             border-radius: 20px;
             font-weight: 600;
             font-size: 0.875rem;
             margin-bottom: 1.5rem;
             animation: fadeIn 0.6s ease-out;
+            backdrop-filter: blur(6px);
         }
-        
+
+        .hero-badge::before {
+            content: '●';
+            font-size: 10px;
+        }
+
+        .hero-badge::after {
+            content: 'Live';
+            letter-spacing: 0.12em;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+        }
+
         .hero-title {
             font-size: clamp(2.5rem, 5vw, 4rem);
             font-weight: 900;
@@ -264,20 +313,52 @@
             margin-bottom: 1.5rem;
             animation: slideUp 0.6s ease-out 0.2s both;
         }
-        
+
         .hero-title .highlight {
-            color: #0047AB;
+            font-family: 'DM Sans', 'Inter', sans-serif;
+            background: linear-gradient(90deg, #7cd0ff, #d7e5ff);
+            -webkit-background-clip: text;
+            color: transparent;
         }
-        
+
         .hero-title .money {
-            color: #FFB000;
+            color: #ffda7b;
+            font-family: 'JetBrains Mono', 'Inter', sans-serif;
+            letter-spacing: -0.02em;
+            position: relative;
         }
-        
+
+        .hero-title .money::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background: linear-gradient(90deg, rgba(255, 209, 102, 0.4), transparent);
+            border-radius: 999px;
+        }
+
         .hero-subtitle {
             font-size: clamp(1.25rem, 2vw, 1.5rem);
-            color: #6b7280;
+            color: rgba(214, 224, 255, 0.78);
             margin-bottom: 3rem;
             animation: slideUp 0.6s ease-out 0.4s both;
+        }
+
+        .accent-word {
+            font-family: 'JetBrains Mono', 'Inter', sans-serif;
+            color: #89f8d4;
+            display: inline-block;
+            position: relative;
+        }
+
+        .accent-word::after {
+            content: '';
+            position: absolute;
+            inset: auto 0 -4px 0;
+            height: 2px;
+            background: linear-gradient(90deg, rgba(137, 248, 212, 0), rgba(137, 248, 212, 0.7), rgba(137, 248, 212, 0));
         }
         
         /* Stats Grid */
@@ -292,24 +373,25 @@
         }
         
         .stat-card {
-            background: white;
-            border-radius: 12px;
-            padding: 2rem 1.5rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            background: rgba(10, 13, 26, 0.65);
+            border-radius: 16px;
+            padding: 2rem 1.75rem;
+            box-shadow: 0 20px 40px -20px rgba(12, 20, 60, 0.7);
             transition: all 0.3s ease;
             animation: scaleIn 0.6s ease-out 0.6s both;
             position: relative;
             overflow: hidden;
+            border: 1px solid rgba(124, 208, 255, 0.08);
         }
-        
+
         .stat-card::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, #0047AB, #00C851);
+            height: 3px;
+            background: linear-gradient(90deg, rgba(124, 208, 255, 0), rgba(124, 208, 255, 0.7), rgba(0, 200, 81, 0));
         }
         
         .stat-card:hover {
@@ -318,18 +400,18 @@
         }
         
         .stat-number {
-            font-size: 2.5rem;
+            font-size: 2.6rem;
             font-weight: 800;
-            color: #0047AB;
+            color: #dbe7ff;
             margin-bottom: 0.5rem;
             font-variant-numeric: tabular-nums;
         }
-        
+
         .stat-label {
-            font-size: 0.875rem;
-            color: #6b7280;
+            font-size: 0.85rem;
+            color: rgba(214, 224, 255, 0.7);
             text-transform: uppercase;
-            letter-spacing: 0.05em;
+            letter-spacing: 0.12em;
             font-weight: 600;
         }
         
@@ -354,29 +436,40 @@
             cursor: pointer;
             border: none;
             font-size: 1rem;
+            position: relative;
+            overflow: hidden;
+            transform-style: preserve-3d;
+            will-change: transform;
+            --magnetic-x: 0px;
+            --magnetic-y: 0px;
+            --hover-lift: 0px;
+            transform: translate3d(calc(var(--magnetic-x)), calc(var(--magnetic-y) - var(--hover-lift)), 0);
         }
-        
+
         .btn-primary {
-            background: linear-gradient(135deg, #0047AB, #001F3F);
+            background: linear-gradient(135deg, #347cff, #0047AB);
             color: white;
-            box-shadow: 0 4px 6px rgba(0, 71, 171, 0.2);
+            box-shadow: 0 18px 35px -18px rgba(52, 124, 255, 0.8);
         }
-        
+
         .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0, 71, 171, 0.3);
+            --hover-lift: 2px;
+            transform: translate3d(calc(var(--magnetic-x)), calc(var(--magnetic-y) - var(--hover-lift)), 0) scale(1.01);
+            box-shadow: 0 18px 40px -18px rgba(52, 124, 255, 0.8);
         }
-        
+
         .btn-secondary {
-            background: white;
-            color: #0047AB;
-            border: 2px solid #0047AB;
+            background: rgba(255, 255, 255, 0.08);
+            color: #9cc8ff;
+            border: 1px solid rgba(124, 208, 255, 0.3);
+            backdrop-filter: blur(6px);
         }
-        
+
         .btn-secondary:hover {
-            background: #0047AB;
-            color: white;
-            transform: translateY(-2px);
+            background: rgba(124, 208, 255, 0.12);
+            color: #c4e4ff;
+            --hover-lift: 2px;
+
         }
         
         /* Search Section */
@@ -913,6 +1006,450 @@
                 transition-duration: 0.01ms !important;
             }
         }
+
+        /* Salary Search Widget */
+        #salaryWidget {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .salary-widget {
+            --bg: #0b0c10;
+            --card: #111218;
+            --muted: #1a1b22;
+            --text: #e8e9ee;
+            --sub: #a9adbf;
+            --accent: #ffd166;
+            --line: #242632;
+        }
+
+        .salary-widget .salary-card {
+            background: var(--card);
+            border: 1px solid var(--line);
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+            overflow: hidden;
+            color: var(--text);
+        }
+
+        .salary-widget,
+        .salary-widget table,
+        .salary-widget thead th,
+        .salary-widget tbody td {
+            color: var(--text);
+        }
+
+        .salary-widget .salary-card-header {
+            padding: 18px 18px 0;
+        }
+
+        .salary-widget .salary-card-header h3 {
+            font-size: 28px;
+            margin: 0 0 16px;
+            color: var(--text);
+        }
+
+        .salary-widget .salary-lead {
+            color: var(--sub);
+            margin: 0 0 24px;
+        }
+
+        .salary-widget .salary-form {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 12px;
+            padding: 18px;
+            border-bottom: 1px solid var(--line);
+            background: var(--bg);
+        }
+
+        .salary-widget label {
+            font-size: 12px;
+            color: var(--sub);
+            display: block;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        .salary-widget input,
+        .salary-widget select {
+            width: 100%;
+            padding: 10px 12px;
+            border-radius: 10px;
+            border: 1px solid var(--line);
+            background: var(--muted);
+            color: var(--text);
+            font-size: 0.95rem;
+            font-family: inherit;
+        }
+
+        .salary-widget input::placeholder {
+            color: #7b8092;
+        }
+
+        .salary-widget input:focus,
+        .salary-widget select:focus {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        .salary-widget .salary-col-3 {
+            grid-column: span 3;
+        }
+
+        .salary-widget .salary-col-4 {
+            grid-column: span 4;
+        }
+
+        .salary-widget .salary-col-6 {
+            grid-column: span 6;
+        }
+
+        .salary-widget .salary-col-8 {
+            grid-column: span 8;
+        }
+
+        .salary-widget .salary-col-9 {
+            grid-column: span 9;
+        }
+
+        .salary-widget .salary-col-12 {
+            grid-column: span 12;
+        }
+
+        .salary-widget .salary-controls {
+            display: flex;
+            gap: 12px;
+            align-items: flex-end;
+        }
+
+        .salary-widget .salary-control {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .salary-widget .salary-actions {
+            display: flex;
+            gap: 8px;
+            justify-content: flex-end;
+        }
+
+        .salary-widget .salary-btn {
+            cursor: pointer;
+            background: #222432;
+            border: 1px solid #2b2d3a;
+            color: var(--text);
+            padding: 10px 16px;
+            border-radius: 10px;
+            transition: all 0.2s ease;
+            font-size: 0.95rem;
+            position: relative;
+            overflow: hidden;
+            transform-style: preserve-3d;
+            --magnetic-x: 0px;
+            --magnetic-y: 0px;
+            --hover-lift: 0px;
+            transform: translate3d(calc(var(--magnetic-x)), calc(var(--magnetic-y) - var(--hover-lift)), 0);
+        }
+
+        .salary-widget .salary-btn:hover {
+            --hover-lift: 1px;
+        }
+
+        .salary-widget .salary-btn.accent {
+            background: var(--accent);
+            border-color: #e0b34a;
+            color: #1a1a1a;
+        }
+
+        .salary-widget .salary-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .salary-widget .salary-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 12px;
+            border-radius: 999px;
+            border: 1px solid var(--line);
+            background: linear-gradient(135deg, rgba(36, 44, 76, 0.95), rgba(34, 36, 50, 0.6));
+            color: var(--text);
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+        }
+
+        .salary-widget .salary-pill:hover {
+            border-color: rgba(255, 209, 102, 0.5);
+            color: var(--accent);
+        }
+
+        .salary-widget .salary-pill-highlight {
+            background: linear-gradient(90deg, rgba(255, 209, 102, 0.2), rgba(255, 209, 102, 0.05));
+            border: 1px solid rgba(255, 209, 102, 0.35);
+            justify-content: space-between;
+            cursor: pointer;
+        }
+
+        .salary-widget .salary-saved-searches {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .salary-widget .salary-results {
+            padding: 8px 18px 18px;
+            background: var(--card);
+        }
+
+        .salary-widget .salary-meta {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            justify-content: space-between;
+            margin: 12px 0;
+        }
+
+        .salary-widget .salary-meta small {
+            color: var(--sub);
+        }
+
+        .salary-widget .salary-pager {
+            display: flex;
+            gap: 6px;
+        }
+
+        .salary-widget .salary-table-wrap {
+            overflow: auto;
+        }
+
+        .salary-widget table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            border-radius: 12px;
+            border: 1px solid var(--line);
+            overflow: hidden;
+            table-layout: auto;
+            background: rgba(9, 12, 24, 0.78);
+            box-shadow: 0 25px 45px -30px rgba(8, 12, 30, 0.9);
+        }
+
+        .salary-widget thead th {
+            font-size: 12px;
+            color: var(--sub);
+            text-align: left;
+            background: rgba(18, 20, 34, 0.95);
+            padding: 14px 16px;
+            border-bottom: 1px solid var(--line);
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .salary-widget thead th.col-name { width: 24%; }
+        .salary-widget thead th.col-title { width: 24%; }
+        .salary-widget thead th.col-dept { width: 22%; }
+        .salary-widget thead th.col-pay { width: 10%; }
+        .salary-widget thead th.col-annual { width: 12%; min-width: 130px; }
+        .salary-widget thead th.col-hourly { width: 8%; min-width: 110px; }
+
+        .salary-widget tbody td.col-name { width: 24%; }
+        .salary-widget tbody td.col-title { width: 24%; }
+        .salary-widget tbody td.col-dept { width: 22%; }
+        .salary-widget tbody td.col-pay { width: 10%; white-space: nowrap; }
+        .salary-widget tbody td.col-annual,
+        .salary-widget tbody td.col-hourly {
+            width: auto;
+            white-space: nowrap;
+        }
+
+        .salary-widget tbody td.col-title,
+        .salary-widget tbody td.col-dept {
+            font-size: 0.95rem;
+            color: rgba(207, 214, 255, 0.86);
+        }
+
+        .salary-widget tbody td {
+            padding: 18px 16px;
+            border-bottom: 1px solid var(--line);
+            color: rgba(230, 234, 255, 0.95);
+            line-height: 1.55;
+            vertical-align: top;
+            white-space: normal;
+            overflow: visible;
+            word-break: normal;
+            overflow-wrap: break-word;
+        }
+
+        .salary-widget tbody tr {
+            background: linear-gradient(180deg, rgba(22, 26, 46, 0.92), rgba(15, 17, 31, 0.92));
+            transition: background 0.3s ease, transform 0.3s ease;
+        }
+
+        .salary-widget tbody tr:nth-child(odd) {
+            background: linear-gradient(180deg, rgba(26, 30, 52, 0.94), rgba(18, 21, 37, 0.94));
+        }
+
+        .salary-widget tbody tr:hover {
+            background: linear-gradient(180deg, rgba(32, 41, 68, 0.98), rgba(21, 25, 42, 0.97));
+            transform: translateY(-2px);
+        }
+
+        .salary-widget tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .salary-widget .salary-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 999px;
+            font-size: 12px;
+            border: 1px solid var(--line);
+            background: #171926;
+            color: var(--sub);
+            margin-top: 6px;
+        }
+
+        .salary-widget .salary-cell {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            font-weight: 600;
+            letter-spacing: 0.01em;
+        }
+
+        .salary-widget .salary-num {
+            text-align: right;
+            font-variant-numeric: tabular-nums;
+            font-size: 1rem;
+        }
+
+        .salary-widget td.salary-num {
+            justify-content: flex-end;
+            font-weight: 600;
+        }
+
+        .salary-widget .salary-notice small {
+            color: var(--sub);
+        }
+
+        @media (max-width: 900px) {
+            .salary-widget .salary-col-3,
+            .salary-widget .salary-col-4,
+            .salary-widget .salary-col-6,
+            .salary-widget .salary-col-8,
+            .salary-widget .salary-col-9 {
+                grid-column: span 12;
+            }
+
+            .salary-widget .salary-controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .salary-widget .salary-actions {
+                justify-content: stretch;
+            }
+
+            .salary-widget .salary-pill-highlight {
+                justify-content: center;
+            }
+        }
+
+        @media (max-width: 700px) {
+            .salary-widget .salary-results {
+                padding: 12px;
+            }
+
+            .salary-widget .salary-table-wrap {
+                overflow: visible;
+            }
+
+            .salary-widget table,
+            .salary-widget tbody,
+            .salary-widget tr,
+            .salary-widget td,
+            .salary-widget th {
+                display: block;
+                width: 100%;
+            }
+
+            .salary-widget table {
+                border: none;
+            }
+
+            .salary-widget thead {
+                display: none;
+            }
+
+            .salary-widget tbody tr {
+                border: 1px solid var(--line);
+                border-radius: 12px;
+                margin-bottom: 12px;
+                padding: 12px;
+                background: var(--muted);
+            }
+
+            .salary-widget tbody td {
+                border: none;
+                padding: 10px 0;
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 6px;
+                max-width: none;
+                overflow-wrap: break-word;
+            }
+
+            .salary-widget tbody td::before {
+                width: auto;
+                min-width: 0;
+                display: block;
+                white-space: normal;
+                margin-bottom: 2px;
+            }
+
+            .salary-widget tbody td .salary-cell,
+            .salary-widget tbody td.col-title,
+            .salary-widget tbody td.col-dept,
+            .salary-widget tbody td.col-pay,
+            .salary-widget tbody td.col-annual,
+            .salary-widget tbody td.col-hourly {
+                flex: none;
+                white-space: normal;
+                width: 100%;
+            }
+
+            .salary-widget tbody td::before {
+                content: attr(data-label);
+                font-size: 11px;
+                text-transform: uppercase;
+                letter-spacing: 0.08em;
+                color: var(--sub);
+                margin-right: 12px;
+                flex: 0 0 auto;
+                width: 40%;
+            }
+
+            .salary-widget tbody td strong {
+                display: block;
+            }
+
+            .salary-widget .salary-meta {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+
+            .salary-widget .salary-pager {
+                width: 100%;
+                justify-content: space-between;
+            }
+        }
     </style>
 </head>
 <body>
@@ -928,6 +1465,7 @@
             <div class="nav-links">
                 <a href="#search" class="nav-link">Salary Lookup</a>
                 <a href="#leads" class="nav-link">Business Intelligence</a>
+                <a href="/budget-dashboard.html" class="nav-link">Budget Dashboard</a>
                 <a href="#contact" class="nav-link">Contact</a>
                 <a href="#leads" class="nav-cta">Get Leads →</a>
             </div>
@@ -988,7 +1526,7 @@
             </h1>
             
             <p class="hero-subtitle">
-                Track city employee salaries. Get fresh business leads daily.
+                Track city employee <span class="accent-word">salaries</span>. Get fresh business leads <span class="accent-word">daily</span>.
             </p>
             
             <div class="stats-grid">
@@ -1007,13 +1545,17 @@
             </div>
             
             <div class="cta-group">
-                <a href="#search" class="btn btn-primary">
+                <a href="#search" class="btn btn-primary" data-magnetic="0.35">
                     <i data-lucide="search" style="width: 20px; height: 20px;"></i>
                     Search Salaries FREE
                 </a>
-                <a href="#leads" class="btn btn-secondary">
+                <a href="#leads" class="btn btn-secondary" data-magnetic="0.25">
                     <i data-lucide="trending-up" style="width: 20px; height: 20px;"></i>
                     Get Business Leads
+                </a>
+                <a href="/budget-dashboard.html" class="btn btn-secondary" data-magnetic="0.22" style="background: rgba(255, 209, 102, 0.12); color: rgba(255, 209, 102, 0.9); border-color: rgba(255, 209, 102, 0.45);">
+                    <i data-lucide="pie-chart" style="width: 20px; height: 20px;"></i>
+                    Explore Budget Dashboard
                 </a>
             </div>
         </div>
@@ -1024,57 +1566,119 @@
         <div class="search-container">
             <div class="section-header">
                 <h2 class="section-title">Instant Salary Lookup</h2>
-                <p class="section-description">Search any Chicago city employee by name or department</p>
+                <p class="section-description">Live Socrata data direct from the City of Chicago portal. Filter by name, department, pay type, and more.</p>
             </div>
-            
-            <div class="search-bar">
-                <input type="text" class="search-input" placeholder="Enter employee name or department..." id="searchInput">
-                <button class="search-btn" onclick="performSearch()">Search</button>
-            </div>
-            
-            <div class="quick-filters">
-                <button class="filter-tag" onclick="window.quickSearch('Police')">Police</button>
-                <button class="filter-tag" onclick="window.quickSearch('Fire')">Fire</button>
-                <button class="filter-tag" onclick="window.quickSearch('Mayor')">Mayor's Office</button>
-                <button class="filter-tag" onclick="window.quickSearch('200000')">$200K+</button>
-                <button class="filter-tag" onclick="window.quickSearch('Overtime')">Top Overtime</button>
-            </div>
-            
-            <div class="results-table">
-                <div class="table-header">
-                    <div>Name</div>
-                    <div>Title</div>
-                    <div>Salary</div>
-                    <div>Details</div>
-                </div>
-                <div class="table-row" id="result1">
-                    <div class="employee-name" data-label="Name">JOHNSON, LARRY D</div>
-                    <div class="employee-title" data-label="Title">Police Superintendent</div>
-                    <div class="salary" data-label="Salary">$300,044</div>
-                    <div data-label="Details">
-                        <button onclick="alert('Employee: JOHNSON, LARRY D\nTitle: Police Superintendent\nDepartment: Police\nTotal: $300,044\nBase: $260,044\nOvertime: $40,000')" style="background:none;border:none;color:#0047AB;cursor:pointer;font-weight:500;">
-                            View Details →
-                        </button>
+
+            <div id="salaryWidget" class="salary-widget">
+                <div class="salary-card">
+                    <div class="salary-card-header">
+                        <h3>Search City of Chicago Employee Salaries</h3>
+                        <p class="salary-lead">Live query of the <em>Current Employee Names, Salaries, and Position Titles</em> dataset. Every search hits the official API.</p>
                     </div>
-                </div>
-                <div class="table-row" id="result2">
-                    <div class="employee-name" data-label="Name">CARTER, ANNETTE M</div>
-                    <div class="employee-title" data-label="Title">Fire Commissioner</div>
-                    <div class="salary" data-label="Salary">$235,000</div>
-                    <div data-label="Details">
-                        <button onclick="alert('Employee: CARTER, ANNETTE M\nTitle: Fire Commissioner\nDepartment: Fire\nTotal: $235,000\nBase: $220,000\nOvertime: $15,000')" style="background:none;border:none;color:#0047AB;cursor:pointer;font-weight:500;">
-                            View Details →
-                        </button>
-                    </div>
-                </div>
-                <div class="table-row" id="result3">
-                    <div class="employee-name" data-label="Name">WILLIAMS, DAVID R</div>
-                    <div class="employee-title" data-label="Title">Chief Financial Officer</div>
-                    <div class="salary" data-label="Salary">$215,000</div>
-                    <div data-label="Details">
-                        <button onclick="alert('Employee: WILLIAMS, DAVID R\nTitle: Chief Financial Officer\nDepartment: Finance\nTotal: $215,000\nBase: $215,000\nOvertime: $0')" style="background:none;border:none;color:#0047AB;cursor:pointer;font-weight:500;">
-                            View Details →
-                        </button>
+
+                    <form id="salarySearchForm" class="salary-form">
+                        <div class="salary-col-4">
+                            <label for="salaryName">Name (contains)</label>
+                            <input id="salaryName" type="text" placeholder="e.g., SMITH">
+                        </div>
+                        <div class="salary-col-4">
+                            <label for="salaryDept">Department</label>
+                            <select id="salaryDept">
+                                <option value="">All departments…</option>
+                            </select>
+                        </div>
+                        <div class="salary-col-4">
+                            <label for="salaryTitle">Job Title (contains)</label>
+                            <input id="salaryTitle" type="text" placeholder="e.g., ENGINEER">
+                        </div>
+                        <div class="salary-col-3">
+                            <label for="salaryMin">Min Annual Salary ($)</label>
+                            <input id="salaryMin" type="number" inputmode="numeric" min="0" step="1000" placeholder="50000">
+                        </div>
+                        <div class="salary-col-3">
+                            <label for="salaryMax">Max Annual Salary ($)</label>
+                            <input id="salaryMax" type="number" inputmode="numeric" min="0" step="1000" placeholder="200000">
+                        </div>
+                        <div class="salary-col-3">
+                            <label for="salaryFT">Status</label>
+                            <select id="salaryFT">
+                                <option value="">All</option>
+                                <option value="F">Full-time</option>
+                                <option value="P">Part-time</option>
+                            </select>
+                        </div>
+                        <div class="salary-col-3">
+                            <label for="salaryPayType">Pay Type</label>
+                            <select id="salaryPayType">
+                                <option value="">Salary + Hourly</option>
+                                <option value="Salary">Salary only</option>
+                                <option value="Hourly">Hourly only</option>
+                            </select>
+                        </div>
+                        <div class="salary-col-9 salary-controls">
+                            <div class="salary-control">
+                                <label for="salarySort">Sort</label>
+                                <select id="salarySort">
+                                    <option value="annual_salary DESC">Annual Salary ↓</option>
+                                    <option value="annual_salary ASC">Annual Salary ↑</option>
+                                    <option value="name ASC">Name A→Z</option>
+                                    <option value="department ASC">Department A→Z</option>
+                                </select>
+                            </div>
+                            <div class="salary-control" style="max-width:140px;">
+                                <label for="salaryLimit">Per page</label>
+                                <select id="salaryLimit">
+                                    <option>25</option>
+                                    <option selected>50</option>
+                                    <option>100</option>
+                                </select>
+                            </div>
+                            <div class="salary-control salary-actions">
+                                <button class="salary-btn accent" type="submit" data-magnetic="0.2">Search</button>
+                                <button class="salary-btn" type="button" id="salaryReset" data-magnetic="0.18">Reset</button>
+                            </div>
+                        </div>
+                        <div class="salary-col-3">
+                            <label>Quick Links</label>
+                            <button type="button" class="salary-btn salary-pill salary-pill-highlight" id="salaryExport" title="Download current results as CSV">📥 Export CSV</button>
+                        </div>
+                        <div class="salary-col-12">
+                            <label>Saved searches</label>
+                            <div class="salary-saved-searches">
+                                <button type="button" class="salary-btn salary-pill" data-preset="top100" data-magnetic="0.12">🏆 Top 100 earners</button>
+                                <button type="button" class="salary-btn salary-pill" data-preset="police200" data-magnetic="0.12">🚓 Police — $200k+</button>
+                                <button type="button" class="salary-btn salary-pill" data-preset="fire200" data-magnetic="0.12">🚒 Fire — $200k+</button>
+                                <button type="button" class="salary-btn salary-pill" data-preset="chiefTitles" data-magnetic="0.12">👔 Titles containing “CHIEF”</button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <div class="salary-results">
+                        <div class="salary-meta">
+                            <small id="salaryResultCount">Use the search to load results.</small>
+                            <div class="salary-pager">
+                                <button class="salary-btn" id="salaryPrev" disabled>← Prev</button>
+                                <button class="salary-btn" id="salaryNext" disabled>Next →</button>
+                            </div>
+                        </div>
+                        <div class="salary-table-wrap">
+                            <table id="salaryTable" hidden>
+                                <thead>
+                                    <tr>
+                                        <th class="col-name">Name</th>
+                                        <th class="col-title">Job Title</th>
+                                        <th class="col-dept">Department</th>
+                                        <th class="col-pay">Pay Type</th>
+                                        <th class="col-annual salary-num">Annual Salary</th>
+                                        <th class="col-hourly salary-num">Hourly Rate</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                        <div class="salary-notice">
+                            <small>Data source: City of Chicago — “Current Employee Names, Salaries, and Position Titles” (resource <code>xzkq-xp2w</code>). Queried live via Socrata.</small>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1192,79 +1796,402 @@
     </footer>
     
     <script>
-        // Simple mobile-compatible JavaScript
-        
-        // Make functions globally available
-        window.quickSearch = function(term) {
-            document.getElementById('searchInput').value = term;
-            window.updateResults(term);
-        };
-        
-        window.performSearch = function() {
-            const input = document.getElementById('searchInput');
-            if (input) {
-                window.updateResults(input.value);
-            }
-        };
-        
-        window.updateResults = function(searchTerm) {
-            const resultsDiv = document.querySelector('.results-table');
-            if (!resultsDiv) return;
-            
-            // Simple data
-            const data = {
-                'Police': [
-                    {name: 'JOHNSON, LARRY D', title: 'Police Superintendent', salary: '$300,044', dept: 'Police', base: '$260,044', overtime: '$40,000'},
-                    {name: 'BROWN, DAVID O', title: 'Deputy Chief', salary: '$197,736', dept: 'Police', base: '$180,000', overtime: '$17,736'},
-                    {name: 'WILLIAMS, ERIC M', title: 'Commander', salary: '$178,452', dept: 'Police', base: '$165,000', overtime: '$13,452'}
-                ],
-                'Fire': [
-                    {name: 'CARTER, ANNETTE M', title: 'Fire Commissioner', salary: '$235,000', dept: 'Fire', base: '$220,000', overtime: '$15,000'},
-                    {name: 'FORD, RICHARD C', title: 'Deputy Fire Commissioner', salary: '$197,736', dept: 'Fire', base: '$185,000', overtime: '$12,736'},
-                    {name: 'JONES, THOMAS L', title: 'Battalion Chief', salary: '$170,112', dept: 'Fire', base: '$155,000', overtime: '$15,112'}
-                ],
-                'Mayor': [
-                    {name: 'JOHNSON, BRANDON', title: 'Mayor', salary: '$216,210', dept: 'Mayor\\\'s Office', base: '$216,210', overtime: '$0'},
-                    {name: 'GREEN, MICHAEL S', title: 'Chief of Staff', salary: '$185,000', dept: 'Mayor\\\'s Office', base: '$185,000', overtime: '$0'},
-                    {name: 'DAVIS, JENNIFER K', title: 'Deputy Mayor', salary: '$175,000', dept: 'Mayor\\\'s Office', base: '$175,000', overtime: '$0'}
-                ],
-                '200000': [
-                    {name: 'JOHNSON, LARRY D', title: 'Police Superintendent', salary: '$300,044', dept: 'Police', base: '$260,044', overtime: '$40,000'},
-                    {name: 'CARTER, ANNETTE M', title: 'Fire Commissioner', salary: '$235,000', dept: 'Fire', base: '$220,000', overtime: '$15,000'},
-                    {name: 'JOHNSON, BRANDON', title: 'Mayor', salary: '$216,210', dept: 'Mayor\\\'s Office', base: '$216,210', overtime: '$0'}
-                ],
-                'Overtime': [
-                    {name: 'SMITH, JOHN P', title: 'Police Sergeant', salary: '$245,887', dept: 'Police', base: '$147,442', overtime: '$98,445'},
-                    {name: 'RODRIGUEZ, MARIA L', title: 'Fire Lieutenant', salary: '$235,122', dept: 'Fire', base: '$147,888', overtime: '$87,234'},
-                    {name: 'THOMPSON, ROBERT K', title: 'Streets Supervisor', salary: '$198,776', dept: 'Streets & San', base: '$122,233', overtime: '$76,543'}
-                ]
+        // Salary search widget (live Socrata integration)
+        (function() {
+            const widget = document.getElementById('salaryWidget');
+            if (!widget) return;
+
+            const DATASET = 'xzkq-xp2w';
+            const SOC_BASE_JSON = `https://data.cityofchicago.org/resource/${DATASET}.json`;
+            const SOC_BASE_CSV = `https://data.cityofchicago.org/resource/${DATASET}.csv`;
+            const PROXY_JSON = '/api/salaries.php';
+            const PROXY_CSV = '/api/salaries.php?csv=1';
+
+            const $ = (selector, root = widget) => root.querySelector(selector);
+            const $$ = (selector, root = widget) => Array.from(root.querySelectorAll(selector));
+
+            const els = {
+                form: $('#salarySearchForm'),
+                name: $('#salaryName'),
+                dept: $('#salaryDept'),
+                title: $('#salaryTitle'),
+                min: $('#salaryMin'),
+                max: $('#salaryMax'),
+                ft: $('#salaryFT'),
+                payType: $('#salaryPayType'),
+                sort: $('#salarySort'),
+                limit: $('#salaryLimit'),
+                reset: $('#salaryReset'),
+                exportBtn: $('#salaryExport'),
+                resultCount: $('#salaryResultCount'),
+                prev: $('#salaryPrev'),
+                next: $('#salaryNext'),
+                table: $('#salaryTable')
             };
-            
-            // Get the right data
-            let results = data[searchTerm] || data['Police'];
-            
-            // Build simple HTML
-            let html = '<div class="table-header"><div>Name</div><div>Title</div><div>Salary</div><div>Details</div></div>';
-            
-            results.forEach(function(item) {
-                const detailsText = 'Employee: ' + item.name + '\\nTitle: ' + item.title + '\\nDepartment: ' + item.dept + '\\nTotal: ' + item.salary + '\\nBase: ' + item.base + '\\nOvertime: ' + item.overtime;
-                html += '<div class="table-row">';
-                html += '<div class="employee-name" data-label="Name">' + item.name + '</div>';
-                html += '<div class="employee-title" data-label="Title">' + item.title + '</div>';
-                html += '<div class="salary" data-label="Salary">' + item.salary + '</div>';
-                html += '<div data-label="Details">';
-                html += '<button onclick="alert(\'' + detailsText + '\')" style="background:none;border:none;color:#0047AB;cursor:pointer;font-weight:500;">View Details →</button>';
-                html += '</div></div>';
+
+            if (!els.form) return;
+
+            const tbody = els.table.querySelector('tbody');
+            let pageOffset = 0;
+
+            const fmtAnnual = new Intl.NumberFormat(undefined, { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
+            const fmtHourly = new Intl.NumberFormat(undefined, { style: 'currency', currency: 'USD', maximumFractionDigits: 2 });
+
+            const PRESETS = {
+                top100: { sortBy: 'annual_salary DESC', limit: 100, minSal: '200000' },
+                police200: { dept: 'POLICE', minSal: '200000', sortBy: 'annual_salary DESC' },
+                fire200: { dept: 'FIRE', minSal: '200000', sortBy: 'annual_salary DESC' },
+                chiefTitles: { title: 'CHIEF', sortBy: 'annual_salary DESC' }
+            };
+
+            const escapeSoql = (value) => String(value).replace(/'/g, "''");
+
+            function paramsFromForm() {
+                return {
+                    name: els.name.value || '',
+                    dept: els.dept.value || '',
+                    title: els.title.value || '',
+                    minSal: els.min.value || '',
+                    maxSal: els.max.value || '',
+                    ft: els.ft.value || '',
+                    payType: els.payType.value || '',
+                    sortBy: els.sort.value || 'annual_salary DESC',
+                    limit: Number(els.limit.value) || 50
+                };
+            }
+
+            function buildWhere(params) {
+                const conditions = [];
+                if (params.name.trim()) {
+                    const v = escapeSoql(params.name.trim());
+                    conditions.push(`upper(name) like upper('%${v}%')`);
+                }
+                if (params.dept) {
+                    const v = escapeSoql(params.dept);
+                    conditions.push(`department='${v}'`);
+                }
+                if (params.title.trim()) {
+                    const v = escapeSoql(params.title.trim());
+                    conditions.push(`upper(job_titles) like upper('%${v}%')`);
+                }
+                if (params.payType) {
+                    conditions.push(`salary_or_hourly='${params.payType}'`);
+                }
+                if (params.ft) {
+                    conditions.push(`full_or_part_time='${params.ft}'`);
+                }
+                const minVal = Number(params.minSal);
+                const maxVal = Number(params.maxSal);
+                if (!Number.isNaN(minVal) && minVal > 0) {
+                    conditions.push(`annual_salary >= ${minVal}`);
+                }
+                if (!Number.isNaN(maxVal) && maxVal > 0) {
+                    conditions.push(`annual_salary <= ${maxVal}`);
+                }
+                return conditions.join(' AND ');
+            }
+
+            function proxiedFetchJSON(buildURL) {
+                const real = buildURL();
+                const url = new URL(PROXY_JSON, window.location.origin);
+                url.searchParams.set('url', real);
+                return fetch(url.toString()).then((response) => {
+                    if (!response.ok) {
+                        throw new Error(`Proxy HTTP ${response.status}`);
+                    }
+                    return response.json();
+                });
+            }
+
+            function csvProxyUrl(buildURL) {
+                const real = buildURL();
+                const url = new URL(PROXY_CSV, window.location.origin);
+                url.searchParams.set('url', real);
+                return url.toString();
+            }
+
+            async function fetchCount(whereClause) {
+                const data = await proxiedFetchJSON(() => {
+                    const u = new URL(SOC_BASE_JSON);
+                    u.searchParams.set('$select', 'count(1) as c');
+                    if (whereClause) u.searchParams.set('$where', whereClause);
+                    return u.toString();
+                });
+                return data?.[0]?.c ? Number(data[0].c) : 0;
+            }
+
+            async function fetchPage(whereClause, order, limit, offset) {
+                return proxiedFetchJSON(() => {
+                    const u = new URL(SOC_BASE_JSON);
+                    u.searchParams.set('$select', [
+                        'name',
+                        'job_titles',
+                        'department',
+                        'salary_or_hourly',
+                        'annual_salary',
+                        'hourly_rate',
+                        'full_or_part_time'
+                    ].join(','));
+                    if (whereClause) u.searchParams.set('$where', whereClause);
+                    if (order) u.searchParams.set('$order', order);
+                    u.searchParams.set('$limit', String(limit));
+                    u.searchParams.set('$offset', String(offset));
+                    return u.toString();
+                });
+            }
+
+            function renderRows(rows) {
+                tbody.innerHTML = '';
+                rows.forEach((row) => {
+                    const tr = document.createElement('tr');
+                    const status = row.full_or_part_time === 'F'
+                        ? 'Full-time'
+                        : row.full_or_part_time === 'P'
+                            ? 'Part-time'
+                            : (row.full_or_part_time || '');
+                    const statusBadge = status ? `<span class="salary-badge">${status}</span>` : '';
+                    tr.innerHTML = `
+                        <td class="col-name" data-label="Name">
+                            <div class="salary-cell">
+                                <strong>${row.name || ''}</strong>
+                                ${statusBadge}
+                            </div>
+                        </td>
+                        <td class="col-title" data-label="Job Title">${row.job_titles || ''}</td>
+                        <td class="col-dept" data-label="Department">${row.department || ''}</td>
+                        <td class="col-pay" data-label="Pay Type">${row.salary_or_hourly || ''}</td>
+                        <td class="col-annual salary-num" data-label="Annual Salary">${row.annual_salary ? fmtAnnual.format(Number(row.annual_salary)) : ''}</td>
+                        <td class="col-hourly salary-num" data-label="Hourly Rate">${row.hourly_rate ? fmtHourly.format(Number(row.hourly_rate)) : ''}</td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+                els.table.hidden = rows.length === 0;
+            }
+
+            function setPager(total, limit) {
+                const start = total === 0 ? 0 : pageOffset + 1;
+                const end = Math.min(pageOffset + limit, total);
+                els.resultCount.textContent = total ? `Showing ${start}–${end} of ${total} employees` : 'No results.';
+                els.prev.disabled = pageOffset === 0;
+                els.next.disabled = pageOffset + limit >= total;
+            }
+
+            function updateCsvLink(whereClause, params) {
+                const href = csvProxyUrl(() => {
+                    const u = new URL(SOC_BASE_CSV);
+                    u.searchParams.set('$select', 'name,job_titles,department,salary_or_hourly,annual_salary,hourly_rate,full_or_part_time');
+                    if (whereClause) u.searchParams.set('$where', whereClause);
+                    if (params.sortBy) u.searchParams.set('$order', params.sortBy);
+                    u.searchParams.set('$limit', '50000');
+                    return u.toString();
+                });
+                els.exportBtn.disabled = false;
+                els.exportBtn.onclick = () => window.open(href, '_blank');
+            }
+
+            async function runSearch(resetOffset = false) {
+                try {
+                    const params = paramsFromForm();
+                    if (resetOffset) pageOffset = 0;
+                    const whereClause = buildWhere(params);
+                    els.resultCount.innerHTML = '<span class="skeleton" style="display:inline-block;width:220px;height:12px;border-radius:6px;"></span>';
+                    els.exportBtn.disabled = true;
+                    const [total, rows] = await Promise.all([
+                        fetchCount(whereClause),
+                        fetchPage(whereClause, params.sortBy, params.limit, pageOffset)
+                    ]);
+                    renderRows(rows);
+                    setPager(total, params.limit);
+                    updateCsvLink(whereClause, params);
+                } catch (error) {
+                    console.error(error);
+                    els.resultCount.textContent = 'Error loading data. Try again in a moment.';
+                    els.table.hidden = true;
+                    tbody.innerHTML = '';
+                    els.exportBtn.disabled = true;
+                }
+            }
+
+            function applyPreset(key) {
+                const preset = PRESETS[key];
+                if (!preset) return;
+                els.form.reset();
+                pageOffset = 0;
+                Object.entries(preset).forEach(([field, value]) => {
+                    switch (field) {
+                        case 'name':
+                            els.name.value = value;
+                            break;
+                        case 'dept':
+                            els.dept.value = value;
+                            break;
+                        case 'title':
+                            els.title.value = value;
+                            break;
+                        case 'minSal':
+                            els.min.value = value;
+                            break;
+                        case 'maxSal':
+                            els.max.value = value;
+                            break;
+                        case 'ft':
+                            els.ft.value = value;
+                            break;
+                        case 'payType':
+                            els.payType.value = value;
+                            break;
+                        case 'sortBy':
+                            els.sort.value = value;
+                            break;
+                        case 'limit':
+                            els.limit.value = String(value);
+                            break;
+                        default:
+                            break;
+                    }
+                });
+                runSearch(true);
+            }
+
+            const presetButtons = $$('[data-preset]');
+            presetButtons.forEach((button) => {
+                button.addEventListener('click', () => applyPreset(button.dataset.preset));
             });
-            
-            resultsDiv.innerHTML = html;
-        };
-        
+
+            els.form.addEventListener('submit', (event) => {
+                event.preventDefault();
+                runSearch(true);
+            });
+
+            els.reset.addEventListener('click', () => {
+                els.form.reset();
+                pageOffset = 0;
+                runSearch(true);
+            });
+
+            els.prev.addEventListener('click', () => {
+                const params = paramsFromForm();
+                pageOffset = Math.max(0, pageOffset - (Number(params.limit) || 50));
+                runSearch(false);
+            });
+
+            els.next.addEventListener('click', () => {
+                const params = paramsFromForm();
+                pageOffset += Number(params.limit) || 50;
+                runSearch(false);
+            });
+
+            async function loadDepartments() {
+                try {
+                    const rows = await proxiedFetchJSON(() => {
+                        const u = new URL(SOC_BASE_JSON);
+                        u.searchParams.set('$select', 'department');
+                        u.searchParams.set('$group', 'department');
+                        u.searchParams.set('$order', 'department');
+                        return u.toString();
+                    });
+                    rows.forEach((row) => {
+                        if (!row.department) return;
+                        const option = document.createElement('option');
+                        option.value = row.department;
+                        option.textContent = row.department;
+                        els.dept.appendChild(option);
+                    });
+                } catch (error) {
+                    console.warn('Department load failed', error);
+                }
+            }
+
+            loadDepartments();
+            els.min.value = '0';
+            runSearch(true);
+
+            window.salaryWidgetApplyPreset = applyPreset;
+        })();
+
+        // Motion + magnetic interactions
+        (function initPremiumInteractions() {
+            const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+            // Magnetic buttons for pointer devices
+            if (window.matchMedia('(pointer:fine)').matches) {
+                const magneticButtons = document.querySelectorAll('[data-magnetic]');
+                magneticButtons.forEach((btn) => {
+                    const strength = Number(btn.dataset.magnetic || 0.18) * 40;
+                    let rafId = null;
+
+                    const reset = () => {
+                        btn.style.setProperty('--magnetic-x', '0px');
+                        btn.style.setProperty('--magnetic-y', '0px');
+                    };
+
+                    const handleMove = (event) => {
+                        const rect = btn.getBoundingClientRect();
+                        const ratioX = (event.clientX - rect.left) / rect.width - 0.5;
+                        const ratioY = (event.clientY - rect.top) / rect.height - 0.5;
+                        const targetX = ratioX * strength;
+                        const targetY = ratioY * strength;
+
+                        if (rafId) cancelAnimationFrame(rafId);
+                        rafId = requestAnimationFrame(() => {
+                            btn.style.setProperty('--magnetic-x', `${targetX}px`);
+                            btn.style.setProperty('--magnetic-y', `${targetY}px`);
+                        });
+                    };
+
+                    btn.addEventListener('mousemove', handleMove);
+                    btn.addEventListener('mouseleave', () => {
+                        if (rafId) cancelAnimationFrame(rafId);
+                        rafId = null;
+                        reset();
+                    });
+                });
+            }
+
+            // Premium animations using Motion One
+            if (!reduceMotion && window.motion) {
+                const { animate, stagger, inView } = window.motion;
+
+                animate('.hero-title span', { opacity: [0, 1], y: [24, 0] }, {
+                    delay: stagger(0.08, { start: 0.2 }),
+                    duration: 0.6,
+                    easing: 'ease-out'
+                });
+
+                animate('.cta-group .btn', { opacity: [0, 1], y: [20, 0] }, {
+                    delay: stagger(0.1, { start: 0.4 }),
+                    duration: 0.6,
+                    easing: 'ease-out'
+                });
+
+                inView('.stat-card', ({ target }) => {
+                    animate(target, { opacity: [0, 1], y: [24, 0], scale: [0.96, 1] }, {
+                        duration: 0.6,
+                        easing: 'ease-out'
+                    });
+                }, { margin: '0px 0px -20% 0px' });
+
+                inView('.leads-grid .lead-card', ({ target }) => {
+                    animate(target, { opacity: [0, 1], y: [28, 0] }, {
+                        duration: 0.55,
+                        easing: 'ease-out'
+                    });
+                }, { margin: '0px 0px -15% 0px' });
+
+                inView('.salary-widget tbody tr', ({ target }) => {
+                    animate(target, { opacity: [0, 1], y: [18, 0] }, {
+                        duration: 0.45,
+                        easing: 'ease-out'
+                    });
+                }, { margin: '0px 0px -10% 0px' });
+            }
+        })();
+
         // Initialize icons if available
         if (typeof lucide !== 'undefined') {
             lucide.createIcons();
         }
-        
+
         // Simple navbar scroll
         window.addEventListener('scroll', function() {
             const navbar = document.getElementById('navbar');
@@ -1274,11 +2201,11 @@
                 navbar.classList.remove('scrolled');
             }
         });
-        
+
         // Mobile menu with auto-collapse
         const mobileMenuBtn = document.getElementById('mobileMenu');
         let menuTimeout;
-        
+
         function closeMobileMenu() {
             const navLinks = document.querySelector('.nav-links');
             if (navLinks && window.innerWidth <= 768) {
@@ -1288,36 +2215,33 @@
                 clearTimeout(menuTimeout);
             }
         }
-        
+
         if (mobileMenuBtn) {
             mobileMenuBtn.onclick = function() {
                 const navLinks = document.querySelector('.nav-links');
-                if (navLinks) {
-                    const isOpen = navLinks.style.display === 'flex';
-                    
-                    if (isOpen) {
-                        closeMobileMenu();
-                    } else {
-                        navLinks.style.display = 'flex';
-                        navLinks.style.position = 'absolute';
-                        navLinks.style.top = '100%';
-                        navLinks.style.left = '0';
-                        navLinks.style.right = '0';
-                        navLinks.style.background = 'white';
-                        navLinks.style.flexDirection = 'column';
-                        navLinks.style.padding = '1rem';
-                        navLinks.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)';
-                        navLinks.style.zIndex = '999';
-                        
-                        // Auto-close after 3 seconds
-                        if (menuTimeout) clearTimeout(menuTimeout);
-                        menuTimeout = setTimeout(closeMobileMenu, 3000);
-                    }
+                if (!navLinks) return;
+                const isOpen = navLinks.style.display === 'flex';
+
+                if (isOpen) {
+                    closeMobileMenu();
+                } else {
+                    navLinks.style.display = 'flex';
+                    navLinks.style.position = 'absolute';
+                    navLinks.style.top = '100%';
+                    navLinks.style.left = '0';
+                    navLinks.style.right = '0';
+                    navLinks.style.background = 'white';
+                    navLinks.style.flexDirection = 'column';
+                    navLinks.style.padding = '1rem';
+                    navLinks.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)';
+                    navLinks.style.zIndex = '999';
+
+                    if (menuTimeout) clearTimeout(menuTimeout);
+                    menuTimeout = setTimeout(closeMobileMenu, 3000);
                 }
             };
         }
-        
-        // Close menu when clicking on nav links
+
         const navLinks = document.querySelectorAll('.nav-link, .nav-cta');
         navLinks.forEach(function(link) {
             link.addEventListener('click', function() {
@@ -1326,12 +2250,11 @@
                 }
             });
         });
-        
-        // Close menu when clicking outside
+
         document.addEventListener('click', function(event) {
             const navLinksDiv = document.querySelector('.nav-links');
             const mobileBtn = document.getElementById('mobileMenu');
-            
+
             if (navLinksDiv && mobileBtn && window.innerWidth <= 768) {
                 if (!navLinksDiv.contains(event.target) && !mobileBtn.contains(event.target)) {
                     closeMobileMenu();
@@ -1339,5 +2262,6 @@
             }
         });
     </script>
+
 </body>
 </html>

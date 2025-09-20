@@ -2,6 +2,27 @@
 
 All notable changes to Chicago's Money website will be documented in this file.
 
+## [2025-09-10]
+
+### Added
+- Premium hero treatment with mesh-gradient backdrop, live status badge, and mixed-font typography.
+- Magnetic hover/motion-based micro-interactions powered by Motion One for CTAs, presets, stats, and salary rows.
+- Gradient-rich card styling for the salary search results, including alternating row backgrounds and elevated shadows.
+- New `/budget-dashboard.html` interactive page with live payroll, overtime, and department analytics cards backed by Socrata queries and Chart.js visualizations.
+- `/api/snapshot` endpoint to generate branded PNG previews for dashboard stories plus toast feedback for share interactions.
+
+### Changed
+- Reset the salary search minimum to start at `0` so users can immediately dial in their own threshold.
+- Reformatted salary table columns with fixed widths and nowrap handling for numeric fields to improve desktop legibility.
+- Updated CTA/preset buttons to use new color gradients and glassmorphic accents for consistency with the refreshed hero.
+- Bumped service worker cache version to deliver the new styling to returning visitors.
+- Replaced the department bar chart with a lightweight insight stack (badges + table) for faster loads.
+
+
+### Fixed
+- Addressed salary table wrapping issues: desktop values now stay on a single line, while mobile cards stack labels/values cleanly without vertical text.
+- Ensured mobile salary cards retain the previous readable layout after desktop adjustments by refining the breakpoint flex rules.
+
 ## [2025-09-09]
 
 ### Fixed

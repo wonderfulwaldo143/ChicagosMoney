@@ -1,41 +1,43 @@
-# Repository Guidelines
+# Agent Playbook
 
-## Project Structure & Module Organization
-- Root contains `index.html`, `styles.css`, `script.js` and the `IMG/` assets folder.
-- Keep images in `IMG/` (kebab-case names, e.g., `hero-mobile.jpg`).
-- Place any additional static assets (favicons, sitemap) at repo root unless a clear subfolder exists.
+Use this guide as the quick reference for working safely and efficiently in this repo.
 
-## Build, Test, and Development Commands
-- Serve locally (no build step): `python3 -m http.server 8000` then open `http://localhost:8000/`.
-- Optional formatting (if installed locally): `npx prettier -w index.html styles.css script.js`.
-- Validate HTML/CSS (manual): use W3C validators or Chrome DevTools > Lighthouse for quick checks.
+## Quick Checklist
+- Confirm the task scope, inspect the existing implementation, and note any related docs (e.g., `CLAUDE.md`, `FORMSPREE_SETUP.md`).
+- Make focused changes that match current patterns in HTML, CSS, and JS.
+- Preview updates locally, run manual smoke tests, and check the console before wrapping up.
+- Review the diff, ensure filenames and casing remain consistent, and leave the repo in a buildable state.
 
-## Coding Style & Naming Conventions
-- Indentation: 2 spaces; UTF-8; LF line endings.
-- HTML: semantic tags (`header`, `main`, `section`, `footer`); attributes in consistent order (`id`, `class`, `data-*`, others).
-- CSS: classes in kebab-case (e.g., `.site-header`); group variables/utilities first; prefer flex/grid; avoid ID selectors.
-- JS: ES6+; functions/variables in camelCase; modules or IIFE to avoid globals; no inline event handlers in HTML.
-- Assets: use kebab-case filenames; optimize images before commit (target <200KB when practical).
+## Repository Layout
+- Primary site files live in `public_html/` (`index.html`, `styles.css`, `script.js`, service worker, manifest, etc.).
+- Image assets belong in `public_html/IMG/` with kebab-case filenames (e.g., `hero-mobile.jpg`).
+- Additional static assets (favicons, sitemap, feeds) stay alongside the main files unless a dedicated folder already exists.
+- Configuration references: `public_html/FORMSPREE_SETUP.md` for forms, `public_html/CHANGELOG.md` for shipped changes.
 
-## Testing Guidelines
-- Manual smoke tests: load page, no console errors, links work, forms submit.
-- Responsive checks: verify at 360px, 768px, 1024px, 1440px breakpoints.
-- Accessibility: run Lighthouse; ensure keyboard navigation and alt text for images.
-- Cross-browser: test latest Chrome and Firefox at minimum.
+## Local Workflow
+- Serve the site without a build step: `python3 -m http.server 8000` then open `http://localhost:8000/`.
+- Optional formatting (if available locally): `npx prettier -w public_html/index.html public_html/styles.css public_html/script.js`.
+- When touching CSS/JS, reuse existing utilities/components; avoid introducing frameworks or build dependencies.
 
-## Commit & Pull Request Guidelines
-- Commit messages: Conventional Commits style, e.g., `feat: add sticky header`, `fix: correct mobile nav z-index`, `docs: update forms guide`.
-- Scope PRs narrowly; include:
-  - Summary of changes and rationale
-  - Before/after screenshots (UI changes)
-  - Linked issue or task reference
-  - Manual test notes (browsers, breakpoints)
+## Coding Standards
+- Indentation 2 spaces, UTF-8 encoding, LF line endings.
+- HTML: use semantic tags, keep attribute order consistent (`id`, `class`, `data-*`, others), and avoid inline event handlers.
+- CSS: prefer Flexbox/Grid, write classes in kebab-case, group variables and utilities near the top of a file, minimize ID selectors.
+- JS: modern ES6+, functions/variables in camelCase, wrap new code to avoid leaking globals (modules or IIFE), sanitize any user input before use.
 
-## Security & Configuration Tips
-- Do not commit secrets or API keys. Configure forms via `FORMSPREE_SETUP.md`.
-- Avoid inline scripts/styles where possible; prefer external files.
-- Validate/sanitize any user-input handling in `script.js`.
+## QA Expectations
+- Smoke test after changes: load the page, ensure links/forms work, and confirm no console errors or missing assets.
+- Responsive check at least at 360px, 768px, 1024px, and 1440px.
+- Accessibility pass: Lighthouse or equivalent, verify keyboard navigation, alt text, and contrast where touched.
+- Cross-browser sanity check in the latest Chrome and Firefox.
 
-## Agent-Specific Notes
-- Keep changes minimal and surgical; match existing patterns.
-- If adding tools, avoid introducing build dependencies unless necessary for a clear benefit.
+## Version Control & Handoff
+- Use Conventional Commit messages (e.g., `feat: add sticky header`, `fix: correct mobile nav z-index`, `docs: update forms guide`).
+- Keep PRs small. Include change summary, rationale, before/after screenshots for UI shifts, linked issue/task, and manual test notes.
+- Document noteworthy behavior changes in `public_html/CHANGELOG.md` when applicable.
+
+## Security & Housekeeping
+- Never commit secrets or API keys; reference `FORMSPREE_SETUP.md` for form configuration.
+- Prefer external assets over inline styles/scripts unless there's a clear need.
+- Optimize new images before committing (target under ~200 KB when practical) and keep filenames stable.
+- Clean up temporary files or debugging code before submitting work.

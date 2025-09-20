@@ -1,9 +1,10 @@
 // Chicago's Money Service Worker v1.0
 // Provides offline support and caching for PWA
 
-const CACHE_NAME = 'chicagos-money-v1';
+const CACHE_NAME = 'chicagos-money-v4';
 const urlsToCache = [
   '/',
+  '/budget-dashboard.html',
   '/styles.css',
   '/script.js',
   '/manifest.json',
@@ -83,16 +84,16 @@ self.addEventListener('fetch', event => {
         return response;
       })
       .catch(() => {
-        // Network failed, try cache
+        // Network failed, try cache then return explicit error response
         return caches.match(event.request)
           .then(response => {
             if (response) {
               return response;
             }
-            // Return offline page if available
             if (event.request.destination === 'document') {
               return caches.match('/');
             }
+            return Response.error();
           });
       })
   );
