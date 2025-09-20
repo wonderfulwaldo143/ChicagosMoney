@@ -27,11 +27,12 @@ jobs:
       - name: Deploy via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
-          server: ${{ secrets.82.25.81.222 }}
-          username: ${{ secrets.u476428393_SqQqgFb2r }}
-          password: ${{ secrets.Chrisanel2! }}
+          server: ${{ secrets.HOSTINGER_FTP_SERVER }}
+          username: ${{ secrets.HOSTINGER_FTP_USERNAME }}
+          password: ${{ secrets.HOSTINGER_FTP_PASSWORD }}
           protocol: ftps
-          server-dir: public_html
+          security: strict
+          server-dir: /public_html/
           local-dir: public_html
           state-name: .ftp-deploy-sync-state.json
           exclude: |
