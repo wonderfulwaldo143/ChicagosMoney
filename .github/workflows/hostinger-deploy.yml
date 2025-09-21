@@ -25,12 +25,12 @@ jobs:
           fetch-depth: 1
 
       - name: Deploy via SFTP
-        uses: appleboy/sftp-action@v0.1.1
+        uses: wlixcc/SFTP-Deploy-Action@v1.2.4
         with:
-          host: ${{ secrets.HOSTINGER_FTP_SERVER }}
           username: ${{ secrets.HOSTINGER_FTP_USERNAME }}
           password: ${{ secrets.HOSTINGER_FTP_PASSWORD }}
+          server: ${{ secrets.HOSTINGER_FTP_SERVER }}
           port: 65002
-          source: "public_html/."
-          target: "/home/u476428393/websites/SqQqgFb2r/public_html"
-          overwrite: true
+          local_path: public_html/
+          remote_path: /home/u476428393/websites/SqQqgFb2r/public_html/
+          args: "-o StrictHostKeyChecking=no"
