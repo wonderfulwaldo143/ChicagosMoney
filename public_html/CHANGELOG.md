@@ -10,6 +10,8 @@ All notable changes to Chicago's Money website will be documented in this file.
 
 ### Changed
 - Updated navigation across active pages to point to the new salary lookup destination instead of in-page anchors.
+- Crafted a dedicated mobile card layout for the salary search results so names, badges, and pay data read cleanly without
+  impacting the desktop table design.
 
 ## [2025-09-10]
 
