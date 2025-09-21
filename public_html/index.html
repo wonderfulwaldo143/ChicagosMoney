@@ -170,49 +170,91 @@
         
         /* Alert Bar */
         .alert-bar {
+            --alert-scroll-duration: 90s;
+            --alert-marquee-play: running;
             background: linear-gradient(90deg, #CE1141, #dc2626);
             color: white;
-            padding: 0.75rem;
-            text-align: center;
+            padding: 0.75rem 1rem;
             font-weight: 600;
             position: fixed;
             top: var(--navbar-height, 72px);
             left: 0;
             right: 0;
             z-index: 980;
-            overflow: hidden;
-            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
         }
-        
+
+        .alert-bar[data-paused="true"] {
+            --alert-marquee-play: paused;
+        }
+
+        .alert-bar-track {
+            position: relative;
+            overflow: hidden;
+            flex: 1 1 auto;
+            min-width: 0;
+        }
+
         .alert-bar-content {
             display: inline-flex;
-            animation: scrollText 90s linear infinite;
-            -webkit-animation: scrollText 90s linear infinite;
+            align-items: center;
+            gap: 3rem;
+            white-space: nowrap;
+            animation: scrollText var(--alert-scroll-duration, 90s) linear infinite;
+            -webkit-animation: scrollText var(--alert-scroll-duration, 90s) linear infinite;
+            animation-play-state: var(--alert-marquee-play, running);
+            -webkit-animation-play-state: var(--alert-marquee-play, running);
+            will-change: transform;
         }
-        
+
         .alert-bar-content span {
             display: inline-block;
             white-space: nowrap;
-            padding-right: 50px;
         }
-        
+
+        .alert-bar-toggle {
+            flex-shrink: 0;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.15);
+            color: #fff;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.35rem 0.9rem;
+            cursor: pointer;
+            transition: background 0.2s ease, border-color 0.2s ease;
+        }
+
+        .alert-bar-toggle:hover,
+        .alert-bar-toggle:focus-visible {
+            background: rgba(255, 255, 255, 0.25);
+            border-color: rgba(255, 255, 255, 0.6);
+        }
+
+        .alert-bar[data-paused="true"] .alert-bar-toggle {
+            background: rgba(255, 255, 255, 0.25);
+            border-color: rgba(255, 255, 255, 0.7);
+        }
+
         @keyframes scrollText {
             0% {
-                transform: translateX(0);
-                -webkit-transform: translateX(0);
+                transform: translate3d(0, 0, 0);
+                -webkit-transform: translate3d(0, 0, 0);
             }
             100% {
-                transform: translateX(-50%);
-                -webkit-transform: translateX(-50%);
+                transform: translate3d(-50%, 0, 0);
+                -webkit-transform: translate3d(-50%, 0, 0);
             }
         }
-        
+
         @-webkit-keyframes scrollText {
             0% {
-                -webkit-transform: translateX(0);
+                -webkit-transform: translate3d(0, 0, 0);
             }
             100% {
-                -webkit-transform: translateX(-50%);
+                -webkit-transform: translate3d(-50%, 0, 0);
             }
         }
         
@@ -1040,8 +1082,19 @@
             
             .alert-bar {
                 font-size: 0.875rem;
-                padding: 0.5rem;
+                padding: 0.5rem 0.75rem;
+                gap: 0.5rem;
                 top: var(--navbar-height, 60px);
+                --alert-scroll-duration: 45s;
+            }
+
+            .alert-bar-content {
+                gap: 2rem;
+            }
+
+            .alert-bar-toggle {
+                padding: 0.25rem 0.6rem;
+                font-size: 0.7rem;
             }
             
             .hero {
@@ -1123,7 +1176,23 @@
                 text-align: center;
             }
         }
-        
+
+        @media (max-width: 480px) {
+            .alert-bar {
+                font-size: 0.8rem;
+                gap: 0.35rem;
+            }
+
+            .alert-bar-content {
+                gap: 1.5rem;
+            }
+
+            .alert-bar-toggle {
+                padding: 0.2rem 0.5rem;
+                font-size: 0.65rem;
+            }
+        }
+
         /* Loading Animation */
         .skeleton {
             background: linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 50%, #f3f4f6 75%);
@@ -1161,6 +1230,21 @@
                 animation-duration: 0.01ms !important;
                 animation-iteration-count: 1 !important;
                 transition-duration: 0.01ms !important;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .alert-bar {
+                --alert-scroll-duration: 75s;
+            }
+
+            .alert-bar-content {
+                animation-duration: var(--alert-scroll-duration, 90s) !important;
+                animation-iteration-count: infinite !important;
+                animation-play-state: var(--alert-marquee-play, running) !important;
+                -webkit-animation-duration: var(--alert-scroll-duration, 90s) !important;
+                -webkit-animation-iteration-count: infinite !important;
+                -webkit-animation-play-state: var(--alert-marquee-play, running) !important;
             }
         }
 
@@ -1596,6 +1680,40 @@
                 display: block;
             }
 
+            .salary-widget tbody td.col-name,
+            .salary-widget tbody td.col-annual {
+                align-items: center;
+                text-align: center;
+            }
+
+            .salary-widget tbody td.col-name::before,
+            .salary-widget tbody td.col-annual::before {
+                width: 100%;
+                margin-right: 0;
+                text-align: center;
+                color: var(--sub);
+            }
+
+            .salary-widget tbody td.col-name .salary-cell {
+                align-items: center;
+                text-align: center;
+                width: 100%;
+            }
+
+            .salary-widget tbody td.col-name strong {
+                color: #00C851;
+                text-align: center;
+            }
+
+            .salary-widget tbody td.col-annual {
+                color: #00C851;
+                text-align: center;
+            }
+
+            .salary-widget tbody td.col-annual.salary-num {
+                justify-content: center;
+            }
+
             .salary-widget .salary-meta {
                 flex-direction: column;
                 align-items: flex-start;
@@ -1636,41 +1754,45 @@
     </nav>
     
     <!-- Alert Bar -->
-    <div class="alert-bar">
-        <div class="alert-bar-content">
-            <span>⚡ BREAKING: 873 Chicago City Employees Make Over $200,000 Per Year ⚡ 
-            📊 Police Superintendent Salary: $300,044 Including Overtime ⚡ 
-            💰 Top 100 City Employees Collected $42M in Overtime Pay ⚡ 
-            🚨 Fire Department's Highest Earner: $287,000 Total Compensation ⚡ 
-            📈 Average Chicago City Worker Salary: $87,384 in 2024 ⚡ 
-            🏛️ Mayor's Office Budget: $31.7 Million Annually ⚡ 
-            👮 2,107 Police Officers Earned Over $150,000 Last Year ⚡ 
-            🚒 Fire Department Overtime Spending: $95 Million in 2024 ⚡ 
-            💵 City CFO Total Compensation: $215,000 Base Salary ⚡ 
-            📉 Pension Obligations: $2.8 Billion Due This Year ⚡ 
-            🏗️ Streets & Sanitation Commissioner: $169,992 Annual Salary ⚡ 
-            ⚠️ 47 City Employees Made More Than The Governor ⚡ 
-            💸 Total City Payroll: $2.3 Billion Spent on 35,847 Employees ⚡ 
-            🎯 Water Department's Top Earner: $242,000 With Benefits ⚡ 
-            📍 Chicago Has 14th Highest Municipal Salaries in USA ⚡ 
-            🔍 Search Any City Employee's Salary FREE on ChicagosMoney.com ⚡</span>
-            <span>⚡ BREAKING: 873 Chicago City Employees Make Over $200,000 Per Year ⚡ 
-            📊 Police Superintendent Salary: $300,044 Including Overtime ⚡ 
-            💰 Top 100 City Employees Collected $42M in Overtime Pay ⚡ 
-            🚨 Fire Department's Highest Earner: $287,000 Total Compensation ⚡ 
-            📈 Average Chicago City Worker Salary: $87,384 in 2024 ⚡ 
-            🏛️ Mayor's Office Budget: $31.7 Million Annually ⚡ 
-            👮 2,107 Police Officers Earned Over $150,000 Last Year ⚡ 
-            🚒 Fire Department Overtime Spending: $95 Million in 2024 ⚡ 
-            💵 City CFO Total Compensation: $215,000 Base Salary ⚡ 
-            📉 Pension Obligations: $2.8 Billion Due This Year ⚡ 
-            🏗️ Streets & Sanitation Commissioner: $169,992 Annual Salary ⚡ 
-            ⚠️ 47 City Employees Made More Than The Governor ⚡ 
-            💸 Total City Payroll: $2.3 Billion Spent on 35,847 Employees ⚡ 
-            🎯 Water Department's Top Earner: $242,000 With Benefits ⚡ 
-            📍 Chicago Has 14th Highest Municipal Salaries in USA ⚡ 
-            🔍 Search Any City Employee's Salary FREE on ChicagosMoney.com ⚡</span>
+    <div class="alert-bar" role="region" aria-label="Breaking salary headlines ticker">
+        <div class="alert-bar-track">
+            <div class="alert-bar-content" aria-live="polite">
+                <span>⚡ BREAKING: 873 Chicago City Employees Make Over $200,000 Per Year ⚡
+                📊 Police Superintendent Salary: $300,044 Including Overtime ⚡
+                💰 Top 100 City Employees Collected $42M in Overtime Pay ⚡
+                🚨 Fire Department's Highest Earner: $287,000 Total Compensation ⚡
+                📈 Average Chicago City Worker Salary: $87,384 in 2024 ⚡
+                🏛️ Mayor's Office Budget: $31.7 Million Annually ⚡
+                👮 2,107 Police Officers Earned Over $150,000 Last Year ⚡
+                🚒 Fire Department Overtime Spending: $95 Million in 2024 ⚡
+                💵 City CFO Total Compensation: $215,000 Base Salary ⚡
+                📉 Pension Obligations: $2.8 Billion Due This Year ⚡
+                🏗️ Streets & Sanitation Commissioner: $169,992 Annual Salary ⚡
+                ⚠️ 47 City Employees Made More Than The Governor ⚡
+                💸 Total City Payroll: $2.3 Billion Spent on 35,847 Employees ⚡
+                🎯 Water Department's Top Earner: $242,000 With Benefits ⚡
+                📍 Chicago Has 14th Highest Municipal Salaries in USA ⚡
+                🔍 Search Any City Employee's Salary FREE on ChicagosMoney.com ⚡</span>
+                <span>⚡ BREAKING: 873 Chicago City Employees Make Over $200,000 Per Year ⚡
+                📊 Police Superintendent Salary: $300,044 Including Overtime ⚡
+                💰 Top 100 City Employees Collected $42M in Overtime Pay ⚡
+                🚨 Fire Department's Highest Earner: $287,000 Total Compensation ⚡
+                📈 Average Chicago City Worker Salary: $87,384 in 2024 ⚡
+                🏛️ Mayor's Office Budget: $31.7 Million Annually ⚡
+                👮 2,107 Police Officers Earned Over $150,000 Last Year ⚡
+                🚒 Fire Department Overtime Spending: $95 Million in 2024 ⚡
+                💵 City CFO Total Compensation: $215,000 Base Salary ⚡
+                📉 Pension Obligations: $2.8 Billion Due This Year ⚡
+                🏗️ Streets & Sanitation Commissioner: $169,992 Annual Salary ⚡
+                ⚠️ 47 City Employees Made More Than The Governor ⚡
+                💸 Total City Payroll: $2.3 Billion Spent on 35,847 Employees ⚡
+                🎯 Water Department's Top Earner: $242,000 With Benefits ⚡
+                📍 Chicago Has 14th Highest Municipal Salaries in USA ⚡
+                🔍 Search Any City Employee's Salary FREE on ChicagosMoney.com ⚡</span>
+            </div>
         </div>
+        <button class="alert-bar-toggle" type="button" data-alert-toggle aria-pressed="false"
+            aria-label="Pause breaking news ticker">Pause</button>
     </div>
     
     <!-- Hero Section -->
@@ -2264,6 +2386,54 @@
             }
 
             updateOffsets();
+        })();
+
+        // Alert ticker controls
+        (function initAlertTickerControls() {
+            const alertBar = document.querySelector('.alert-bar');
+            if (!alertBar) {
+                return;
+            }
+
+            const toggle = alertBar.querySelector('[data-alert-toggle]');
+
+            if (!toggle) {
+                return;
+            }
+
+            const setPausedState = (paused) => {
+                if (paused) {
+                    alertBar.setAttribute('data-paused', 'true');
+                } else {
+                    alertBar.removeAttribute('data-paused');
+                }
+
+                toggle.setAttribute('aria-pressed', String(paused));
+                toggle.setAttribute(
+                    'aria-label',
+                    paused ? 'Resume breaking news ticker' : 'Pause breaking news ticker'
+                );
+                toggle.textContent = paused ? 'Play' : 'Pause';
+            };
+
+            setPausedState(false);
+
+            toggle.addEventListener('click', () => {
+                const isPaused = alertBar.getAttribute('data-paused') === 'true';
+                setPausedState(!isPaused);
+            });
+
+            const reduceMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+            const syncWithPreference = () => {
+                const isPaused = alertBar.getAttribute('data-paused') === 'true';
+                setPausedState(isPaused);
+            };
+
+            if (typeof reduceMotionQuery.addEventListener === 'function') {
+                reduceMotionQuery.addEventListener('change', syncWithPreference);
+            } else if (typeof reduceMotionQuery.addListener === 'function') {
+                reduceMotionQuery.addListener(syncWithPreference);
+            }
         })();
 
         // Motion + magnetic interactions

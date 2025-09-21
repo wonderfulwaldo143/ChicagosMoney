@@ -2,7 +2,9 @@
 
 # Chicago's Money - Deployment Script
 # Helps deploy the website to production without nesting extra folders
+# Helps deploy the website to production without nesting extra folders
 
+set -euo pipefail
 set -euo pipefail
 
 # Configuration
@@ -17,7 +19,10 @@ NC='\033[0m' # No Color
 
 ALL_FILES_EXIST=true
 
+ALL_FILES_EXIST=true
+
 command_exists() {
+  command -v "$1" >/dev/null 2>&1
   command -v "$1" >/dev/null 2>&1
 }
 
@@ -49,6 +54,8 @@ run_predeployment_checks() {
 
   echo "Checking critical files..."
   local files_to_check=(
+  echo "Checking critical files..."
+  local files_to_check=(
     "$PUBLIC_DIR/index.html"
     "$PUBLIC_DIR/.htaccess"
     "$PUBLIC_DIR/robots.txt"
@@ -56,23 +63,35 @@ run_predeployment_checks() {
     "$PUBLIC_DIR/manifest.json"
     "$PUBLIC_DIR/sw.js"
   )
+  )
 
+  ALL_FILES_EXIST=true
+  for file in "${files_to_check[@]}"; do
   ALL_FILES_EXIST=true
   for file in "${files_to_check[@]}"; do
     if [ -f "$file" ]; then
       echo -e "${GREEN}✓${NC} $file exists"
+      echo -e "${GREEN}✓${NC} $file exists"
     else
       echo -e "${RED}✗${NC} $file missing"
       ALL_FILES_EXIST=false
+      echo -e "${RED}✗${NC} $file missing"
+      ALL_FILES_EXIST=false
     fi
+  done
   done
 
   echo ""
   echo "🔍 SEO Check:"
   if grep -q "noindex" "$PUBLIC_DIR/index.html"; then
+  echo ""
+  echo "🔍 SEO Check:"
+  if grep -q "noindex" "$PUBLIC_DIR/index.html"; then
     echo -e "${RED}⚠️  WARNING: noindex found in index.html${NC}"
   else
+  else
     echo -e "${GREEN}✓${NC} No noindex directive found"
+  fi
   fi
 
   echo ""
@@ -96,17 +115,45 @@ print_optimization_suggestions() {
   echo ""
   echo "🔧 Optimization Suggestions:"
   echo ""
+  echo ""
+  echo "📊 File Size Analysis:"
+  local img_size
+  img_size=$(du -sh "$PUBLIC_DIR/IMG" 2>/dev/null | cut -f1)
+  if [ -n "$img_size" ]; then
+    echo "Image folder size: $img_size"
+    if [[ "$img_size" == *"M"* ]]; then
+      local numeric_size=${img_size%%M*}
+      if [[ "$numeric_size" =~ ^[0-9]+$ ]] && [ "$numeric_size" -gt 2 ]; then
+        echo -e "${YELLOW}⚠️  Consider optimizing images (currently $img_size)${NC}"
+      fi
+    fi
+  else
+    echo "Image folder not found."
+  fi
+}
 
+print_optimization_suggestions() {
+  echo ""
+  echo "🔧 Optimization Suggestions:"
+  echo ""
+
+  if command_exists uglifyjs; then
   if command_exists uglifyjs; then
     echo -e "${GREEN}✓${NC} UglifyJS available for JavaScript minification"
   else
+  else
     echo -e "${YELLOW}!${NC} Install UglifyJS for JS minification: npm install -g uglify-js"
+  fi
   fi
 
   if command_exists cssnano; then
+  if command_exists cssnano; then
     echo -e "${GREEN}✓${NC} CSSNano available for CSS minification"
   else
+  else
     echo -e "${YELLOW}!${NC} Install CSSNano for CSS minification: npm install -g cssnano-cli"
+  fi
+}
   fi
 }
 
@@ -213,10 +260,43 @@ print_post_deployment_tasks() {
 print_final_status() {
   echo ""
   if [ "$ALL_FILES_EXIST" = true ]; then
+  echo "🚀 Ready to launch? Here's your final checklist:"
+  echo ""
+  echo "1. Backup everything first"
+  echo "2. Upload all files from $PUBLIC_DIR/"
+  echo "3. Set permissions (644 for files, 755 for directories)"
+  echo "4. Test the live site thoroughly"
+  echo "5. Submit sitemaps to search engines"
+  echo "6. Monitor for 24 hours"
+}
+
+print_final_status() {
+  echo ""
+  if [ "$ALL_FILES_EXIST" = true ]; then
     echo -e "${GREEN}✅ All critical files present. Site is ready for deployment!${NC}"
+  else
   else
     echo -e "${RED}❌ Some critical files are missing. Please review before deploying.${NC}"
   fi
+  fi
+
+  echo ""
+  echo "=========================================="
+  echo "        Good luck with your launch!       "
+  echo "=========================================="
+}
+
+main() {
+  print_header
+  run_predeployment_checks
+  print_optimization_suggestions
+  print_deployment_options
+  prompt_remote_sync
+  print_post_deployment_tasks
+  print_final_status
+}
+
+main "$@"
 
   echo ""
   echo "=========================================="
