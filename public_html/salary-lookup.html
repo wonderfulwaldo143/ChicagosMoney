@@ -1405,15 +1405,13 @@
 
         .salary-widget thead th.col-name { width: 24%; }
         .salary-widget thead th.col-title { width: 24%; }
-        .salary-widget thead th.col-dept { width: 22%; }
-        .salary-widget thead th.col-pay { width: 10%; }
+        .salary-widget thead th.col-dept { width: 24%; }
         .salary-widget thead th.col-annual { width: 12%; min-width: 130px; }
         .salary-widget thead th.col-hourly { width: 8%; min-width: 110px; }
 
         .salary-widget tbody td.col-name { width: 24%; }
         .salary-widget tbody td.col-title { width: 24%; }
-        .salary-widget tbody td.col-dept { width: 22%; }
-        .salary-widget tbody td.col-pay { width: 10%; white-space: nowrap; }
+        .salary-widget tbody td.col-dept { width: 24%; }
         .salary-widget tbody td.col-annual,
         .salary-widget tbody td.col-hourly {
             width: auto;
@@ -1484,6 +1482,7 @@
         .salary-widget td.salary-num {
             justify-content: flex-end;
             font-weight: 600;
+            color: #34d399;
         }
 
         .salary-widget .salary-notice small {
@@ -1583,7 +1582,6 @@
             .salary-widget tbody td .salary-cell,
             .salary-widget tbody td.col-title,
             .salary-widget tbody td.col-dept,
-            .salary-widget tbody td.col-pay,
             .salary-widget tbody td.col-annual,
             .salary-widget tbody td.col-hourly {
                 flex: none;
@@ -1847,7 +1845,6 @@
                                         <th class="col-name">Name</th>
                                         <th class="col-title">Job Title</th>
                                         <th class="col-dept">Department</th>
-                                        <th class="col-pay">Pay Type</th>
                                         <th class="col-annual salary-num">Annual Salary</th>
                                         <th class="col-hourly salary-num">Hourly Rate</th>
                                     </tr>
@@ -2166,12 +2163,6 @@
                     deptCell.setAttribute('data-label', 'Department');
                     deptCell.textContent = row.department || '';
                     tr.appendChild(deptCell);
-
-                    const payCell = document.createElement('td');
-                    payCell.className = 'col-pay';
-                    payCell.setAttribute('data-label', 'Pay Type');
-                    payCell.textContent = row.salary_or_hourly || '';
-                    tr.appendChild(payCell);
 
                     const annualCell = document.createElement('td');
                     annualCell.className = 'col-annual salary-num';
