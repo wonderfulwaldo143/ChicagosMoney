@@ -28,12 +28,18 @@
             padding: 0;
             box-sizing: border-box;
         }
-        
+
+        :root {
+            --navbar-height: 72px;
+            --alert-bar-height: 0px;
+        }
+
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             background: #ffffff;
             color: #1a1a1a;
             overflow-x: hidden;
+            padding-top: calc(var(--navbar-height, 72px) + var(--alert-bar-height, 0px));
         }
         
         /* Professional Navigation */
@@ -170,10 +176,10 @@
             text-align: center;
             font-weight: 600;
             position: fixed;
-            top: 73px;
+            top: var(--navbar-height, 72px);
             left: 0;
             right: 0;
-            z-index: 900;
+            z-index: 980;
             overflow: hidden;
             white-space: nowrap;
         }
@@ -1035,7 +1041,7 @@
             .alert-bar {
                 font-size: 0.875rem;
                 padding: 0.5rem;
-                top: 60px;
+                top: var(--navbar-height, 60px);
             }
             
             .hero {
@@ -2214,6 +2220,50 @@
             runSearch(true);
 
             window.salaryWidgetApplyPreset = applyPreset;
+        })();
+
+        // Keep alert banner aligned under the navbar
+        (function maintainBannerOffset() {
+            const root = document.documentElement;
+            const navbar = document.getElementById('navbar');
+            const alertBar = document.querySelector('.alert-bar');
+
+            if (!navbar && !alertBar) {
+                return;
+            }
+
+            const updateOffsets = () => {
+                if (navbar) {
+                    root.style.setProperty('--navbar-height', `${navbar.offsetHeight}px`);
+                } else {
+                    root.style.setProperty('--navbar-height', '0px');
+                }
+
+                if (alertBar) {
+                    root.style.setProperty('--alert-bar-height', `${alertBar.offsetHeight}px`);
+                } else {
+                    root.style.setProperty('--alert-bar-height', '0px');
+                }
+            };
+
+            let resizeFrame;
+            const requestUpdate = () => {
+                if (resizeFrame) {
+                    cancelAnimationFrame(resizeFrame);
+                }
+                resizeFrame = requestAnimationFrame(updateOffsets);
+            };
+
+            window.addEventListener('load', updateOffsets);
+            window.addEventListener('resize', requestUpdate);
+
+            if ('ResizeObserver' in window) {
+                const observer = new ResizeObserver(requestUpdate);
+                if (navbar) observer.observe(navbar);
+                if (alertBar) observer.observe(alertBar);
+            }
+
+            updateOffsets();
         })();
 
         // Motion + magnetic interactions
