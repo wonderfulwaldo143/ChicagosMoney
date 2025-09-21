@@ -170,7 +170,7 @@
         
         /* Alert Bar */
         .alert-bar {
-            --alert-scroll-duration: 90s;
+            --alert-scroll-duration: 120s;
             --alert-marquee-play: running;
             background: linear-gradient(90deg, #CE1141, #dc2626);
             color: white;
@@ -202,8 +202,8 @@
             align-items: center;
             gap: 3rem;
             white-space: nowrap;
-            animation: scrollText var(--alert-scroll-duration, 90s) linear infinite;
-            -webkit-animation: scrollText var(--alert-scroll-duration, 90s) linear infinite;
+            animation: scrollText var(--alert-scroll-duration, 120s) linear infinite;
+            -webkit-animation: scrollText var(--alert-scroll-duration, 120s) linear infinite;
             animation-play-state: var(--alert-marquee-play, running);
             -webkit-animation-play-state: var(--alert-marquee-play, running);
             will-change: transform;
@@ -1085,7 +1085,7 @@
                 padding: 0.5rem 0.75rem;
                 gap: 0.5rem;
                 top: var(--navbar-height, 60px);
-                --alert-scroll-duration: 45s;
+                --alert-scroll-duration: 75s;
             }
 
             .alert-bar-content {
@@ -1235,14 +1235,14 @@
 
         @media (prefers-reduced-motion: reduce) {
             .alert-bar {
-                --alert-scroll-duration: 75s;
+                --alert-scroll-duration: 120s;
             }
 
             .alert-bar-content {
-                animation-duration: var(--alert-scroll-duration, 90s) !important;
+                animation-duration: var(--alert-scroll-duration, 120s) !important;
                 animation-iteration-count: infinite !important;
                 animation-play-state: var(--alert-marquee-play, running) !important;
-                -webkit-animation-duration: var(--alert-scroll-duration, 90s) !important;
+                -webkit-animation-duration: var(--alert-scroll-duration, 120s) !important;
                 -webkit-animation-iteration-count: infinite !important;
                 -webkit-animation-play-state: var(--alert-marquee-play, running) !important;
             }
@@ -1801,35 +1801,69 @@
     <div class="alert-bar" role="region" aria-label="Breaking salary headlines ticker">
         <div class="alert-bar-track">
             <div class="alert-bar-content" aria-live="polite">
-                <span>⚡ BREAKING: 873 Chicago City Employees Make Over $200,000 Per Year ⚡
+                <span>🏙️ Chicago's 2024 City Budget: $16.6 Billion powering services citywide ⚡
+                💼 Corporate Fund for daily operations totals $5.7 Billion this year ⚡
+                💰 City payroll surpasses $4.2 Billion covering 32,000 workers ⚡
+                🕒 Citywide overtime spending hit $680 Million in the latest fiscal year ⚡
+                🚓 Police Department payroll alone reaches $1.58 Billion ⚡
+                🚒 Fire Department payroll dedicates $720 Million to frontline crews ⚡
+                💧 Water Management payroll invests $380 Million in infrastructure ⚡
+                🚦 Transportation Department payroll holds steady at $265 Million ⚡
+                📚 Chicago Public Library payroll totals $190 Million for librarians & staff ⚡
+                🛡️ Police overtime cost the city $280 Million last year ⚡
+                🔥 Fire Department overtime totaled $190 Million ⚡
+                💦 Water Management overtime added $58 Million ⚡
+                🧹 Streets & Sanitation overtime reached $42 Million ⚡
+                ✈️ Aviation overtime spending hit $36 Million ⚡
+                👮 Police Department headcount funded for 13,800 positions ⚡
+                🚌 Chicago Public Schools citywide roles counted 9,800 positions ⚡
+                🚒 Fire Department staffing budget covers 5,100 firefighters & medics ⚡
+                ✈️ Aviation Department employs 3,000 workers citywide ⚡
+                💧 Water Management keeps 2,800 specialists on payroll ⚡
+                ⚡ BREAKING: 873 Chicago City Employees Make Over $200,000 Per Year ⚡
                 📊 Police Superintendent Salary: $300,044 Including Overtime ⚡
                 💰 Top 100 City Employees Collected $42M in Overtime Pay ⚡
                 🚨 Fire Department's Highest Earner: $287,000 Total Compensation ⚡
                 📈 Average Chicago City Worker Salary: $87,384 in 2024 ⚡
                 🏛️ Mayor's Office Budget: $31.7 Million Annually ⚡
                 👮 2,107 Police Officers Earned Over $150,000 Last Year ⚡
-                🚒 Fire Department Overtime Spending: $95 Million in 2024 ⚡
                 💵 City CFO Total Compensation: $215,000 Base Salary ⚡
+                ⚠️ 47 City Employees Made More Than The Governor ⚡
                 📉 Pension Obligations: $2.8 Billion Due This Year ⚡
                 🏗️ Streets & Sanitation Commissioner: $169,992 Annual Salary ⚡
-                ⚠️ 47 City Employees Made More Than The Governor ⚡
-                💸 Total City Payroll: $2.3 Billion Spent on 35,847 Employees ⚡
                 🎯 Water Department's Top Earner: $242,000 With Benefits ⚡
                 📍 Chicago Has 14th Highest Municipal Salaries in USA ⚡
                 🔍 Search Any City Employee's Salary FREE on ChicagosMoney.com ⚡</span>
-                <span>⚡ BREAKING: 873 Chicago City Employees Make Over $200,000 Per Year ⚡
+                <span>🏙️ Chicago's 2024 City Budget: $16.6 Billion powering services citywide ⚡
+                💼 Corporate Fund for daily operations totals $5.7 Billion this year ⚡
+                💰 City payroll surpasses $4.2 Billion covering 32,000 workers ⚡
+                🕒 Citywide overtime spending hit $680 Million in the latest fiscal year ⚡
+                🚓 Police Department payroll alone reaches $1.58 Billion ⚡
+                🚒 Fire Department payroll dedicates $720 Million to frontline crews ⚡
+                💧 Water Management payroll invests $380 Million in infrastructure ⚡
+                🚦 Transportation Department payroll holds steady at $265 Million ⚡
+                📚 Chicago Public Library payroll totals $190 Million for librarians & staff ⚡
+                🛡️ Police overtime cost the city $280 Million last year ⚡
+                🔥 Fire Department overtime totaled $190 Million ⚡
+                💦 Water Management overtime added $58 Million ⚡
+                🧹 Streets & Sanitation overtime reached $42 Million ⚡
+                ✈️ Aviation overtime spending hit $36 Million ⚡
+                👮 Police Department headcount funded for 13,800 positions ⚡
+                🚌 Chicago Public Schools citywide roles counted 9,800 positions ⚡
+                🚒 Fire Department staffing budget covers 5,100 firefighters & medics ⚡
+                ✈️ Aviation Department employs 3,000 workers citywide ⚡
+                💧 Water Management keeps 2,800 specialists on payroll ⚡
+                ⚡ BREAKING: 873 Chicago City Employees Make Over $200,000 Per Year ⚡
                 📊 Police Superintendent Salary: $300,044 Including Overtime ⚡
                 💰 Top 100 City Employees Collected $42M in Overtime Pay ⚡
                 🚨 Fire Department's Highest Earner: $287,000 Total Compensation ⚡
                 📈 Average Chicago City Worker Salary: $87,384 in 2024 ⚡
                 🏛️ Mayor's Office Budget: $31.7 Million Annually ⚡
                 👮 2,107 Police Officers Earned Over $150,000 Last Year ⚡
-                🚒 Fire Department Overtime Spending: $95 Million in 2024 ⚡
                 💵 City CFO Total Compensation: $215,000 Base Salary ⚡
+                ⚠️ 47 City Employees Made More Than The Governor ⚡
                 📉 Pension Obligations: $2.8 Billion Due This Year ⚡
                 🏗️ Streets & Sanitation Commissioner: $169,992 Annual Salary ⚡
-                ⚠️ 47 City Employees Made More Than The Governor ⚡
-                💸 Total City Payroll: $2.3 Billion Spent on 35,847 Employees ⚡
                 🎯 Water Department's Top Earner: $242,000 With Benefits ⚡
                 📍 Chicago Has 14th Highest Municipal Salaries in USA ⚡
                 🔍 Search Any City Employee's Salary FREE on ChicagosMoney.com ⚡</span>
