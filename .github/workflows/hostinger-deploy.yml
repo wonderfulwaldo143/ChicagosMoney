@@ -31,5 +31,6 @@ jobs:
           username: ${{ secrets.HOSTINGER_FTP_USERNAME }}
           password: ${{ secrets.HOSTINGER_FTP_PASSWORD }}
           port: 65002
-          source: "public_html/*"
-          target: "public_html"
+          source: "public_html/**"
+          target: "domains/chicagosmoney.com/public_html"
+          debug: true
