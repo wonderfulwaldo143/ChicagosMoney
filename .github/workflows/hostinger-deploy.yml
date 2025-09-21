@@ -33,7 +33,7 @@ jobs:
           protocol: ftps
           security: strict
           server-dir: /public_html/
-          local-dir: public_html
+          local-dir: public_html/
           state-name: .ftp-deploy-sync-state.json
           exclude: |
             **/.git*
