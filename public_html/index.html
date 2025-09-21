@@ -1628,8 +1628,9 @@
                             <div class="salary-control" style="max-width:140px;">
                                 <label for="salaryLimit">Per page</label>
                                 <select id="salaryLimit">
+                                    <option selected>10</option>
                                     <option>25</option>
-                                    <option selected>50</option>
+                                    <option>50</option>
                                     <option>100</option>
                                 </select>
                             </div>
@@ -1856,7 +1857,7 @@
                     ft: els.ft.value || '',
                     payType: els.payType.value || '',
                     sortBy: els.sort.value || 'annual_salary DESC',
-                    limit: Number(els.limit.value) || 50
+                    limit: Number(els.limit.value) || 10
                 };
             }
 
