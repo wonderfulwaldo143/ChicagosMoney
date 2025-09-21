@@ -1596,6 +1596,40 @@
                 display: block;
             }
 
+            .salary-widget tbody td.col-name,
+            .salary-widget tbody td.col-annual {
+                align-items: center;
+                text-align: center;
+            }
+
+            .salary-widget tbody td.col-name::before,
+            .salary-widget tbody td.col-annual::before {
+                width: 100%;
+                margin-right: 0;
+                text-align: center;
+                color: var(--sub);
+            }
+
+            .salary-widget tbody td.col-name .salary-cell {
+                align-items: center;
+                text-align: center;
+                width: 100%;
+            }
+
+            .salary-widget tbody td.col-name strong {
+                color: #00C851;
+                text-align: center;
+            }
+
+            .salary-widget tbody td.col-annual {
+                color: #00C851;
+                text-align: center;
+            }
+
+            .salary-widget tbody td.col-annual.salary-num {
+                justify-content: center;
+            }
+
             .salary-widget .salary-meta {
                 flex-direction: column;
                 align-items: flex-start;
