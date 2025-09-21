@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chicago's Money - Track City Spending & Get Business Leads</title>
-    <meta name="description" content="Discover Chicago city employees making $300K+. Get fresh business leads daily. Your competitive advantage in Chicago business.">
+    <title>Chicago's Money - Salary Lookup Lab</title>
+    <meta name="description" content="Search 35,000+ Chicago city employee salaries with live filters, presets, and CSV export powered by the official Socrata API.">
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -105,11 +105,12 @@
             position: relative;
         }
         
-        .nav-link:hover {
+        .nav-link:hover,
+        .nav-link.active {
             color: #0047AB;
             transform: translateY(-1px);
         }
-        
+
         .nav-link::after {
             content: '';
             position: absolute;
@@ -121,7 +122,8 @@
             transition: width 0.3s ease;
         }
         
-        .nav-link:hover::after {
+        .nav-link:hover::after,
+        .nav-link.active::after {
             width: 100%;
         }
         
@@ -1488,6 +1490,20 @@
             color: var(--sub);
         }
 
+        .salary-insight-panel {
+            margin-top: 2rem;
+            padding: 1.25rem;
+            border-radius: 16px;
+            background: rgba(15, 23, 42, 0.12);
+            color: #e2e8f0;
+            display: grid;
+            gap: 0.75rem;
+        }
+
+        .salary-insight-panel strong {
+            color: #7cd0ff;
+        }
+
         @media (max-width: 900px) {
             .salary-widget .salary-col-3,
             .salary-widget .salary-col-4,
@@ -1607,16 +1623,16 @@
     <!-- Navigation -->
     <nav class="navbar" id="navbar">
         <div class="nav-container">
-            <div class="logo">
+            <div class="logo" onclick="window.location.href='/index.html'">
                 <span class="logo-chicago">Chicago'</span>
                 <span class="logo-dollar">$</span>
                 <span class="logo-money">Money</span>
             </div>
             
             <div class="nav-links">
-                <a href="/salary-lookup.html" class="nav-link">Salary Lookup</a>
-                <a href="#leads" class="nav-link">Business Intelligence</a>
+                <a href="/salary-lookup.html" class="nav-link active">Salary Lookup</a>
                 <a href="/budget-dashboard.html" class="nav-link">Budget Dashboard</a>
+                <a href="#leads" class="nav-link">Business Intelligence</a>
                 <a href="#contact" class="nav-link">Contact</a>
                 <a href="#leads" class="nav-cta">Get Leads →</a>
             </div>
@@ -1632,127 +1648,226 @@
     <!-- Alert Bar -->
     <div class="alert-bar">
         <div class="alert-bar-content">
-            <span>⚡ BREAKING: 873 Chicago City Employees Make Over $200,000 Per Year ⚡ 
-            📊 Police Superintendent Salary: $300,044 Including Overtime ⚡ 
-            💰 Top 100 City Employees Collected $42M in Overtime Pay ⚡ 
-            🚨 Fire Department's Highest Earner: $287,000 Total Compensation ⚡ 
-            📈 Average Chicago City Worker Salary: $87,384 in 2024 ⚡ 
-            🏛️ Mayor's Office Budget: $31.7 Million Annually ⚡ 
-            👮 2,107 Police Officers Earned Over $150,000 Last Year ⚡ 
-            🚒 Fire Department Overtime Spending: $95 Million in 2024 ⚡ 
-            💵 City CFO Total Compensation: $215,000 Base Salary ⚡ 
-            📉 Pension Obligations: $2.8 Billion Due This Year ⚡ 
-            🏗️ Streets & Sanitation Commissioner: $169,992 Annual Salary ⚡ 
-            ⚠️ 47 City Employees Made More Than The Governor ⚡ 
-            💸 Total City Payroll: $2.3 Billion Spent on 35,847 Employees ⚡ 
-            🎯 Water Department's Top Earner: $242,000 With Benefits ⚡ 
-            📍 Chicago Has 14th Highest Municipal Salaries in USA ⚡ 
-            🔍 Search Any City Employee's Salary FREE on ChicagosMoney.com ⚡</span>
-            <span>⚡ BREAKING: 873 Chicago City Employees Make Over $200,000 Per Year ⚡ 
-            📊 Police Superintendent Salary: $300,044 Including Overtime ⚡ 
-            💰 Top 100 City Employees Collected $42M in Overtime Pay ⚡ 
-            🚨 Fire Department's Highest Earner: $287,000 Total Compensation ⚡ 
-            📈 Average Chicago City Worker Salary: $87,384 in 2024 ⚡ 
-            🏛️ Mayor's Office Budget: $31.7 Million Annually ⚡ 
-            👮 2,107 Police Officers Earned Over $150,000 Last Year ⚡ 
-            🚒 Fire Department Overtime Spending: $95 Million in 2024 ⚡ 
-            💵 City CFO Total Compensation: $215,000 Base Salary ⚡ 
-            📉 Pension Obligations: $2.8 Billion Due This Year ⚡ 
-            🏗️ Streets & Sanitation Commissioner: $169,992 Annual Salary ⚡ 
-            ⚠️ 47 City Employees Made More Than The Governor ⚡ 
-            💸 Total City Payroll: $2.3 Billion Spent on 35,847 Employees ⚡ 
-            🎯 Water Department's Top Earner: $242,000 With Benefits ⚡ 
-            📍 Chicago Has 14th Highest Municipal Salaries in USA ⚡ 
-            🔍 Search Any City Employee's Salary FREE on ChicagosMoney.com ⚡</span>
+            <span>🔍 Instant salary lookups across 35,847 Chicago employees • Live Socrata data • CSV export ready • Curated presets for top earners, police, fire, and more</span>
+            <span>🔍 Instant salary lookups across 35,847 Chicago employees • Live Socrata data • CSV export ready • Curated presets for top earners, police, fire, and more</span>
         </div>
     </div>
     
     <!-- Hero Section -->
     <section class="hero">
         <div class="hero-content">
-            <div class="hero-badge">PUBLIC DATA • REAL-TIME UPDATES</div>
-            
+            <div class="hero-badge">LIVE CITY PAYROLL DATA</div>
+
             <h1 class="hero-title">
-                Where Does <span class="highlight">Chicago's</span> <span class="money">Money</span> Go?
+                Chicago's <span class="highlight">Salary</span> <span class="money">Lookup Lab</span>
             </h1>
-            
+
             <p class="hero-subtitle">
-                Track city employee <span class="accent-word">salaries</span>. Get fresh business leads <span class="accent-word">daily</span>.
+                Search every active city employee with precision. Apply <span class="accent-word">advanced filters</span>, trigger preset views, and export clean CSVs—all powered by the official data portal.
             </p>
-            
+
             <div class="stats-grid">
                 <div class="stat-card">
                     <div class="stat-number" id="stat1">$300,044</div>
-                    <div class="stat-label">Highest Salary</div>
+                    <div class="stat-label">Highest salary</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-number" id="stat2">35,847</div>
-                    <div class="stat-label">City Employees</div>
+                    <div class="stat-label">Employees indexed</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-number" id="stat3">$42M</div>
-                    <div class="stat-label">Overtime Top 100</div>
+                    <div class="stat-label">Top 100 overtime</div>
                 </div>
             </div>
-            
+
             <div class="cta-group">
-                <a href="/salary-lookup.html" class="btn btn-primary" data-magnetic="0.35">
+                <a href="#salaryWidget" class="btn btn-primary" data-magnetic="0.35">
                     <i data-lucide="search" style="width: 20px; height: 20px;"></i>
-                    Search Salaries FREE
+                    Launch Salary Search
                 </a>
-                <a href="#leads" class="btn btn-secondary" data-magnetic="0.25">
-                    <i data-lucide="trending-up" style="width: 20px; height: 20px;"></i>
-                    Get Business Leads
-                </a>
-                <a href="/budget-dashboard.html" class="btn btn-secondary" data-magnetic="0.22" style="background: rgba(255, 209, 102, 0.12); color: rgba(255, 209, 102, 0.9); border-color: rgba(255, 209, 102, 0.45);">
+                <a href="/budget-dashboard.html" class="btn btn-secondary" data-magnetic="0.25">
                     <i data-lucide="pie-chart" style="width: 20px; height: 20px;"></i>
                     Explore Budget Dashboard
+                </a>
+                <a href="#leads" class="btn btn-secondary" data-magnetic="0.22" style="background: rgba(255, 209, 102, 0.12); color: rgba(255, 209, 102, 0.9); border-color: rgba(255, 209, 102, 0.45);">
+                    <i data-lucide="trending-up" style="width: 20px; height: 20px;"></i>
+                    See Business Leads
                 </a>
             </div>
         </div>
     </section>
     
-    <!-- Salary Lookup Promo -->
-    <section class="salary-promo-section" id="salary-tool">
+    <!-- Feature Highlights -->
+    <section class="salary-promo-section">
         <div class="salary-promo">
             <div class="salary-promo-card">
-                <div class="salary-promo-badge">Live Tool</div>
-                <h2 class="salary-promo-title">City payroll intelligence, now in one dedicated hub</h2>
-                <p class="salary-promo-text">Unlock the full Chicago salary lookup experience on its own page. Slice 35,000+ records with instant filters, curated presets, and CSV exports.</p>
+                <div class="salary-promo-badge">Why this matters</div>
+                <h2 class="salary-promo-title">Built for journalists, analysts, watchdogs, and curious residents</h2>
+                <p class="salary-promo-text">Slice public payroll data any way you need. Keep tabs on compensation trends, validate department overtime, or surface your next big story—all without touching a spreadsheet.</p>
                 <ul class="salary-promo-list">
-                    <li><i data-lucide="zap"></i> Real-time Socrata API queries</li>
-                    <li><i data-lucide="filter"></i> Saved presets for top earners, police, fire, and more</li>
-                    <li><i data-lucide="download"></i> One-click CSV downloads for deeper analysis</li>
+                    <li><i data-lucide="zap"></i> Real-time Socrata API calls with zero stale caches</li>
+                    <li><i data-lucide="filter"></i> Layer filters by name, department, pay type, and salary thresholds</li>
+                    <li><i data-lucide="download"></i> Download ready-to-share CSVs on every search</li>
                 </ul>
                 <div class="salary-promo-actions">
-                    <a href="/salary-lookup.html" class="btn btn-primary" data-magnetic="0.3">
-                        <i data-lucide="rocket" style="width: 20px; height: 20px;"></i>
-                        Launch Salary Lookup
+                    <a href="#salaryWidget" class="btn btn-primary" data-magnetic="0.3">
+                        <i data-lucide="target" style="width: 20px; height: 20px;"></i>
+                        Jump to the tool
                     </a>
-                    <a href="/salary-lookup.html#salaryWidget" class="btn btn-secondary" data-magnetic="0.22">
-                        <i data-lucide="external-link" style="width: 20px; height: 20px;"></i>
-                        Preview the Tool
+                    <a href="#contact" class="btn btn-secondary" data-magnetic="0.22">
+                        <i data-lucide="mail" style="width: 20px; height: 20px;"></i>
+                        Request custom insight
                     </a>
                 </div>
             </div>
             <div class="salary-promo-panel">
                 <div class="salary-promo-stat">
-                    <span class="salary-promo-stat-label">Latest update</span>
-                    <span class="salary-promo-stat-value">Real-time</span>
+                    <span class="salary-promo-stat-label">Saved searches</span>
+                    <span class="salary-promo-stat-value">Top 100 • Police $200k+ • Fire $200k+ • CHIEF titles</span>
                 </div>
                 <div class="salary-promo-stat">
-                    <span class="salary-promo-stat-label">Records tracked</span>
-                    <span class="salary-promo-stat-value">35,000+</span>
+                    <span class="salary-promo-stat-label">Data freshness</span>
+                    <span class="salary-promo-stat-value">Every query live</span>
                 </div>
                 <div class="salary-promo-stat">
-                    <span class="salary-promo-stat-label">Preset shortcuts</span>
-                    <span class="salary-promo-stat-value">4 ready-made</span>
+                    <span class="salary-promo-stat-label">Export format</span>
+                    <span class="salary-promo-stat-value">CSV + JSON</span>
                 </div>
-                <p class="salary-promo-footnote">Every search queries the official “Current Employee Names, Salaries, and Position Titles” dataset (<code>xzkq-xp2w</code>).</p>
+                <p class="salary-promo-footnote">Data source: City of Chicago — “Current Employee Names, Salaries, and Position Titles” dataset (<code>xzkq-xp2w</code>).</p>
             </div>
         </div>
     </section>
     
+    <!-- Search Section -->
+    <section class="search-section" id="search">
+        <div class="search-container">
+            <div class="section-header">
+                <h2 class="section-title">Instant Salary Lookup</h2>
+                <p class="section-description">Filter by name, department, pay type, salary range, or use one-click presets to surface the data you need. Every search pulls directly from the official API.</p>
+            </div>
+
+            <div id="salaryWidget" class="salary-widget">
+                <div class="salary-card">
+                    <div class="salary-card-header">
+                        <h3>Search City of Chicago Employee Salaries</h3>
+                        <p class="salary-lead">Live query of the <em>Current Employee Names, Salaries, and Position Titles</em> dataset. Every search hits the official API.</p>
+                    </div>
+
+                    <form id="salarySearchForm" class="salary-form">
+                        <div class="salary-col-4">
+                            <label for="salaryName">Name (contains)</label>
+                            <input id="salaryName" type="text" placeholder="e.g., SMITH">
+                        </div>
+                        <div class="salary-col-4">
+                            <label for="salaryDept">Department</label>
+                            <select id="salaryDept">
+                                <option value="">All departments…</option>
+                            </select>
+                        </div>
+                        <div class="salary-col-4">
+                            <label for="salaryTitle">Job Title (contains)</label>
+                            <input id="salaryTitle" type="text" placeholder="e.g., ENGINEER">
+                        </div>
+                        <div class="salary-col-3">
+                            <label for="salaryMin">Min Annual Salary ($)</label>
+                            <input id="salaryMin" type="number" inputmode="numeric" min="0" step="1000" placeholder="50000">
+                        </div>
+                        <div class="salary-col-3">
+                            <label for="salaryMax">Max Annual Salary ($)</label>
+                            <input id="salaryMax" type="number" inputmode="numeric" min="0" step="1000" placeholder="200000">
+                        </div>
+                        <div class="salary-col-3">
+                            <label for="salaryFT">Status</label>
+                            <select id="salaryFT">
+                                <option value="">All</option>
+                                <option value="F">Full-time</option>
+                                <option value="P">Part-time</option>
+                            </select>
+                        </div>
+                        <div class="salary-col-3">
+                            <label for="salaryPayType">Pay Type</label>
+                            <select id="salaryPayType">
+                                <option value="">Salary + Hourly</option>
+                                <option value="Salary">Salary only</option>
+                                <option value="Hourly">Hourly only</option>
+                            </select>
+                        </div>
+                        <div class="salary-col-9 salary-controls">
+                            <div class="salary-control">
+                                <label for="salarySort">Sort</label>
+                                <select id="salarySort">
+                                    <option value="annual_salary DESC">Annual Salary ↓</option>
+                                    <option value="annual_salary ASC">Annual Salary ↑</option>
+                                    <option value="name ASC">Name A→Z</option>
+                                    <option value="department ASC">Department A→Z</option>
+                                </select>
+                            </div>
+                            <div class="salary-control" style="max-width:140px;">
+                                <label for="salaryLimit">Per page</label>
+                                <select id="salaryLimit">
+                                    <option>10</option>
+                                    <option selected>25</option>
+                                    <option>50</option>
+                                    <option>100</option>
+                                </select>
+                            </div>
+                            <div class="salary-control salary-actions">
+                                <button class="salary-btn accent" type="submit" data-magnetic="0.2">Search</button>
+                                <button class="salary-btn" type="button" id="salaryReset" data-magnetic="0.18">Reset</button>
+                            </div>
+                        </div>
+                        <div class="salary-col-3">
+                            <label>Quick Links</label>
+                            <button type="button" class="salary-btn salary-pill salary-pill-highlight" id="salaryExport" title="Download current results as CSV">📥 Export CSV</button>
+                        </div>
+                        <div class="salary-col-12">
+                            <label>Saved searches</label>
+                            <div class="salary-saved-searches">
+                                <button type="button" class="salary-btn salary-pill" data-preset="top100" data-magnetic="0.12">🏆 Top 100 earners</button>
+                                <button type="button" class="salary-btn salary-pill" data-preset="police200" data-magnetic="0.12">🚓 Police — $200k+</button>
+                                <button type="button" class="salary-btn salary-pill" data-preset="fire200" data-magnetic="0.12">🚒 Fire — $200k+</button>
+                                <button type="button" class="salary-btn salary-pill" data-preset="chiefTitles" data-magnetic="0.12">👔 Titles containing “CHIEF”</button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <div class="salary-results">
+                        <div class="salary-meta">
+                            <small id="salaryResultCount">Use the search to load results.</small>
+                            <div class="salary-pager">
+                                <button class="salary-btn" id="salaryPrev" disabled>← Prev</button>
+                                <button class="salary-btn" id="salaryNext" disabled>Next →</button>
+                            </div>
+                        </div>
+                        <div class="salary-table-wrap">
+                            <table id="salaryTable" hidden>
+                                <thead>
+                                    <tr>
+                                        <th class="col-name">Name</th>
+                                        <th class="col-title">Job Title</th>
+                                        <th class="col-dept">Department</th>
+                                        <th class="col-pay">Pay Type</th>
+                                        <th class="col-annual salary-num">Annual Salary</th>
+                                        <th class="col-hourly salary-num">Hourly Rate</th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                        <div class="salary-notice">
+                            <small>Data source: City of Chicago — “Current Employee Names, Salaries, and Position Titles” (resource <code>xzkq-xp2w</code>). Queried live via Socrata.</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="salary-insight-panel">
+                <strong>Need department-wide snapshots?</strong> Try setting a salary minimum of <code>200000</code> and filtering for POLICE or FIRE to surface overtime heavy roles instantly. Export to CSV for pivot tables, or share the query URL with your newsroom.
+            </div>
+        </div>
+    </section>
+
     <!-- Business Leads Section -->
     <section id="leads" class="leads-section">
         <div class="leads-content">
