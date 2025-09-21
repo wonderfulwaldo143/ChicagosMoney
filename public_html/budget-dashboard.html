@@ -73,21 +73,153 @@
       margin: 0 auto;
       padding: 0 24px;
       display: flex;
-      justify-content: space-between;
       align-items: center;
+      gap: 1.5rem;
+      position: relative;
     }
 
-    .nav-links a {
+    .logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-weight: 800;
+      font-size: 1.45rem;
+      letter-spacing: 0.01em;
+      text-decoration: none;
+      color: var(--text-primary);
+    }
+
+    .logo-chicago {
+      color: rgba(124, 208, 255, 0.95);
+    }
+
+    .logo-dollar {
+      color: var(--accent-gold);
+      font-size: 1.75rem;
+      line-height: 1;
+      display: inline-flex;
+      align-items: center;
+      transform: translateY(-1px);
+    }
+
+    .logo-money {
+      color: var(--accent-green);
+    }
+
+    .nav-links {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .nav-link {
       color: rgba(218, 226, 255, 0.82);
       text-decoration: none;
       font-weight: 500;
-      margin-left: 1.5rem;
-      transition: color 0.2s ease;
+      font-size: 0.95rem;
+      letter-spacing: 0.01em;
+      position: relative;
+      transition: color 0.2s ease, transform 0.2s ease;
     }
 
-    .nav-links a:hover,
-    .nav-links a.active {
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: -6px;
+      width: 0;
+      height: 2px;
+      background: var(--accent-gold);
+      border-radius: 999px;
+      transition: width 0.25s ease;
+      opacity: 0.85;
+    }
+
+    .nav-link:hover,
+    .nav-link:focus-visible {
       color: var(--accent-gold);
+      transform: translateY(-1px);
+    }
+
+    .nav-link:hover::after,
+    .nav-link:focus-visible::after,
+    .nav-link.active::after {
+      width: 100%;
+    }
+
+    .nav-link.active {
+      color: var(--accent-gold);
+    }
+
+    .nav-cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.35rem;
+      text-decoration: none;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      padding: 0.55rem 1.25rem;
+      border-radius: 999px;
+      background: linear-gradient(135deg, rgba(124, 208, 255, 0.35), rgba(137, 248, 212, 0.42));
+      color: rgba(9, 12, 24, 0.92);
+      border: 1px solid rgba(124, 208, 255, 0.3);
+      box-shadow: 0 18px 35px -22px rgba(46, 210, 255, 0.5);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .nav-cta:hover,
+    .nav-cta:focus-visible {
+      transform: translateY(-1px);
+      box-shadow: 0 22px 40px -20px rgba(46, 210, 255, 0.55);
+    }
+
+    .mobile-menu-btn {
+      display: none;
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      border: 1px solid rgba(124, 208, 255, 0.3);
+      background: rgba(26, 32, 58, 0.6);
+      color: rgba(218, 226, 255, 0.9);
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      cursor: pointer;
+      transition: border-color 0.2s ease, background 0.2s ease;
+      margin-left: auto;
+    }
+
+    .mobile-menu-btn:hover,
+    .mobile-menu-btn:focus-visible {
+      border-color: rgba(255, 209, 102, 0.45);
+      background: rgba(32, 40, 68, 0.8);
+    }
+
+    .mobile-menu-btn span {
+      display: block;
+      width: 20px;
+      height: 2px;
+      background: currentColor;
+      border-radius: 999px;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+
+    .mobile-menu-btn span + span {
+      margin-top: 5px;
+    }
+
+    .mobile-menu-btn.is-open span:nth-child(1) {
+      transform: translateY(7px) rotate(45deg);
+    }
+
+    .mobile-menu-btn.is-open span:nth-child(2) {
+      opacity: 0;
+    }
+
+    .mobile-menu-btn.is-open span:nth-child(3) {
+      transform: translateY(-7px) rotate(-45deg);
     }
 
     main {
@@ -558,8 +690,42 @@
         padding: 1.5rem;
       }
 
+      .nav-container {
+        gap: 1rem;
+      }
+
+      .mobile-menu-btn {
+        display: inline-flex;
+      }
+
       .nav-links {
+        margin-left: 0;
+        position: absolute;
+        top: calc(100% + 12px);
+        right: 24px;
+        left: 24px;
         display: none;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1rem;
+        padding: 1.2rem;
+        background: rgba(8, 10, 22, 0.95);
+        border: 1px solid rgba(118, 144, 255, 0.18);
+        border-radius: 16px;
+        box-shadow: 0 24px 45px -30px rgba(8, 10, 20, 0.95);
+        z-index: 150;
+      }
+
+      .nav-links.open {
+        display: flex;
+      }
+
+      .nav-link {
+        font-size: 1rem;
+      }
+
+      .nav-cta {
+        width: 100%;
       }
 
       .toast {
@@ -581,19 +747,31 @@
   
 </head>
 <body>
-  <nav class="navbar">
+  <nav class="navbar" id="navbar">
     <div class="nav-container">
-      <div class="logo">
+      <a class="logo" href="/index.html">
         <span class="logo-chicago">Chicago'</span>
         <span class="logo-dollar">$</span>
         <span class="logo-money">Money</span>
-      </div>
-      <div class="nav-links">
-        <a href="/index.html">Home</a>
-        <a href="/salary-lookup.html">Salary Lookup</a>
-        <a href="/budget-dashboard.html" class="active">Budget Dashboard</a>
-        <a href="/index.html#leads">Business Intelligence</a>
-        <a href="/index.html#contact">Contact</a>
+      </a>
+      <button
+        class="mobile-menu-btn"
+        type="button"
+        aria-label="Toggle navigation"
+        aria-controls="primaryNav"
+        aria-expanded="false"
+      >
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+      <div class="nav-links" id="primaryNav">
+        <a href="/index.html" class="nav-link">Home</a>
+        <a href="/salary-lookup.html" class="nav-link">Salary Lookup</a>
+        <a href="/budget-dashboard.html" class="nav-link active" aria-current="page">Budget Dashboard</a>
+        <a href="/index.html#leads" class="nav-link">Business Intelligence</a>
+        <a href="/index.html#contact" class="nav-link">Contact</a>
+        <a href="/index.html#leads" class="nav-cta">Get Leads →</a>
       </div>
     </div>
   </nav>
@@ -682,6 +860,65 @@
   </main>
 
   <script>
+    const navLinksContainer = document.getElementById('primaryNav');
+    const mobileMenuButton = document.querySelector('.mobile-menu-btn');
+
+    const closeMobileNav = () => {
+      if (!navLinksContainer || !mobileMenuButton) return;
+      navLinksContainer.classList.remove('open');
+      mobileMenuButton.classList.remove('is-open');
+      mobileMenuButton.setAttribute('aria-expanded', 'false');
+    };
+
+    const toggleMobileNav = () => {
+      if (!navLinksContainer || !mobileMenuButton) return;
+      const willOpen = !navLinksContainer.classList.contains('open');
+      navLinksContainer.classList.toggle('open', willOpen);
+      mobileMenuButton.classList.toggle('is-open', willOpen);
+      mobileMenuButton.setAttribute('aria-expanded', String(willOpen));
+    };
+
+    const handleResize = () => {
+      if (!navLinksContainer || !mobileMenuButton) return;
+      if (window.innerWidth > 720) {
+        navLinksContainer.classList.remove('open');
+        mobileMenuButton.classList.remove('is-open');
+        mobileMenuButton.setAttribute('aria-expanded', 'false');
+      }
+    };
+
+    if (mobileMenuButton && navLinksContainer) {
+      mobileMenuButton.addEventListener('click', (event) => {
+        event.stopPropagation();
+        toggleMobileNav();
+      });
+
+      navLinksContainer.querySelectorAll('a').forEach((anchor) => {
+        anchor.addEventListener('click', () => {
+          if (window.innerWidth <= 720) {
+            closeMobileNav();
+          }
+        });
+      });
+    }
+
+    window.addEventListener('resize', handleResize);
+
+    document.addEventListener('click', (event) => {
+      if (!navLinksContainer || !mobileMenuButton) return;
+      if (window.innerWidth > 720) return;
+      if (navLinksContainer.contains(event.target)) return;
+      if (mobileMenuButton.contains(event.target)) return;
+      closeMobileNav();
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key !== 'Escape') return;
+      closeMobileNav();
+    });
+
+    handleResize();
+
     const PROXY_BASE = '/api/salaries.php';
     const DATASET_JSON = 'https://data.cityofchicago.org/resource/xzkq-xp2w.json';
     const toastEl = document.getElementById('dashboardToast');
