@@ -25,17 +25,12 @@ jobs:
           fetch-depth: 1
 
       - name: Deploy via SFTP
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        uses: appleboy/scp-action@v0.1.7
         with:
-          server: ${{ secrets.HOSTINGER_FTP_SERVER }}
+          host: ${{ secrets.HOSTINGER_FTP_SERVER }}
           username: ${{ secrets.HOSTINGER_FTP_USERNAME }}
           password: ${{ secrets.HOSTINGER_FTP_PASSWORD }}
-          protocol: sftp
           port: 22
-          server-dir: /public_html/
-          local-dir: public_html/
-          state-name: .ftp-deploy-sync-state.json
-          exclude: |
-            **/.git*
-            **/.github*
-            **/.DS_Store
+          source: "public_html/**"
+          target: "/public_html/"
+          strip_components: 1
