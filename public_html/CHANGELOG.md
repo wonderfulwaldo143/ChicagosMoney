@@ -2,6 +2,15 @@
 
 All notable changes to Chicago's Money website will be documented in this file.
 
+## [Unreleased]
+
+### Added
+- Dedicated `salary-lookup.html` experience featuring the full salary lookup widget with tailored hero, feature highlights, and live Socrata integration.
+- Homepage hero CTA and promotional card now direct visitors to the salary lookup lab.
+
+### Changed
+- Updated navigation across active pages to point to the new salary lookup destination instead of in-page anchors.
+
 ## [2025-09-10]
 
 ### Added
