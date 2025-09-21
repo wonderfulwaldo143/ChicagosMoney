@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" 
+     xmlns:atom="http://www.w3.org/2005/Atom"
+     xmlns:dc="http://purl.org/dc/elements/1.1/"
+     xmlns:content="http://purl.org/rss/1.0/modules/content/"
+     xmlns:media="http://search.yahoo.com/mrss/">
+    
+    <channel>
+        <title>Chicago's Money - Where Does All The Money Go?</title>
+        <link>https://chicagosmoney.com</link>
+        <description>Tracking Chicago's public spending with data-driven insights, reports, and transparency. Get updates on city budget, employee salaries, and financial transparency.</description>
+        <language>en-us</language>
+        <copyright>Copyright 2025 Chicago's Money</copyright>
+        <lastBuildDate>Tue, 10 Sep 2025 12:00:00 -0600</lastBuildDate>
+        <pubDate>Tue, 10 Sep 2025 12:00:00 -0600</pubDate>
+        <ttl>1440</ttl>
+        <atom:link href="https://chicagosmoney.com/feed.xml" rel="self" type="application/rss+xml"/>
+        
+        <image>
+            <url>https://chicagosmoney.com/IMG/chicagos_money_logo_variant_1.png</url>
+            <title>Chicago's Money</title>
+            <link>https://chicagosmoney.com</link>
+            <width>144</width>
+            <height>144</height>
+        </image>
+        
+        <item>
+            <title>Chicago's Money Launches in 2025</title>
+            <link>https://chicagosmoney.com</link>
+            <guid isPermaLink="false">launch-2025</guid>
+            <description>We're excited to announce the upcoming launch of Chicago's Money, your comprehensive source for Chicago public spending transparency.</description>
+            <content:encoded><![CDATA[
+                <p>Chicago's Money is launching in 2025 with a mission to bring unprecedented transparency to Chicago's public spending.</p>
+                <h3>What We'll Offer:</h3>
+                <ul>
+                    <li><strong>Employee Salary Database:</strong> Search over 35,000 city employee salaries</li>
+                    <li><strong>Budget vs Actual:</strong> Compare approved budgets with actual spending</li>
+                    <li><strong>Pension Crisis Tracker:</strong> Monitor the $2.8B annual pension payments</li>
+                    <li><strong>Department Deep Dives:</strong> Detailed analysis of each department's spending</li>
+                    <li><strong>Revenue Tracker:</strong> See where Chicago's $17.3B budget comes from</li>
+                    <li><strong>Lobbyist Watch:</strong> Track registered lobbyists and their expenditures</li>
+                </ul>
+                <p>Sign up for early access at <a href="https://chicagosmoney.com">chicagosmoney.com</a></p>
+            ]]></content:encoded>
+            <pubDate>Tue, 10 Sep 2025 12:00:00 -0600</pubDate>
+            <dc:creator>Chicago's Money Team</dc:creator>
+            <category>Announcement</category>
+            <category>Transparency</category>
+        </item>
+        
+        <item>
+            <title>Business Intelligence Reports Now Available</title>
+            <link>https://chicagosmoney.com/#leads</link>
+            <guid isPermaLink="false">business-intel-launch</guid>
+            <description>Transform Chicago's open data into actionable business intelligence with our new report offerings.</description>
+            <content:encoded><![CDATA[
+                <p>We're launching our Business Intelligence service to help Chicago businesses leverage public data for growth.</p>
+                <h3>Available Reports:</h3>
+                <ol>
+                    <li><strong>New Business Leads:</strong> Daily CSV of newly registered businesses with owner contacts</li>
+                    <li><strong>Construction Permit Radar:</strong> Weekly feed of new construction permits</li>
+                    <li><strong>Restaurant Health Watchlist:</strong> Failed inspections and violations</li>
+                    <li><strong>Code Violation Hotlist:</strong> Building violations and remediation opportunities</li>
+                    <li><strong>Liquor License Movements:</strong> Track new and expired licenses</li>
+                    <li><strong>311 Sanitation Signals:</strong> Commercial area complaints</li>
+                </ol>
+                <h3>Pricing Tiers:</h3>
+                <ul>
+                    <li>Corridor Intel: $29/month</li>
+                    <li>Industry Feed: $99/month</li>
+                    <li>Enterprise Dashboard: $299/month</li>
+                </ul>
+                <p>Contact us at <a href="mailto:business@chicagosmoney.com">business@chicagosmoney.com</a></p>
+            ]]></content:encoded>
+            <pubDate>Tue, 10 Sep 2025 11:00:00 -0600</pubDate>
+            <dc:creator>Chicago's Money Team</dc:creator>
+            <category>Business Intelligence</category>
+            <category>Data Reports</category>
+        </item>
+        
+        <item>
+            <title>Why Chicago Needs Financial Transparency</title>
+            <link>https://chicagosmoney.com</link>
+            <guid isPermaLink="false">why-transparency</guid>
+            <description>Understanding where tax dollars go is fundamental to democracy and civic engagement.</description>
+            <content:encoded><![CDATA[
+                <p>Chicago manages a budget of over $17 billion annually, yet many citizens don't know where their tax dollars go.</p>
+                <h3>The Need for Transparency:</h3>
+                <ul>
+                    <li>Chicago faces a $30+ billion pension crisis</li>
+                    <li>Property taxes have increased 60% in the last decade</li>
+                    <li>City debt continues to grow</li>
+                    <li>Department spending lacks visibility</li>
+                </ul>
+                <p>Chicago's Money aims to make this complex financial data accessible to everyone.</p>
+                <blockquote>"Sunlight is the best disinfectant" - Justice Louis Brandeis</blockquote>
+                <p>Join us in bringing transparency to Chicago's finances.</p>
+            ]]></content:encoded>
+            <pubDate>Tue, 10 Sep 2025 10:00:00 -0600</pubDate>
+            <dc:creator>Chicago's Money Team</dc:creator>
+            <category>Transparency</category>
+            <category>Chicago Budget</category>
+        </item>
+        
+    </channel>
+</rss>

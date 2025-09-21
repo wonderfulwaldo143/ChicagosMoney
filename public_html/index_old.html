@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+/clea<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,7 +16,6 @@
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@motionone/dom/dist/motion.min.js"></script>
     
     <!-- Theme CSS -->
     <link rel="stylesheet" href="styles.css">
@@ -220,92 +219,45 @@
                 opacity: 1;
             }
         }
-
-        @keyframes pulseGlow {
-            0% {
-                opacity: 0.6;
-                transform: scale(1) rotate(6deg);
-            }
-            100% {
-                opacity: 1;
-                transform: scale(1.08) rotate(10deg);
-            }
-        }
         
         /* Hero Section */
         .hero {
-            background: radial-gradient(140% 120% at 10% 10%, rgba(0, 71, 171, 0.22), transparent),
-                        radial-gradient(120% 100% at 90% 30%, rgba(0, 200, 81, 0.2), transparent),
-                        #05060f;
-            padding: 5.5rem 2rem 4.5rem;
+            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 50%, #f8f9fa 100%);
+            padding: 5rem 2rem 4rem;
             margin-top: 40px;
             position: relative;
             overflow: hidden;
-            color: rgba(232, 235, 255, 0.92);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
         }
-
-        .hero::before,
-        .hero::after {
+        
+        .hero::before {
             content: '';
             position: absolute;
-            inset: -40% -10% auto;
-            height: 75%;
-            background: radial-gradient(ellipse at center, rgba(0, 174, 255, 0.2), transparent 70%);
-            filter: blur(60px);
-            opacity: 0.9;
-            transform: rotate(8deg);
-            animation: pulseGlow 8s ease-in-out infinite alternate;
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        .hero::after {
-            inset: auto -30% -50% -30%;
-            background: radial-gradient(circle at center, rgba(255, 176, 0, 0.18), transparent 70%);
-            filter: blur(80px);
-            transform: rotate(-12deg);
-            animation-delay: 2s;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #0047AB, transparent);
+            animation: shimmer 3s infinite;
         }
         
         .hero-content {
             max-width: 1280px;
             margin: 0 auto;
             text-align: center;
-            position: relative;
-            z-index: 1;
         }
         
         .hero-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: rgba(0, 174, 255, 0.12);
-            color: #7cd0ff;
+            display: inline-block;
+            background: rgba(0, 71, 171, 0.1);
+            color: #0047AB;
             padding: 0.5rem 1rem;
             border-radius: 20px;
             font-weight: 600;
             font-size: 0.875rem;
             margin-bottom: 1.5rem;
             animation: fadeIn 0.6s ease-out;
-            backdrop-filter: blur(6px);
         }
-
-        .hero-badge::before {
-            content: '●';
-            font-size: 10px;
-        }
-
-        .hero-badge::after {
-            content: 'Live';
-            letter-spacing: 0.12em;
-            font-size: 0.7rem;
-            text-transform: uppercase;
-        }
-
+        
         .hero-title {
             font-size: clamp(2.5rem, 5vw, 4rem);
             font-weight: 900;
@@ -313,52 +265,20 @@
             margin-bottom: 1.5rem;
             animation: slideUp 0.6s ease-out 0.2s both;
         }
-
+        
         .hero-title .highlight {
-            font-family: 'DM Sans', 'Inter', sans-serif;
-            background: linear-gradient(90deg, #7cd0ff, #d7e5ff);
-            -webkit-background-clip: text;
-            color: transparent;
+            color: #0047AB;
         }
-
+        
         .hero-title .money {
-            color: #ffda7b;
-            font-family: 'JetBrains Mono', 'Inter', sans-serif;
-            letter-spacing: -0.02em;
-            position: relative;
+            color: #FFB000;
         }
-
-        .hero-title .money::after {
-            content: '';
-            position: absolute;
-            bottom: -8px;
-            left: 0;
-            width: 100%;
-            height: 6px;
-            background: linear-gradient(90deg, rgba(255, 209, 102, 0.4), transparent);
-            border-radius: 999px;
-        }
-
+        
         .hero-subtitle {
             font-size: clamp(1.25rem, 2vw, 1.5rem);
-            color: rgba(214, 224, 255, 0.78);
+            color: #6b7280;
             margin-bottom: 3rem;
             animation: slideUp 0.6s ease-out 0.4s both;
-        }
-
-        .accent-word {
-            font-family: 'JetBrains Mono', 'Inter', sans-serif;
-            color: #89f8d4;
-            display: inline-block;
-            position: relative;
-        }
-
-        .accent-word::after {
-            content: '';
-            position: absolute;
-            inset: auto 0 -4px 0;
-            height: 2px;
-            background: linear-gradient(90deg, rgba(137, 248, 212, 0), rgba(137, 248, 212, 0.7), rgba(137, 248, 212, 0));
         }
         
         /* Stats Grid */
@@ -373,25 +293,24 @@
         }
         
         .stat-card {
-            background: rgba(10, 13, 26, 0.65);
-            border-radius: 16px;
-            padding: 2rem 1.75rem;
-            box-shadow: 0 20px 40px -20px rgba(12, 20, 60, 0.7);
+            background: white;
+            border-radius: 12px;
+            padding: 2rem 1.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
             transition: all 0.3s ease;
             animation: scaleIn 0.6s ease-out 0.6s both;
             position: relative;
             overflow: hidden;
-            border: 1px solid rgba(124, 208, 255, 0.08);
         }
-
+        
         .stat-card::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
-            height: 3px;
-            background: linear-gradient(90deg, rgba(124, 208, 255, 0), rgba(124, 208, 255, 0.7), rgba(0, 200, 81, 0));
+            height: 4px;
+            background: linear-gradient(90deg, #0047AB, #00C851);
         }
         
         .stat-card:hover {
@@ -400,18 +319,18 @@
         }
         
         .stat-number {
-            font-size: 2.6rem;
+            font-size: 2.5rem;
             font-weight: 800;
-            color: #dbe7ff;
+            color: #0047AB;
             margin-bottom: 0.5rem;
             font-variant-numeric: tabular-nums;
         }
-
+        
         .stat-label {
-            font-size: 0.85rem;
-            color: rgba(214, 224, 255, 0.7);
+            font-size: 0.875rem;
+            color: #6b7280;
             text-transform: uppercase;
-            letter-spacing: 0.12em;
+            letter-spacing: 0.05em;
             font-weight: 600;
         }
         
@@ -436,40 +355,29 @@
             cursor: pointer;
             border: none;
             font-size: 1rem;
-            position: relative;
-            overflow: hidden;
-            transform-style: preserve-3d;
-            will-change: transform;
-            --magnetic-x: 0px;
-            --magnetic-y: 0px;
-            --hover-lift: 0px;
-            transform: translate3d(calc(var(--magnetic-x)), calc(var(--magnetic-y) - var(--hover-lift)), 0);
         }
-
+        
         .btn-primary {
-            background: linear-gradient(135deg, #347cff, #0047AB);
+            background: linear-gradient(135deg, #0047AB, #001F3F);
             color: white;
-            box-shadow: 0 18px 35px -18px rgba(52, 124, 255, 0.8);
+            box-shadow: 0 4px 6px rgba(0, 71, 171, 0.2);
         }
-
+        
         .btn-primary:hover {
-            --hover-lift: 2px;
-            transform: translate3d(calc(var(--magnetic-x)), calc(var(--magnetic-y) - var(--hover-lift)), 0) scale(1.01);
-            box-shadow: 0 18px 40px -18px rgba(52, 124, 255, 0.8);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 71, 171, 0.3);
         }
-
+        
         .btn-secondary {
-            background: rgba(255, 255, 255, 0.08);
-            color: #9cc8ff;
-            border: 1px solid rgba(124, 208, 255, 0.3);
-            backdrop-filter: blur(6px);
+            background: white;
+            color: #0047AB;
+            border: 2px solid #0047AB;
         }
-
+        
         .btn-secondary:hover {
-            background: rgba(124, 208, 255, 0.12);
-            color: #c4e4ff;
-            --hover-lift: 2px;
-
+            background: #0047AB;
+            color: white;
+            transform: translateY(-2px);
         }
         
         /* Search Section */
@@ -1145,17 +1053,10 @@
             border-radius: 10px;
             transition: all 0.2s ease;
             font-size: 0.95rem;
-            position: relative;
-            overflow: hidden;
-            transform-style: preserve-3d;
-            --magnetic-x: 0px;
-            --magnetic-y: 0px;
-            --hover-lift: 0px;
-            transform: translate3d(calc(var(--magnetic-x)), calc(var(--magnetic-y) - var(--hover-lift)), 0);
         }
 
         .salary-widget .salary-btn:hover {
-            --hover-lift: 1px;
+            transform: translateY(-1px);
         }
 
         .salary-widget .salary-btn.accent {
@@ -1177,14 +1078,14 @@
             padding: 6px 12px;
             border-radius: 999px;
             border: 1px solid var(--line);
-            background: linear-gradient(135deg, rgba(36, 44, 76, 0.95), rgba(34, 36, 50, 0.6));
+            background: #141621;
             color: var(--text);
             font-size: 0.9rem;
             transition: all 0.2s ease;
         }
 
         .salary-widget .salary-pill:hover {
-            border-color: rgba(255, 209, 102, 0.5);
+            border-color: var(--accent);
             color: var(--accent);
         }
 
@@ -1234,69 +1135,34 @@
             border-radius: 12px;
             border: 1px solid var(--line);
             overflow: hidden;
-            table-layout: auto;
-            background: rgba(9, 12, 24, 0.78);
-            box-shadow: 0 25px 45px -30px rgba(8, 12, 30, 0.9);
         }
 
         .salary-widget thead th {
             font-size: 12px;
             color: var(--sub);
             text-align: left;
-            background: rgba(18, 20, 34, 0.95);
-            padding: 14px 16px;
+            background: #0f1016;
+            padding: 10px 12px;
             border-bottom: 1px solid var(--line);
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-        }
-
-        .salary-widget thead th.col-name { width: 24%; }
-        .salary-widget thead th.col-title { width: 24%; }
-        .salary-widget thead th.col-dept { width: 22%; }
-        .salary-widget thead th.col-pay { width: 10%; }
-        .salary-widget thead th.col-annual { width: 12%; min-width: 130px; }
-        .salary-widget thead th.col-hourly { width: 8%; min-width: 110px; }
-
-        .salary-widget tbody td.col-name { width: 24%; }
-        .salary-widget tbody td.col-title { width: 24%; }
-        .salary-widget tbody td.col-dept { width: 22%; }
-        .salary-widget tbody td.col-pay { width: 10%; white-space: nowrap; }
-        .salary-widget tbody td.col-annual,
-        .salary-widget tbody td.col-hourly {
-            width: auto;
-            white-space: nowrap;
-        }
-
-        .salary-widget tbody td.col-title,
-        .salary-widget tbody td.col-dept {
-            font-size: 0.95rem;
-            color: rgba(207, 214, 255, 0.86);
         }
 
         .salary-widget tbody td {
-            padding: 18px 16px;
+            padding: 12px;
             border-bottom: 1px solid var(--line);
-            color: rgba(230, 234, 255, 0.95);
-            line-height: 1.55;
-            vertical-align: top;
-            white-space: normal;
-            overflow: visible;
-            word-break: normal;
-            overflow-wrap: break-word;
+            color: var(--text);
         }
 
         .salary-widget tbody tr {
-            background: linear-gradient(180deg, rgba(22, 26, 46, 0.92), rgba(15, 17, 31, 0.92));
-            transition: background 0.3s ease, transform 0.3s ease;
+            background: #141621;
+            transition: background 0.2s ease;
         }
 
         .salary-widget tbody tr:nth-child(odd) {
-            background: linear-gradient(180deg, rgba(26, 30, 52, 0.94), rgba(18, 21, 37, 0.94));
+            background: #191b28;
         }
 
         .salary-widget tbody tr:hover {
-            background: linear-gradient(180deg, rgba(32, 41, 68, 0.98), rgba(21, 25, 42, 0.97));
-            transform: translateY(-2px);
+            background: #1e2130;
         }
 
         .salary-widget tbody tr:last-child td {
@@ -1318,19 +1184,15 @@
             display: flex;
             flex-direction: column;
             gap: 4px;
-            font-weight: 600;
-            letter-spacing: 0.01em;
         }
 
         .salary-widget .salary-num {
             text-align: right;
             font-variant-numeric: tabular-nums;
-            font-size: 1rem;
         }
 
         .salary-widget td.salary-num {
             justify-content: flex-end;
-            font-weight: 600;
         }
 
         .salary-widget .salary-notice small {
@@ -1396,32 +1258,11 @@
 
             .salary-widget tbody td {
                 border: none;
-                padding: 10px 0;
+                padding: 8px 0;
                 display: flex;
-                flex-direction: column;
+                justify-content: space-between;
                 align-items: flex-start;
-                gap: 6px;
-                max-width: none;
-                overflow-wrap: break-word;
-            }
-
-            .salary-widget tbody td::before {
-                width: auto;
-                min-width: 0;
-                display: block;
-                white-space: normal;
-                margin-bottom: 2px;
-            }
-
-            .salary-widget tbody td .salary-cell,
-            .salary-widget tbody td.col-title,
-            .salary-widget tbody td.col-dept,
-            .salary-widget tbody td.col-pay,
-            .salary-widget tbody td.col-annual,
-            .salary-widget tbody td.col-hourly {
-                flex: none;
-                white-space: normal;
-                width: 100%;
+                gap: 12px;
             }
 
             .salary-widget tbody td::before {
@@ -1432,7 +1273,6 @@
                 color: var(--sub);
                 margin-right: 12px;
                 flex: 0 0 auto;
-                width: 40%;
             }
 
             .salary-widget tbody td strong {
@@ -1465,7 +1305,6 @@
             <div class="nav-links">
                 <a href="#search" class="nav-link">Salary Lookup</a>
                 <a href="#leads" class="nav-link">Business Intelligence</a>
-                <a href="/budget-dashboard.html" class="nav-link">Budget Dashboard</a>
                 <a href="#contact" class="nav-link">Contact</a>
                 <a href="#leads" class="nav-cta">Get Leads →</a>
             </div>
@@ -1526,7 +1365,7 @@
             </h1>
             
             <p class="hero-subtitle">
-                Track city employee <span class="accent-word">salaries</span>. Get fresh business leads <span class="accent-word">daily</span>.
+                Track city employee salaries. Get fresh business leads daily.
             </p>
             
             <div class="stats-grid">
@@ -1545,17 +1384,13 @@
             </div>
             
             <div class="cta-group">
-                <a href="#search" class="btn btn-primary" data-magnetic="0.35">
+                <a href="#search" class="btn btn-primary">
                     <i data-lucide="search" style="width: 20px; height: 20px;"></i>
                     Search Salaries FREE
                 </a>
-                <a href="#leads" class="btn btn-secondary" data-magnetic="0.25">
+                <a href="#leads" class="btn btn-secondary">
                     <i data-lucide="trending-up" style="width: 20px; height: 20px;"></i>
                     Get Business Leads
-                </a>
-                <a href="/budget-dashboard.html" class="btn btn-secondary" data-magnetic="0.22" style="background: rgba(255, 209, 102, 0.12); color: rgba(255, 209, 102, 0.9); border-color: rgba(255, 209, 102, 0.45);">
-                    <i data-lucide="pie-chart" style="width: 20px; height: 20px;"></i>
-                    Explore Budget Dashboard
                 </a>
             </div>
         </div>
@@ -1634,8 +1469,8 @@
                                 </select>
                             </div>
                             <div class="salary-control salary-actions">
-                                <button class="salary-btn accent" type="submit" data-magnetic="0.2">Search</button>
-                                <button class="salary-btn" type="button" id="salaryReset" data-magnetic="0.18">Reset</button>
+                                <button class="salary-btn accent" type="submit">Search</button>
+                                <button class="salary-btn" type="button" id="salaryReset">Reset</button>
                             </div>
                         </div>
                         <div class="salary-col-3">
@@ -1645,10 +1480,10 @@
                         <div class="salary-col-12">
                             <label>Saved searches</label>
                             <div class="salary-saved-searches">
-                                <button type="button" class="salary-btn salary-pill" data-preset="top100" data-magnetic="0.12">🏆 Top 100 earners</button>
-                                <button type="button" class="salary-btn salary-pill" data-preset="police200" data-magnetic="0.12">🚓 Police — $200k+</button>
-                                <button type="button" class="salary-btn salary-pill" data-preset="fire200" data-magnetic="0.12">🚒 Fire — $200k+</button>
-                                <button type="button" class="salary-btn salary-pill" data-preset="chiefTitles" data-magnetic="0.12">👔 Titles containing “CHIEF”</button>
+                                <button type="button" class="salary-btn salary-pill" data-preset="top100">🏆 Top 100 earners</button>
+                                <button type="button" class="salary-btn salary-pill" data-preset="police200">🚓 Police — $200k+</button>
+                                <button type="button" class="salary-btn salary-pill" data-preset="fire200">🚒 Fire — $200k+</button>
+                                <button type="button" class="salary-btn salary-pill" data-preset="chiefTitles">👔 Titles containing “CHIEF”</button>
                             </div>
                         </div>
                     </form>
@@ -1665,12 +1500,12 @@
                             <table id="salaryTable" hidden>
                                 <thead>
                                     <tr>
-                                        <th class="col-name">Name</th>
-                                        <th class="col-title">Job Title</th>
-                                        <th class="col-dept">Department</th>
-                                        <th class="col-pay">Pay Type</th>
-                                        <th class="col-annual salary-num">Annual Salary</th>
-                                        <th class="col-hourly salary-num">Hourly Rate</th>
+                                        <th style="min-width:220px">Name</th>
+                                        <th style="min-width:200px">Job Title</th>
+                                        <th>Department</th>
+                                        <th>Pay Type</th>
+                                        <th class="salary-num">Annual Salary</th>
+                                        <th class="salary-num">Hourly Rate</th>
                                     </tr>
                                 </thead>
                                 <tbody></tbody>
@@ -1746,7 +1581,7 @@
                 <a href="mailto:info@chicagosmoney.com" class="contact-email">info@chicagosmoney.com</a>
             </p>
             
-            <form class="newsletter-form" action="https://formspree.io/f/xqadnqlb" method="POST">
+            <form class="newsletter-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
                 <input type="email" name="email" class="newsletter-input" placeholder="Enter your email for updates..." required>
                 <input type="hidden" name="_subject" value="Newsletter Signup - Chicago's Money">
                 <button type="submit" class="btn btn-primary">Subscribe</button>
@@ -1761,24 +1596,24 @@
                 <h4>For Citizens</h4>
                 <ul class="footer-links">
                     <li><a href="#search">Salary Lookup</a></li>
-                    <li><a href="/budget-dashboard.html">Budget Dashboard</a></li>
-                    <li><a href="#contact">Contact</a></li>
+                    <li><a href="#stats">Budget Dashboard</a></li>
+                    <li><a href="#data">Public Records</a></li>
                 </ul>
             </div>
             <div class="footer-section">
                 <h4>For Businesses</h4>
                 <ul class="footer-links">
                     <li><a href="#leads">Business Leads</a></li>
-                    <li><a href="#leads">Construction Permits</a></li>
-                    <li><a href="#leads">Violation Alerts</a></li>
+                    <li><a href="#permits">Permit Tracking</a></li>
+                    <li><a href="#violations">Violation Alerts</a></li>
                 </ul>
             </div>
             <div class="footer-section">
                 <h4>Company</h4>
                 <ul class="footer-links">
-                    <li><a href="#contact">About Us</a></li>
+                    <li><a href="/about">About Us</a></li>
                     <li><a href="mailto:info@chicagosmoney.com">Contact</a></li>
-                    <li><a href="mailto:info@chicagosmoney.com?subject=Privacy%20Policy">Privacy Policy</a></li>
+                    <li><a href="/privacy">Privacy Policy</a></li>
                 </ul>
             </div>
             <div class="footer-section">
@@ -1944,64 +1779,25 @@
                 tbody.innerHTML = '';
                 rows.forEach((row) => {
                     const tr = document.createElement('tr');
-
                     const status = row.full_or_part_time === 'F'
                         ? 'Full-time'
                         : row.full_or_part_time === 'P'
                             ? 'Part-time'
                             : (row.full_or_part_time || '');
-
-                    const nameCell = document.createElement('td');
-                    nameCell.className = 'col-name';
-                    nameCell.setAttribute('data-label', 'Name');
-
-                    const nameWrap = document.createElement('div');
-                    nameWrap.className = 'salary-cell';
-
-                    const nameStrong = document.createElement('strong');
-                    nameStrong.textContent = row.name || '';
-                    nameWrap.appendChild(nameStrong);
-
-                    if (status) {
-                        const badge = document.createElement('span');
-                        badge.className = 'salary-badge';
-                        badge.textContent = status;
-                        nameWrap.appendChild(badge);
-                    }
-
-                    nameCell.appendChild(nameWrap);
-                    tr.appendChild(nameCell);
-
-                    const titleCell = document.createElement('td');
-                    titleCell.className = 'col-title';
-                    titleCell.setAttribute('data-label', 'Job Title');
-                    titleCell.textContent = row.job_titles || '';
-                    tr.appendChild(titleCell);
-
-                    const deptCell = document.createElement('td');
-                    deptCell.className = 'col-dept';
-                    deptCell.setAttribute('data-label', 'Department');
-                    deptCell.textContent = row.department || '';
-                    tr.appendChild(deptCell);
-
-                    const payCell = document.createElement('td');
-                    payCell.className = 'col-pay';
-                    payCell.setAttribute('data-label', 'Pay Type');
-                    payCell.textContent = row.salary_or_hourly || '';
-                    tr.appendChild(payCell);
-
-                    const annualCell = document.createElement('td');
-                    annualCell.className = 'col-annual salary-num';
-                    annualCell.setAttribute('data-label', 'Annual Salary');
-                    annualCell.textContent = row.annual_salary ? fmtAnnual.format(Number(row.annual_salary)) : '';
-                    tr.appendChild(annualCell);
-
-                    const hourlyCell = document.createElement('td');
-                    hourlyCell.className = 'col-hourly salary-num';
-                    hourlyCell.setAttribute('data-label', 'Hourly Rate');
-                    hourlyCell.textContent = row.hourly_rate ? fmtHourly.format(Number(row.hourly_rate)) : '';
-                    tr.appendChild(hourlyCell);
-
+                    const statusBadge = status ? `<span class="salary-badge">${status}</span>` : '';
+                    tr.innerHTML = `
+                        <td data-label="Name">
+                            <div class="salary-cell">
+                                <strong>${row.name || ''}</strong>
+                                ${statusBadge}
+                            </div>
+                        </td>
+                        <td data-label="Job Title">${row.job_titles || ''}</td>
+                        <td data-label="Department">${row.department || ''}</td>
+                        <td data-label="Pay Type">${row.salary_or_hourly || ''}</td>
+                        <td data-label="Annual Salary" class="salary-num">${row.annual_salary ? fmtAnnual.format(Number(row.annual_salary)) : ''}</td>
+                        <td data-label="Hourly Rate" class="salary-num">${row.hourly_rate ? fmtHourly.format(Number(row.hourly_rate)) : ''}</td>
+                    `;
                     tbody.appendChild(tr);
                 });
                 els.table.hidden = rows.length === 0;
@@ -2146,84 +1942,6 @@
             runSearch(true);
 
             window.salaryWidgetApplyPreset = applyPreset;
-        })();
-
-        // Motion + magnetic interactions
-        (function initPremiumInteractions() {
-            const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-            // Magnetic buttons for pointer devices
-            if (window.matchMedia('(pointer:fine)').matches) {
-                const magneticButtons = document.querySelectorAll('[data-magnetic]');
-                magneticButtons.forEach((btn) => {
-                    const strength = Number(btn.dataset.magnetic || 0.18) * 40;
-                    let rafId = null;
-
-                    const reset = () => {
-                        btn.style.setProperty('--magnetic-x', '0px');
-                        btn.style.setProperty('--magnetic-y', '0px');
-                    };
-
-                    const handleMove = (event) => {
-                        const rect = btn.getBoundingClientRect();
-                        const ratioX = (event.clientX - rect.left) / rect.width - 0.5;
-                        const ratioY = (event.clientY - rect.top) / rect.height - 0.5;
-                        const targetX = ratioX * strength;
-                        const targetY = ratioY * strength;
-
-                        if (rafId) cancelAnimationFrame(rafId);
-                        rafId = requestAnimationFrame(() => {
-                            btn.style.setProperty('--magnetic-x', `${targetX}px`);
-                            btn.style.setProperty('--magnetic-y', `${targetY}px`);
-                        });
-                    };
-
-                    btn.addEventListener('mousemove', handleMove);
-                    btn.addEventListener('mouseleave', () => {
-                        if (rafId) cancelAnimationFrame(rafId);
-                        rafId = null;
-                        reset();
-                    });
-                });
-            }
-
-            // Premium animations using Motion One
-            if (!reduceMotion && window.motion) {
-                const { animate, stagger, inView } = window.motion;
-
-                animate('.hero-title span', { opacity: [0, 1], y: [24, 0] }, {
-                    delay: stagger(0.08, { start: 0.2 }),
-                    duration: 0.6,
-                    easing: 'ease-out'
-                });
-
-                animate('.cta-group .btn', { opacity: [0, 1], y: [20, 0] }, {
-                    delay: stagger(0.1, { start: 0.4 }),
-                    duration: 0.6,
-                    easing: 'ease-out'
-                });
-
-                inView('.stat-card', ({ target }) => {
-                    animate(target, { opacity: [0, 1], y: [24, 0], scale: [0.96, 1] }, {
-                        duration: 0.6,
-                        easing: 'ease-out'
-                    });
-                }, { margin: '0px 0px -20% 0px' });
-
-                inView('.leads-grid .lead-card', ({ target }) => {
-                    animate(target, { opacity: [0, 1], y: [28, 0] }, {
-                        duration: 0.55,
-                        easing: 'ease-out'
-                    });
-                }, { margin: '0px 0px -15% 0px' });
-
-                inView('.salary-widget tbody tr', ({ target }) => {
-                    animate(target, { opacity: [0, 1], y: [18, 0] }, {
-                        duration: 0.45,
-                        easing: 'ease-out'
-                    });
-                }, { margin: '0px 0px -10% 0px' });
-            }
         })();
 
         // Initialize icons if available
