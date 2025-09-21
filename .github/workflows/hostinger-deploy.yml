@@ -24,14 +24,14 @@ jobs:
         with:
           fetch-depth: 1
 
-      - name: Deploy via FTP
+      - name: Deploy via SFTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.HOSTINGER_FTP_SERVER }}
           username: ${{ secrets.HOSTINGER_FTP_USERNAME }}
           password: ${{ secrets.HOSTINGER_FTP_PASSWORD }}
-          protocol: ftps
-          security: strict
+          protocol: sftp
+          port: 22
           server-dir: /public_html/
           local-dir: public_html/
           state-name: .ftp-deploy-sync-state.json
