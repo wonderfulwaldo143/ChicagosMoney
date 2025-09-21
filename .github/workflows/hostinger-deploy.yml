@@ -31,7 +31,8 @@ jobs:
           username: ${{ secrets.HOSTINGER_FTP_USERNAME }}
           password: ${{ secrets.HOSTINGER_FTP_PASSWORD }}
           protocol: ftps
-          server-dir: public_html
+          security: strict
+          server-dir: /public_html/
           local-dir: public_html
           state-name: .ftp-deploy-sync-state.json
           exclude: |
