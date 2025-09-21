@@ -25,13 +25,12 @@ jobs:
           fetch-depth: 1
 
       - name: Deploy via SFTP
-        uses: appleboy/scp-action@v0.1.7
+        uses: appleboy/sftp-action@v0.1.1
         with:
           host: ${{ secrets.HOSTINGER_FTP_SERVER }}
           username: ${{ secrets.HOSTINGER_FTP_USERNAME }}
           password: ${{ secrets.HOSTINGER_FTP_PASSWORD }}
           port: 65002
-          source: "public_html/**"
+          source: "public_html/."
           target: "/home/u476428393/websites/SqQqgFb2r/public_html"
-          strip_components: 1
-          debug: true
+          overwrite: true
