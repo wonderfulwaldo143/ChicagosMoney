@@ -20,29 +20,31 @@
 </head>
 <body class="contact-page">
   <a class="skip-link" href="#mainContent">Skip to content</a>
-  <nav class="navbar" id="navbar" aria-label="Primary">
-    <div class="nav-container">
-      <a href="/" class="logo" aria-label="Chicago's Money home">
-        <span class="logo-chicago">Chicago'</span>
-        <span class="logo-dollar">$</span>
-        <span class="logo-money">Money</span>
-      </a>
-      <div class="nav-links" id="primaryNav">
-        <a href="/salary-lookup.html" class="nav-link">Salary Lookup</a>
-        <a href="/#leads" class="nav-link">Business Intelligence</a>
-        <a href="/budget-dashboard.html" class="nav-link">Budget Dashboard</a>
-        <a href="/contact.html" class="nav-link nav-link--active" aria-current="page">Contact</a>
-        <a href="/#leads" class="nav-cta">Get Leads →</a>
+  <header class="site-header" role="banner">
+    <nav class="navbar" id="navbar" aria-label="Primary">
+      <div class="nav-container">
+        <a href="/" class="logo" aria-label="Chicago's Money home">
+          <span class="logo-chicago">Chicago'</span>
+          <span class="logo-dollar">$</span>
+          <span class="logo-money">Money</span>
+        </a>
+        <div class="nav-links" id="primaryNav">
+          <a href="/salary-lookup.html" class="nav-link">Salary Lookup</a>
+          <a href="/index.html#leads" class="nav-link">Business Intelligence</a>
+          <a href="/budget-dashboard.html" class="nav-link">Budget Dashboard</a>
+          <a href="/contact.html" class="nav-link nav-link--active" aria-current="page">Contact</a>
+          <a href="/index.html#leads" class="nav-cta">Get Leads →</a>
+        </div>
+        <button class="mobile-menu-btn" id="mobileMenu" type="button" aria-expanded="false" aria-controls="primaryNav" aria-label="Toggle navigation">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
       </div>
-      <button class="mobile-menu-btn" id="mobileMenu" type="button" aria-expanded="false" aria-controls="primaryNav" aria-label="Toggle navigation">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
-    </div>
-  </nav>
+    </nav>
+  </header>
 
-  <main id="mainContent">
+  <main id="mainContent" role="main">
     <section class="contact-hero" aria-labelledby="contactHeroTitle">
       <div class="container contact-hero__inner">
         <div class="contact-hero__copy">
@@ -51,7 +53,7 @@
           <p class="contact-hero__lead">Whether you're a newsroom chasing the next budget headline, a business scouting leads, or a resident curious about City Hall spending, our team of data journalists is ready to help you interpret Chicago's $16.6 billion municipal ecosystem.</p>
           <div class="contact-hero__actions">
             <a href="mailto:info@chicagosmoney.com?subject=Chicago's%20Money%20Inquiry" class="contact-button contact-button--primary">Email the team</a>
-            <a href="/#leads" class="contact-button contact-button--ghost">Explore business services</a>
+            <a href="/index.html#leads" class="contact-button contact-button--ghost">Explore business services</a>
           </div>
         </div>
         <div class="contact-hero__stats" aria-label="Chicago by the numbers">
@@ -84,7 +86,7 @@
               <li>Help translating budget line items</li>
               <li>Collaboration with neighborhood groups</li>
             </ul>
-            <a class="contact-button" href="mailto:info@chicagosmoney.com?subject=General%20question">Start the conversation</a>
+            <a class="contact-button contact-button--surface" href="mailto:info@chicagosmoney.com?subject=General%20question">Start the conversation</a>
           </article>
           <article class="contact-card">
             <h3>Data partnerships &amp; licensing</h3>
@@ -94,7 +96,7 @@
               <li>Custom lead lists for corridors &amp; wards</li>
               <li>Integrations for CRMs and analytics teams</li>
             </ul>
-            <a class="contact-button" href="mailto:info@chicagosmoney.com?subject=Data%20partnership%20proposal">Discuss a data brief</a>
+            <a class="contact-button contact-button--surface" href="mailto:info@chicagosmoney.com?subject=Data%20partnership%20proposal">Discuss a data brief</a>
           </article>
           <article class="contact-card">
             <h3>Media, speaking &amp; research</h3>
@@ -104,7 +106,7 @@
               <li>City budget history explainers</li>
               <li>Economic development roundtables</li>
             </ul>
-            <a class="contact-button" href="mailto:info@chicagosmoney.com?subject=Media%20request">Request availability</a>
+            <a class="contact-button contact-button--surface" href="mailto:info@chicagosmoney.com?subject=Media%20request">Request availability</a>
           </article>
         </div>
       </div>
@@ -274,9 +276,9 @@
       <div class="footer-section">
         <h4>For Businesses</h4>
         <ul class="footer-links">
-          <li><a href="/#leads">Business Leads</a></li>
-          <li><a href="/#leads">Construction Permits</a></li>
-          <li><a href="/#leads">Violation Alerts</a></li>
+          <li><a href="/index.html#leads">Business Leads</a></li>
+          <li><a href="/index.html#leads">Construction Permits</a></li>
+          <li><a href="/index.html#leads">Violation Alerts</a></li>
         </ul>
       </div>
       <div class="footer-section">
@@ -297,7 +299,7 @@
       </div>
     </div>
     <div class="footer-bottom">
-      <p>&copy; 2025 Chicago's Money. Promoting transparency &amp; business growth through public data.</p>
+      <p>&copy; <span data-current-year>2025</span> Chicago's Money. Promoting transparency &amp; business growth through public data.</p>
     </div>
   </footer>
 
