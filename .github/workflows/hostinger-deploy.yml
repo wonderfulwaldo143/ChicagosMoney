@@ -5,13 +5,23 @@ on:
     branches:
       - main
     paths:
-      - 'public_html/**'
+      - '*.html'
+      - '*.css'
+      - '*.js'
+      - '*.json'
+      - '*.xml'
+      - '*.txt'
+      - '*.php'
+      - '.htaccess'
+      - 'IMG/**'
+      - 'icons/**'
+      - 'api/**'
       - '.github/workflows/hostinger-deploy.yml'
   workflow_dispatch:
 
 jobs:
   deploy:
-    name: Upload public_html to Hostinger
+    name: Upload site to Hostinger
     runs-on: ubuntu-latest
     timeout-minutes: 15
     concurrency:
@@ -25,12 +35,13 @@ jobs:
           fetch-depth: 1
 
       - name: Deploy via SFTP
-        uses: wlixcc/SFTP-Deploy-Action@v1.2.4
+        uses: wlixcc/SFTP-Deploy-Action@v1.2.5
         with:
           username: ${{ secrets.HOSTINGER_FTP_USERNAME }}
           password: ${{ secrets.HOSTINGER_FTP_PASSWORD }}
           server: ${{ secrets.HOSTINGER_FTP_SERVER }}
           port: 65002
-          local_path: public_html/
+          local_path: ./
           remote_path: /home/u476428393/websites/SqQqgFb2r/public_html/
           args: "-o StrictHostKeyChecking=no"
+          rsyncArgs: '--exclude=.git --exclude=.github --exclude=.gitignore --exclude=deploy.sh --exclude=docs --exclude=.DS_Store'
