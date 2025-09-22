@@ -8,11 +8,13 @@ All notable changes to Chicago's Money website will be documented in this file.
 - Dedicated `salary-lookup.html` experience featuring the full salary lookup widget with tailored hero, feature highlights, and live Socrata integration.
 - Homepage hero CTA and promotional card now direct visitors to the salary lookup lab.
 - Responsive navigation header on `budget-dashboard.html` with cross-site links and mobile menu support.
+- New `contact.html` hub with interactive neighborhood insights, visit planner, and Formspree-powered contact form.
 
 ### Changed
 - Updated navigation across active pages to point to the new salary lookup destination instead of in-page anchors.
 - Crafted a dedicated mobile card layout for the salary search results so names, badges, and pay data read cleanly without
   impacting the desktop table design.
+- Primary navigation and footer links now route to the standalone contact center.
 
 ## [2025-09-10]
 
