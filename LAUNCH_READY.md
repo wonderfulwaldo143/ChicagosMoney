@@ -114,7 +114,7 @@ With all optimizations in place, you should see:
 
 ## 📝 Server Upload Instructions
 
-1. Upload all files from `/public_html/` to your web root
+1. Upload all files from the repository root to your web root (do not nest them inside another folder)
 2. Ensure `.htaccess` is uploaded (may be hidden)
 3. Set proper file permissions (644 for files, 755 for directories)
 4. Test all functionality after upload

@@ -3,20 +3,20 @@
 Use this guide as the quick reference for working safely and efficiently in this repo.
 
 ## Quick Checklist
-- Confirm the task scope, inspect the existing implementation, and note any related docs (e.g., `CLAUDE.md`, `FORMSPREE_SETUP.md`).
+- Confirm the task scope, inspect the existing implementation, and note any related docs (e.g., `CLAUDE.md`, `CLAUDE_SITE.md`, `FORMSPREE_SETUP.md`).
 - Make focused changes that match current patterns in HTML, CSS, and JS.
 - Preview updates locally, run manual smoke tests, and check the console before wrapping up.
 - Review the diff, ensure filenames and casing remain consistent, and leave the repo in a buildable state.
 
 ## Repository Layout
-- Primary site files live in `public_html/` (`index.html`, `styles.css`, `script.js`, service worker, manifest, etc.).
-- Image assets belong in `public_html/IMG/` with kebab-case filenames (e.g., `hero-mobile.jpg`).
+- Primary site files now live at the repository root (`index.html`, `styles.css`, `script.js`, service worker, manifest, etc.).
+- Image assets belong in `IMG/` with kebab-case filenames (e.g., `hero-mobile.jpg`).
 - Additional static assets (favicons, sitemap, feeds) stay alongside the main files unless a dedicated folder already exists.
-- Configuration references: `public_html/FORMSPREE_SETUP.md` for forms, `public_html/CHANGELOG.md` for shipped changes.
+- Configuration references: `FORMSPREE_SETUP.md` for forms, `CHANGELOG.md` for shipped changes.
 
 ## Local Workflow
 - Serve the site without a build step: `python3 -m http.server 8000` then open `http://localhost:8000/`.
-- Optional formatting (if available locally): `npx prettier -w public_html/index.html public_html/styles.css public_html/script.js`.
+- Optional formatting (if available locally): `npx prettier -w index.html styles.css script.js`.
 - When touching CSS/JS, reuse existing utilities/components; avoid introducing frameworks or build dependencies.
 
 ## Coding Standards
@@ -34,7 +34,7 @@ Use this guide as the quick reference for working safely and efficiently in this
 ## Version Control & Handoff
 - Use Conventional Commit messages (e.g., `feat: add sticky header`, `fix: correct mobile nav z-index`, `docs: update forms guide`).
 - Keep PRs small. Include change summary, rationale, before/after screenshots for UI shifts, linked issue/task, and manual test notes.
-- Document noteworthy behavior changes in `public_html/CHANGELOG.md` when applicable.
+- Document noteworthy behavior changes in `CHANGELOG.md` when applicable.
 
 ## Security & Housekeeping
 - Never commit secrets or API keys; reference `FORMSPREE_SETUP.md` for form configuration.

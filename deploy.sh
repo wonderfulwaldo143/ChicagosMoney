@@ -1,13 +1,14 @@
 #!/bin/bash
 
 # Chicago's Money - Deployment Script
-# Prevents nesting public_html/public_html during deployment
+# Prevents accidental nested directories during deployment
 
 set -euo pipefail
 
 # Configuration
 SITE_URL="chicagosmoney.com"
-PUBLIC_DIR="public_html"
+WEB_ROOT="."
+DEFAULT_REMOTE_DIR="public_html"
 
 # Colors for output
 RED='\033[0;31m'
@@ -30,18 +31,18 @@ normalize_remote_path() {
   local normalized="${path%/}"
 
   if [[ -z "$normalized" ]]; then
-    normalized="$PUBLIC_DIR"
+    normalized="$DEFAULT_REMOTE_DIR"
   fi
 
-  local public_dir_lower
-  public_dir_lower=$(to_lower "$PUBLIC_DIR")
+  local default_dir_lower
+  default_dir_lower=$(to_lower "$DEFAULT_REMOTE_DIR")
 
   while [[ "$normalized" == */* ]]; do
     local last_segment="${normalized##*/}"
     local parent="${normalized%/*}"
     local parent_last_segment="${parent##*/}"
 
-    if [[ $(to_lower "$last_segment") == "$public_dir_lower" && $(to_lower "$parent_last_segment") == "$public_dir_lower" ]]; then
+    if [[ $(to_lower "$last_segment") == "$default_dir_lower" && $(to_lower "$parent_last_segment") == "$default_dir_lower" ]]; then
       normalized="$parent"
     else
       break
@@ -50,17 +51,17 @@ normalize_remote_path() {
 
   if [[ "$normalized" == */* ]]; then
     local last_segment="${normalized##*/}"
-    if [[ $(to_lower "$last_segment") == "$public_dir_lower" ]]; then
+    if [[ $(to_lower "$last_segment") == "$default_dir_lower" ]]; then
       local prefix="${normalized%/*}"
       if [[ -z "$prefix" ]]; then
-        normalized="/$PUBLIC_DIR"
+        normalized="/$DEFAULT_REMOTE_DIR"
       else
-        normalized="${prefix%/}/$PUBLIC_DIR"
+        normalized="${prefix%/}/$DEFAULT_REMOTE_DIR"
       fi
     fi
   else
-    if [[ $(to_lower "$normalized") == "$public_dir_lower" ]]; then
-      normalized="$PUBLIC_DIR"
+    if [[ $(to_lower "$normalized") == "$default_dir_lower" ]]; then
+      normalized="$DEFAULT_REMOTE_DIR"
     fi
   fi
 
@@ -80,12 +81,12 @@ run_predeployment_checks() {
 
   echo "Checking critical files..."
   local files_to_check=(
-    "$PUBLIC_DIR/index.html"
-    "$PUBLIC_DIR/.htaccess"
-    "$PUBLIC_DIR/robots.txt"
-    "$PUBLIC_DIR/sitemap.xml"
-    "$PUBLIC_DIR/manifest.json"
-    "$PUBLIC_DIR/sw.js"
+    "$WEB_ROOT/index.html"
+    "$WEB_ROOT/.htaccess"
+    "$WEB_ROOT/robots.txt"
+    "$WEB_ROOT/sitemap.xml"
+    "$WEB_ROOT/manifest.json"
+    "$WEB_ROOT/sw.js"
   )
 
   ALL_FILES_EXIST=true
@@ -100,7 +101,7 @@ run_predeployment_checks() {
 
   echo ""
   echo "🔍 SEO Check:"
-  if grep -q "noindex" "$PUBLIC_DIR/index.html" 2>/dev/null; then
+  if grep -q "noindex" "$WEB_ROOT/index.html" 2>/dev/null; then
     echo -e "${RED}⚠️  WARNING: noindex found in index.html${NC}"
   else
     echo -e "${GREEN}✓${NC} No noindex directive found"
@@ -109,7 +110,7 @@ run_predeployment_checks() {
   echo ""
   echo "📊 File Size Analysis:"
   local img_size
-  img_size=$(du -sh "$PUBLIC_DIR/IMG" 2>/dev/null | cut -f1)
+  img_size=$(du -sh "$WEB_ROOT/IMG" 2>/dev/null | cut -f1)
   if [ -n "$img_size" ]; then
     echo "Image folder size: $img_size"
     if [[ "$img_size" == *"M"* ]]; then
@@ -145,11 +146,11 @@ print_deployment_options() {
   echo ""
   echo "📤 Deployment Options:"
   echo ""
-  echo "1) FTP/SFTP: Upload all contents of $PUBLIC_DIR/ to your web root"
-  echo "   (Do not upload the folder itself to avoid $PUBLIC_DIR/$PUBLIC_DIR.)"
+  echo "1) FTP/SFTP: Upload all contents of the repository root to your web root"
+  echo "   (Do not nest the files inside an extra directory on the server.)"
   echo ""
   echo "2) rsync (recommended):"
-  echo "   rsync -avz --delete $PUBLIC_DIR/ user@$SITE_URL:/path/to/web/root/"
+  echo "   rsync -avz --delete ./ user@$SITE_URL:/path/to/web/root/"
   echo ""
 }
 
@@ -167,24 +168,24 @@ sync_with_rsync() {
     return 1
   fi
 
-  read -r -p "Remote web root path [public_html]: " remote_path
+  read -r -p "Remote web root path [${DEFAULT_REMOTE_DIR}]: " remote_path
   local normalized_path
-  normalized_path=$(normalize_remote_path "${remote_path:-$PUBLIC_DIR}")
+  normalized_path=$(normalize_remote_path "${remote_path:-$DEFAULT_REMOTE_DIR}")
   if [[ -n "${remote_path:-}" && "$normalized_path" != "${remote_path%/}" ]]; then
-    echo -e "${YELLOW}!${NC} Adjusted remote path to '$normalized_path' to avoid ${PUBLIC_DIR}/${PUBLIC_DIR}."
+    echo -e "${YELLOW}!${NC} Adjusted remote path to '$normalized_path' to avoid nested directories."
   fi
 
   echo ""
-  echo "The following command will deploy the site without creating an extra public_html directory:"
-  echo "  rsync -avz --delete ${PUBLIC_DIR}/ ${ssh_target}:${normalized_path}/"
+  echo "The following command will deploy the site without creating an extra directory level:"
+  echo "  rsync -avz --delete ${WEB_ROOT}/ ${ssh_target}:${normalized_path}/"
   read -r -p "Proceed with deployment? (y/N): " confirmation
   if [[ ! "$confirmation" =~ ^[Yy]$ ]]; then
     echo -e "${YELLOW}!${NC} Deployment cancelled."
     return 1
   fi
 
-  if rsync -avz --delete "${PUBLIC_DIR}/" "${ssh_target}:${normalized_path}/"; then
-    echo -e "${GREEN}✅ Deployment complete. Copied contents of ${PUBLIC_DIR}/ to ${normalized_path}/ without nesting.${NC}"
+  if rsync -avz --delete "${WEB_ROOT}/" "${ssh_target}:${normalized_path}/"; then
+    echo -e "${GREEN}✅ Deployment complete. Copied repository contents to ${normalized_path}/ without nesting.${NC}"
     return 0
   else
     echo -e "${RED}❌ rsync failed. Review the output above and try again.${NC}"
@@ -193,13 +194,13 @@ sync_with_rsync() {
 }
 
 prompt_remote_sync() {
-  read -r -p "Would you like to sync ${PUBLIC_DIR}/ to a remote server now? (y/N): " deploy_now
+  read -r -p "Would you like to sync the repository to a remote server now? (y/N): " deploy_now
   if [[ "$deploy_now" =~ ^[Yy]$ ]]; then
     if ! sync_with_rsync; then
       echo -e "${YELLOW}!${NC} Remote sync skipped or failed. Upload manually when ready."
     fi
   else
-    echo "Skipping automatic remote sync. Upload the contents of ${PUBLIC_DIR}/ manually when ready."
+    echo "Skipping automatic remote sync. Upload the repository contents manually when ready."
   fi
 }
 

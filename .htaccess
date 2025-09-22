@@ -201,7 +201,7 @@ FileETag None
 # ===================================================================
 
 # Protect sensitive files
-<FilesMatch "(^\.htaccess|\.htpasswd|\.git|\.env|composer\.(json|lock)|package\.(json|lock)|yarn\.lock|webpack\.config\.js|gulpfile\.js|Gruntfile\.js)">
+<FilesMatch "(^\.htaccess|\.htpasswd|\.git|\.env|composer\.(json|lock)|package\.(json|lock)|yarn\.lock|webpack\.config\.js|gulpfile\.js|Gruntfile\.js|.*\.md$)">
     Order allow,deny
     Deny from all
 </FilesMatch>
