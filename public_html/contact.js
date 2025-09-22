@@ -3,7 +3,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const mobileMenu = document.getElementById('mobileMenu');
   const navLinks = document.getElementById('primaryNav');
+  const navbar = document.getElementById('navbar');
   let menuTimeout;
+
+  if (navbar) {
+    const updateNavbarState = () => {
+      if (window.scrollY > 40) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
+      }
+    };
+
+    updateNavbarState();
+    window.addEventListener('scroll', updateNavbarState, { passive: true });
+  }
 
   const closeMobileMenu = () => {
     if (!navLinks) return;
@@ -314,5 +328,10 @@ document.addEventListener('DOMContentLoaded', () => {
       visitButtons[0].setAttribute('aria-pressed', 'true');
       renderVisitDetails(defaultRoute);
     }
+  }
+
+  const currentYearEl = document.querySelector('[data-current-year]');
+  if (currentYearEl) {
+    currentYearEl.textContent = new Date().getFullYear().toString();
   }
 });
