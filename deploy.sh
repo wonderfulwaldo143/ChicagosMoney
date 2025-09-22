@@ -1,10 +1,8 @@
 #!/bin/bash
 
 # Chicago's Money - Deployment Script
-# Helps deploy the website to production without nesting extra folders
-# Helps deploy the website to production without nesting extra folders
+# Prevents nesting public_html/public_html during deployment
 
-set -euo pipefail
 set -euo pipefail
 
 # Configuration
@@ -19,23 +17,51 @@ NC='\033[0m' # No Color
 
 ALL_FILES_EXIST=true
 
-ALL_FILES_EXIST=true
-
 command_exists() {
   command -v "$1" >/dev/null 2>&1
-  command -v "$1" >/dev/null 2>&1
+}
+
+to_lower() {
+  printf '%s' "$1" | LC_ALL=C tr '[:upper:]' '[:lower:]'
 }
 
 normalize_remote_path() {
   local path="$1"
-  local normalized="$path"
+  local normalized="${path%/}"
 
-  while [[ "$normalized" == */$PUBLIC_DIR/$PUBLIC_DIR ]]; do
-    normalized="${normalized%/$PUBLIC_DIR}"
+  if [[ -z "$normalized" ]]; then
+    normalized="$PUBLIC_DIR"
+  fi
+
+  local public_dir_lower
+  public_dir_lower=$(to_lower "$PUBLIC_DIR")
+
+  while [[ "$normalized" == */* ]]; do
+    local last_segment="${normalized##*/}"
+    local parent="${normalized%/*}"
+    local parent_last_segment="${parent##*/}"
+
+    if [[ $(to_lower "$last_segment") == "$public_dir_lower" && $(to_lower "$parent_last_segment") == "$public_dir_lower" ]]; then
+      normalized="$parent"
+    else
+      break
+    fi
   done
 
-  if [[ "$normalized" == "$PUBLIC_DIR/$PUBLIC_DIR" ]]; then
-    normalized="$PUBLIC_DIR"
+  if [[ "$normalized" == */* ]]; then
+    local last_segment="${normalized##*/}"
+    if [[ $(to_lower "$last_segment") == "$public_dir_lower" ]]; then
+      local prefix="${normalized%/*}"
+      if [[ -z "$prefix" ]]; then
+        normalized="/$PUBLIC_DIR"
+      else
+        normalized="${prefix%/}/$PUBLIC_DIR"
+      fi
+    fi
+  else
+    if [[ $(to_lower "$normalized") == "$public_dir_lower" ]]; then
+      normalized="$PUBLIC_DIR"
+    fi
   fi
 
   echo "$normalized"
@@ -54,8 +80,6 @@ run_predeployment_checks() {
 
   echo "Checking critical files..."
   local files_to_check=(
-  echo "Checking critical files..."
-  local files_to_check=(
     "$PUBLIC_DIR/index.html"
     "$PUBLIC_DIR/.htaccess"
     "$PUBLIC_DIR/robots.txt"
@@ -63,36 +87,24 @@ run_predeployment_checks() {
     "$PUBLIC_DIR/manifest.json"
     "$PUBLIC_DIR/sw.js"
   )
-  )
 
-  ALL_FILES_EXIST=true
-  for file in "${files_to_check[@]}"; do
   ALL_FILES_EXIST=true
   for file in "${files_to_check[@]}"; do
     if [ -f "$file" ]; then
       echo -e "${GREEN}✓${NC} $file exists"
-      echo -e "${GREEN}✓${NC} $file exists"
     else
       echo -e "${RED}✗${NC} $file missing"
       ALL_FILES_EXIST=false
-      echo -e "${RED}✗${NC} $file missing"
-      ALL_FILES_EXIST=false
     fi
-  done
   done
 
   echo ""
   echo "🔍 SEO Check:"
-  if grep -q "noindex" "$PUBLIC_DIR/index.html"; then
-  echo ""
-  echo "🔍 SEO Check:"
-  if grep -q "noindex" "$PUBLIC_DIR/index.html"; then
+  if grep -q "noindex" "$PUBLIC_DIR/index.html" 2>/dev/null; then
     echo -e "${RED}⚠️  WARNING: noindex found in index.html${NC}"
-  else
   else
     echo -e "${GREEN}✓${NC} No noindex directive found"
   fi
-  fi
 
   echo ""
   echo "📊 File Size Analysis:"
@@ -115,45 +127,17 @@ print_optimization_suggestions() {
   echo ""
   echo "🔧 Optimization Suggestions:"
   echo ""
-  echo ""
-  echo "📊 File Size Analysis:"
-  local img_size
-  img_size=$(du -sh "$PUBLIC_DIR/IMG" 2>/dev/null | cut -f1)
-  if [ -n "$img_size" ]; then
-    echo "Image folder size: $img_size"
-    if [[ "$img_size" == *"M"* ]]; then
-      local numeric_size=${img_size%%M*}
-      if [[ "$numeric_size" =~ ^[0-9]+$ ]] && [ "$numeric_size" -gt 2 ]; then
-        echo -e "${YELLOW}⚠️  Consider optimizing images (currently $img_size)${NC}"
-      fi
-    fi
-  else
-    echo "Image folder not found."
-  fi
-}
 
-print_optimization_suggestions() {
-  echo ""
-  echo "🔧 Optimization Suggestions:"
-  echo ""
-
-  if command_exists uglifyjs; then
   if command_exists uglifyjs; then
     echo -e "${GREEN}✓${NC} UglifyJS available for JavaScript minification"
   else
-  else
-    echo -e "${YELLOW}!${NC} Install UglifyJS for JS minification: npm install -g uglify-js"
-  fi
+    echo -e "${YELLOW}!${NC} Install UglifyJS: npm install -g uglify-js"
   fi
 
   if command_exists cssnano; then
-  if command_exists cssnano; then
     echo -e "${GREEN}✓${NC} CSSNano available for CSS minification"
   else
-  else
-    echo -e "${YELLOW}!${NC} Install CSSNano for CSS minification: npm install -g cssnano-cli"
-  fi
-}
+    echo -e "${YELLOW}!${NC} Install CSSNano: npm install -g cssnano-cli"
   fi
 }
 
@@ -161,15 +145,11 @@ print_deployment_options() {
   echo ""
   echo "📤 Deployment Options:"
   echo ""
-  echo "1. FTP/SFTP Upload:"
-  echo "   Upload all contents of $PUBLIC_DIR/ to your web root"
+  echo "1) FTP/SFTP: Upload all contents of $PUBLIC_DIR/ to your web root"
   echo "   (Do not upload the folder itself to avoid $PUBLIC_DIR/$PUBLIC_DIR.)"
   echo ""
-  echo "2. rsync (recommended):"
+  echo "2) rsync (recommended):"
   echo "   rsync -avz --delete $PUBLIC_DIR/ user@$SITE_URL:/path/to/web/root/"
-  echo ""
-  echo "3. Git deployment:"
-  echo "   git add . && git commit -m 'Launch ready' && git push origin main"
   echo ""
 }
 
@@ -188,33 +168,25 @@ sync_with_rsync() {
   fi
 
   read -r -p "Remote web root path [public_html]: " remote_path
-  local trimmed_input="${remote_path%/}"
-  if [[ -z "$trimmed_input" ]]; then
-    trimmed_input="$PUBLIC_DIR"
-  fi
   local normalized_path
-  normalized_path=$(normalize_remote_path "$trimmed_input")
-  if [[ "$normalized_path" != "$trimmed_input" ]]; then
-    echo ""
-    echo -e "${YELLOW}!${NC} Adjusted remote path to '${normalized_path}' to avoid uploading into ${PUBLIC_DIR}/${PUBLIC_DIR}."
+  normalized_path=$(normalize_remote_path "${remote_path:-$PUBLIC_DIR}")
+  if [[ -n "${remote_path:-}" && "$normalized_path" != "${remote_path%/}" ]]; then
+    echo -e "${YELLOW}!${NC} Adjusted remote path to '$normalized_path' to avoid ${PUBLIC_DIR}/${PUBLIC_DIR}."
   fi
-  remote_path="$normalized_path"
 
   echo ""
   echo "The following command will deploy the site without creating an extra public_html directory:"
-  echo "  rsync -avz --delete ${PUBLIC_DIR}/ ${ssh_target}:${remote_path}/"
+  echo "  rsync -avz --delete ${PUBLIC_DIR}/ ${ssh_target}:${normalized_path}/"
   read -r -p "Proceed with deployment? (y/N): " confirmation
   if [[ ! "$confirmation" =~ ^[Yy]$ ]]; then
     echo -e "${YELLOW}!${NC} Deployment cancelled."
     return 1
   fi
 
-  if rsync -avz --delete "${PUBLIC_DIR}/" "${ssh_target}:${remote_path}/"; then
-    echo ""
-    echo -e "${GREEN}✅ Deployment complete! The contents of ${PUBLIC_DIR}/ were copied directly to ${remote_path}/ without creating a nested folder.${NC}"
+  if rsync -avz --delete "${PUBLIC_DIR}/" "${ssh_target}:${normalized_path}/"; then
+    echo -e "${GREEN}✅ Deployment complete. Copied contents of ${PUBLIC_DIR}/ to ${normalized_path}/ without nesting.${NC}"
     return 0
   else
-    echo ""
     echo -e "${RED}❌ rsync failed. Review the output above and try again.${NC}"
     return 1
   fi
@@ -224,7 +196,6 @@ prompt_remote_sync() {
   read -r -p "Would you like to sync ${PUBLIC_DIR}/ to a remote server now? (y/N): " deploy_now
   if [[ "$deploy_now" =~ ^[Yy]$ ]]; then
     if ! sync_with_rsync; then
-      echo ""
       echo -e "${YELLOW}!${NC} Remote sync skipped or failed. Upload manually when ready."
     fi
   else
@@ -244,30 +215,6 @@ print_post_deployment_tasks() {
   echo "[ ] Verify analytics tracking"
   echo "[ ] Test on mobile devices"
   echo "[ ] Run PageSpeed Insights"
-  echo "[ ] Set up monitoring"
-  echo ""
-
-  echo "🚀 Ready to launch? Here's your final checklist:"
-  echo ""
-  echo "1. Backup everything first"
-  echo "2. Upload all files from $PUBLIC_DIR/"
-  echo "3. Set permissions (644 for files, 755 for directories)"
-  echo "4. Test the live site thoroughly"
-  echo "5. Submit sitemaps to search engines"
-  echo "6. Monitor for 24 hours"
-}
-
-print_final_status() {
-  echo ""
-  if [ "$ALL_FILES_EXIST" = true ]; then
-  echo "🚀 Ready to launch? Here's your final checklist:"
-  echo ""
-  echo "1. Backup everything first"
-  echo "2. Upload all files from $PUBLIC_DIR/"
-  echo "3. Set permissions (644 for files, 755 for directories)"
-  echo "4. Test the live site thoroughly"
-  echo "5. Submit sitemaps to search engines"
-  echo "6. Monitor for 24 hours"
 }
 
 print_final_status() {
@@ -275,29 +222,8 @@ print_final_status() {
   if [ "$ALL_FILES_EXIST" = true ]; then
     echo -e "${GREEN}✅ All critical files present. Site is ready for deployment!${NC}"
   else
-  else
     echo -e "${RED}❌ Some critical files are missing. Please review before deploying.${NC}"
   fi
-  fi
-
-  echo ""
-  echo "=========================================="
-  echo "        Good luck with your launch!       "
-  echo "=========================================="
-}
-
-main() {
-  print_header
-  run_predeployment_checks
-  print_optimization_suggestions
-  print_deployment_options
-  prompt_remote_sync
-  print_post_deployment_tasks
-  print_final_status
-}
-
-main "$@"
-
   echo ""
   echo "=========================================="
   echo "        Good luck with your launch!       "
