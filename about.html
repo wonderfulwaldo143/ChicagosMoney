@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Chicago's Money – Mission, Methods, and Chicago Facts</title>
+  <meta name="description" content="Learn how Chicago's Money turns public data into insight. Explore our mission, methods, and interactive Chicago facts. Navigate to salary lookup, budget dashboard, and more.">
+  <link rel="canonical" href="https://chicagosmoney.com/about.html">
+
+  <!-- Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+  <!-- Tailwind CSS & Motion -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@motionone/dom/dist/motion.min.js"></script>
+
+  <link rel="icon" href="/IMG/chicagos_money_logo_variant_1.png" type="image/png">
+  <link rel="stylesheet" href="styles.css">
+
+  <style>
+    :root { --navbar-height: 72px; }
+    * { box-sizing: border-box; }
+    body { font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, sans-serif; color:#0f172a; background:#fff; overflow-x:hidden; }
+
+    /* Header / Nav (kept in‑family with other pages) */
+    .navbar { position:fixed; inset-inline:0; top:0; z-index:50; background:rgba(255,255,255,.98); backdrop-filter:blur(10px); border-bottom:1px solid #e5e7eb; transition: box-shadow .3s ease; }
+    .navbar.scrolled{ box-shadow:0 6px 20px -12px rgba(15,23,42,.25) }
+    .nav-container{ max-width:1280px; margin-inline:auto; padding:1rem 2rem; display:flex; align-items:center; justify-content:space-between }
+    .logo{ font-weight:800; font-size:1.75rem; display:flex; align-items:center; gap:.1rem; text-decoration:none; cursor:pointer }
+    .logo-chicago{ color:#0047AB }
+    .logo-dollar{ color:#00C851; font-size:2rem; animation:pulse 3s ease-in-out infinite }
+    .logo-money{ color:#FFB000 }
+    @keyframes pulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.1)} }
+    .nav-links{ display:flex; gap:2rem; align-items:center }
+    .nav-link{ position:relative; text-decoration:none; color:#1a1a1a; font-weight:500; transition:color .2s ease, transform .2s ease }
+    .nav-link:hover, .nav-link.active{ color:#0047AB; transform:translateY(-1px) }
+    .nav-link::after{ content:""; position:absolute; left:0; bottom:-4px; width:0; height:2px; background:#0047AB; transition:width .25s ease }
+    .nav-link:hover::after, .nav-link.active::after{ width:100% }
+    .nav-cta{ background:linear-gradient(135deg,#0047AB,#001F3F); color:#fff!important; padding:.625rem 1.5rem; border-radius:10px; font-weight:700; box-shadow:0 2px 6px rgba(0,71,171,.25) }
+    .mobile-menu-btn{ display:none }
+
+    /* Hero */
+    .about-hero{ padding-top:calc(var(--navbar-height) + 2.5rem); padding-bottom:3rem; background:linear-gradient(180deg,#001F3F 0%, #0b2a66 60%, #0e2250 100%); color:#fff; position:relative; overflow:hidden }
+    .about-hero::after{ content:""; position:absolute; inset:0; background: radial-gradient(60rem 60rem at 110% -10%, rgba(255,176,0,.25), transparent 60%), radial-gradient(40rem 40rem at -10% 110%, rgba(0,71,171,.35), transparent 60%); pointer-events:none }
+    .hero-wrap{ max-width:1120px; margin-inline:auto; padding-inline:1.25rem; display:grid; gap:1.25rem }
+    .hero-badge{ align-self:start; display:inline-flex; gap:.5rem; padding:.45rem .85rem; border-radius:999px; background:rgba(255,255,255,.12); color:#e6edff; font-size:.78rem; letter-spacing:.1em; text-transform:uppercase }
+    .hero-title{ font-size:clamp(2.1rem,6vw,3.4rem); font-weight:800; line-height:1.1 }
+    .hero-sub{ color:#cfe1ff; max-width:70ch; line-height:1.7 }
+    .hero-actions{ display:flex; gap:.75rem; flex-wrap:wrap; margin-top:.5rem }
+    .btn{ display:inline-flex; align-items:center; gap:.5rem; border:none; border-radius:12px; font-weight:700; cursor:pointer; text-decoration:none; padding:.9rem 1.2rem; transition: transform .2s ease, box-shadow .3s ease }
+    .btn-primary{ background:linear-gradient(135deg,#65a1ff,#0047AB); color:#fff; box-shadow:0 18px 35px -18px rgba(52,124,255,.8) }
+    .btn-surface{ background:rgba(255,255,255,.12); color:#e6edff; border:1px solid rgba(214,224,255,.4) }
+    .btn:hover{ transform:translateY(-2px) }
+
+    /* Sections */
+    .section{ padding:3rem 1.25rem }
+    .container{ max-width:1100px; margin-inline:auto }
+    .section-title{ font-size:clamp(1.6rem,3.6vw,2.2rem); font-weight:800; color:#0f172a }
+    .section-lead{ color:#475569; line-height:1.8; max-width:75ch }
+
+    /* Pill stats */
+    .stat-grid{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:.9rem; margin-top:1.25rem }
+    .stat{ background:linear-gradient(135deg, rgba(0,71,171,.08), rgba(255,176,0,.08)); border:1px solid rgba(0,71,171,.18); border-radius:18px; padding:1rem; display:grid; gap:.3rem }
+    .stat .value{ font-weight:800; font-size:1.4rem; color:#0f172a }
+    .stat .label{ color:#334155; font-weight:600 }
+
+    /* Tabs */
+    .tabs{ display:flex; flex-wrap:wrap; gap:.5rem; margin:1rem 0 1.25rem }
+    .tab{ padding:.55rem .9rem; border-radius:999px; border:1px solid rgba(0,71,171,.22); background:#f1f6ff; color:#0047AB; font-weight:700; cursor:pointer }
+    .tab[aria-selected="true"]{ background:#0047AB; color:#fff }
+    .tab-panel{ display:none }
+    .tab-panel[aria-hidden="false"]{ display:grid }
+
+    /* FAQ */
+    .faq{ display:grid; gap:.75rem; margin-top:1rem }
+    .faq-item{ border:1px solid #e5e7eb; border-radius:14px; background:#fff }
+    .faq-q{ width:100%; text-align:left; padding:1rem 1.1rem; background:transparent; border:none; font-weight:700; display:flex; align-items:center; justify-content:space-between; cursor:pointer }
+    .faq-a{ padding:0 1.1rem 1rem; color:#475569; display:none }
+    .faq-item.open .faq-a{ display:block }
+
+    /* Footer */
+    .soft{ background:#0b1324; color:#b7c4e6 }
+    .soft a{ color:#cfe1ff; text-decoration:none }
+
+    /* Responsive tweaks */
+    @media (min-width: 920px){ .stat-grid{ grid-template-columns:repeat(4,1fr) } }
+    @media (max-width: 860px){ .nav-links{ display:none } .mobile-menu-btn{ display:inline-block; background:none; border:none; padding:.5rem } .mobile-menu-btn span{ display:block; width:24px; height:2px; background:#1a1a1a; margin:5px 0 } .nav-drawer{ display:none; position:fixed; inset-inline:0; top:var(--navbar-height); background:#fff; border-bottom:1px solid #e5e7eb; padding:1rem 1.25rem } .nav-drawer.open{ display:grid; gap:.75rem } }
+  </style>
+</head>
+<body>
+  <!-- Navigation -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="/index.html" class="logo" aria-label="Chicago's Money home">
+        <span class="logo-chicago">Chicago'</span>
+        <span class="logo-dollar">$</span>
+        <span class="logo-money">Money</span>
+      </a>
+      <div class="nav-links">
+        <a href="/index.html" class="nav-link">Home</a>
+        <a href="/salary-lookup.html" class="nav-link">Salary Lookup</a>
+        <a href="/budget-dashboard.html" class="nav-link">Budget Dashboard</a>
+        <a href="/blog.html" class="nav-link">Blog</a>
+        <a href="/contact.html" class="nav-link">Contact</a>
+        <a href="/about.html" class="nav-link active" aria-current="page">About</a>
+        <a href="/index.html#leads" class="nav-cta">Get Leads →</a>
+      </div>
+      <button class="mobile-menu-btn" id="mobileMenu" aria-label="Menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <div class="nav-drawer" id="navDrawer">
+      <a class="nav-link" href="/index.html">Home</a>
+      <a class="nav-link" href="/salary-lookup.html">Salary Lookup</a>
+      <a class="nav-link" href="/budget-dashboard.html">Budget Dashboard</a>
+      <a class="nav-link" href="/blog.html">Blog</a>
+      <a class="nav-link" href="/contact.html">Contact</a>
+      <a class="nav-link active" href="/about.html" aria-current="page">About</a>
+      <a class="nav-cta" href="/index.html#leads">Get Leads →</a>
+    </div>
+  </nav>
+
+  <header class="about-hero">
+    <div class="hero-wrap">
+      <span class="hero-badge"><i data-lucide="map-pinned" style="width:16px;height:16px"></i> Built in Chicago</span>
+      <h1 class="hero-title">About Chicago's Money</h1>
+      <p class="hero-sub">We turn public records into practical intelligence. From salary transparency to neighborhood growth signals, Chicago's Money helps residents, reporters, and businesses understand where dollars flow — and where opportunity grows.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="/salary-lookup.html"><i data-lucide="search"></i> Explore Salaries</a>
+        <a class="btn btn-surface" href="/budget-dashboard.html"><i data-lucide="pie-chart"></i> Budget Dashboard</a>
+        <a class="btn btn-surface" href="#faq"><i data-lucide="help-circle"></i> FAQ</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Mission & Method -->
+    <section class="section">
+      <div class="container">
+        <h2 class="section-title">Mission & Method</h2>
+        <p class="section-lead">Our mission is to make Chicago's finances accessible to everyone. We collect, normalize, and explain open data — then ship tools and stories that help people make decisions. No logins. No paywalls. Just clarity.</p>
+
+        <div class="grid gap-4 md:grid-cols-3 mt-6">
+          <article class="stat">
+            <div class="label">Data sources</div>
+            <div class="value">data.cityofchicago.org</div>
+            <p class="text-slate-600">Socrata-backed public datasets with official updates.</p>
+          </article>
+          <article class="stat">
+            <div class="label">Approach</div>
+            <div class="value">Explain + Explore</div>
+            <p class="text-slate-600">Clean interfaces first; deeper links when you want details.</p>
+          </article>
+          <article class="stat">
+            <div class="label">Focus</div>
+            <div class="value">Payroll • Overtime • Permits</div>
+            <p class="text-slate-600">Practical signals that track activity across 77 communities.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- City by the numbers (animated counters) -->
+    <section class="section bg-[#f7faff] border-y border-slate-200" aria-labelledby="numbersTitle">
+      <div class="container">
+        <h2 id="numbersTitle" class="section-title">Chicago by the numbers</h2>
+        <p class="section-lead">A quick pulse on the city we serve. Figures are rounded and updated as official sources refresh.</p>
+        <div class="stat-grid" id="counterGrid">
+          <div class="stat"><div class="label">Population</div><div class="value" data-count="2700000" data-format="comma">0</div><p class="text-slate-600">Approximate residents</p></div>
+          <div class="stat"><div class="label">City Budget (FY2024)</div><div class="value" data-count="16600000000" data-prefix="$" data-format="compact">$0</div><p class="text-slate-600">All funds</p></div>
+          <div class="stat"><div class="label">Active Employees</div><div class="value" data-count="35000" data-format="comma">0</div><p class="text-slate-600">Across agencies</p></div>
+          <div class="stat"><div class="label">Community Areas</div><div class="value" data-count="77" data-format="comma">0</div><p class="text-slate-600">From Rogers Park to Hegewisch</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Interactive tabs: Neighborhood lenses -->
+    <section class="section" aria-labelledby="lensTitle">
+      <div class="container">
+        <h2 id="lensTitle" class="section-title">Neighborhood lenses</h2>
+        <p class="section-lead">Pick a lens to see a Chicago snapshot. These quick takes combine permits, payroll, and public reports into a simple story.</p>
+        <div class="tabs" role="tablist">
+          <button class="tab" role="tab" aria-selected="true" aria-controls="panel-loop" id="tab-loop">Loop</button>
+          <button class="tab" role="tab" aria-selected="false" aria-controls="panel-south" id="tab-south">South Side</button>
+          <button class="tab" role="tab" aria-selected="false" aria-controls="panel-west" id="tab-west">West Side</button>
+          <button class="tab" role="tab" aria-selected="false" aria-controls="panel-north" id="tab-north">North Side</button>
+        </div>
+        <div class="grid gap-4 md:grid-cols-2">
+          <article class="tab-panel" id="panel-loop" aria-hidden="false">
+            <h3 class="font-extrabold text-xl">Loop & Downtown Core</h3>
+            <p class="text-slate-600">Tourism has rebounded and weekday foot traffic is rising. Hotel renovations and riverfront upgrades continue to open opportunities for vendors and services.</p>
+            <ul class="mt-2 text-slate-700 list-disc ps-5">
+              <li>Office occupancy: ~75–80%</li>
+              <li>Riverwalk visits trending up</li>
+              <li>Hospitality reinvestment is steady</li>
+            </ul>
+          </article>
+          <article class="tab-panel" id="panel-south" aria-hidden="true">
+            <h3 class="font-extrabold text-xl">South & Lakefront</h3>
+            <p class="text-slate-600">Corridors around Hyde Park and South Shore are seeing reinvestment. Transit and cultural anchors power new storefront openings.</p>
+            <ul class="mt-2 text-slate-700 list-disc ps-5">
+              <li>Building permits signaling rehab cycles</li>
+              <li>Strong park and lakefront draws</li>
+              <li>Opportunities in neighborhood services</li>
+            </ul>
+          </article>
+          <article class="tab-panel" id="panel-west" aria-hidden="true">
+            <h3 class="font-extrabold text-xl">West Side Logistics</h3>
+            <p class="text-slate-600">Industrial corridors and freight access keep logistics healthy. City contracts support streets and sanitation operations.</p>
+            <ul class="mt-2 text-slate-700 list-disc ps-5">
+              <li>Jobs in fleet & facilities grow with demand</li>
+              <li>Warehouse retrofits and permits active</li>
+              <li>Service leads around arterial streets</li>
+            </ul>
+          </article>
+          <article class="tab-panel" id="panel-north" aria-hidden="true">
+            <h3 class="font-extrabold text-xl">North Side Innovation</h3>
+            <p class="text-slate-600">From River North to Ravenswood, tech and creative firms lift demand for professional services and commercial buildouts.</p>
+            <ul class="mt-2 text-slate-700 list-disc ps-5">
+              <li>Strong pipeline of small permits</li>
+              <li>Growing need for specialty trades</li>
+              <li>Restaurant refresh cycles continue</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq" class="section bg-white" aria-labelledby="faqTitle">
+      <div class="container">
+        <h2 id="faqTitle" class="section-title">FAQ</h2>
+        <div class="faq">
+          <div class="faq-item">
+            <button class="faq-q" aria-expanded="false"><span>Where does the data come from?</span><i data-lucide="database"></i></button>
+            <div class="faq-a">We rely on the City of Chicago's open data portal (Socrata) and official budget documents. Salary and overtime figures originate from the City payroll dataset; permits and inspections come from departmental datasets. We cite source links throughout the site.</div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-q" aria-expanded="false"><span>How often is information updated?</span><i data-lucide="refresh-cw"></i></button>
+            <div class="faq-a">Most datasets refresh weekly or monthly. We reflect those updates in our tools automatically and note the last refresh when possible.</div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-q" aria-expanded="false"><span>Can I use this for outreach or research?</span><i data-lucide="briefcase"></i></button>
+            <div class="faq-a">Yes. Use the Salary Lookup for transparency work and the Business Intelligence section for lead ideas. For deeper integration or newsroom collaboration, see the Contact page.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="section soft" aria-labelledby="ctaTitle">
+      <div class="container grid gap-4 md:grid-cols-2 items-center">
+        <div>
+          <h2 id="ctaTitle" class="text-2xl md:text-3xl font-extrabold">Ready to explore Chicago's numbers?</h2>
+          <p class="mt-2">Jump into the live tools or browse our notes. Everything is built to be fast, mobile‑first, and friendly.</p>
+        </div>
+        <div class="flex flex-wrap gap-2">
+          <a class="btn btn-primary" href="/salary-lookup.html"><i data-lucide="search"></i> Salary Lookup</a>
+          <a class="btn btn-surface" href="/budget-dashboard.html"><i data-lucide="line-chart"></i> Budget Dashboard</a>
+          <a class="btn btn-surface" href="/blog.html"><i data-lucide="notebook"></i> Blog</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    // icons
+    window.lucide && window.lucide.createIcons();
+
+    // sticky header shadow
+    const navbar = document.getElementById('navbar');
+    const onScroll = () => navbar.classList.toggle('scrolled', window.scrollY > 6);
+    document.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+
+    // mobile drawer
+    const mobileBtn = document.getElementById('mobileMenu');
+    const navDrawer = document.getElementById('navDrawer');
+    if (mobileBtn && navDrawer) {
+      mobileBtn.addEventListener('click', () => {
+        const open = navDrawer.classList.toggle('open');
+        mobileBtn.setAttribute('aria-expanded', String(open));
+      });
+    }
+
+    // counters
+    const fmtCompact = (n) => {
+      if (n >= 1e9) return '$' + (n/1e9).toFixed(2) + 'B';
+      if (n >= 1e6) return '$' + (n/1e6).toFixed(2) + 'M';
+      if (n >= 1e3) return '$' + (n/1e3).toFixed(1) + 'K';
+      return '$' + n.toLocaleString();
+    }
+    const animateCounters = () => {
+      const els = document.querySelectorAll('[data-count]');
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((e) => {
+          if (!e.isIntersecting) return;
+          const el = e.target; io.unobserve(el);
+          const target = Number(el.getAttribute('data-count')) || 0;
+          const prefix = el.getAttribute('data-prefix') || '';
+          const format = el.getAttribute('data-format') || 'comma';
+          const start = performance.now();
+          const dur = 1100;
+          const step = (t) => {
+            const p = Math.min(1, (t - start)/dur);
+            const val = Math.round(target * (0.1 + 0.9 * p));
+            el.textContent = prefix
+              ? (format === 'compact' ? fmtCompact(val).replace('$', prefix) : prefix + val.toLocaleString())
+              : (format === 'compact' ? fmtCompact(val).replace('$','') : val.toLocaleString());
+            if (p < 1) requestAnimationFrame(step);
+          }
+          requestAnimationFrame(step);
+        })
+      }, { threshold: 0.4 });
+      els.forEach(el => io.observe(el));
+    };
+    animateCounters();
+
+    // tabs
+    const tabs = document.querySelectorAll('.tab');
+    const panels = {
+      loop: document.getElementById('panel-loop'),
+      south: document.getElementById('panel-south'),
+      west: document.getElementById('panel-west'),
+      north: document.getElementById('panel-north')
+    };
+    tabs.forEach(tab => tab.addEventListener('click', () => {
+      tabs.forEach(t => { t.setAttribute('aria-selected','false'); });
+      tab.setAttribute('aria-selected','true');
+      Object.values(panels).forEach(p => p.setAttribute('aria-hidden','true'));
+      const id = tab.id.replace('tab-','');
+      const panel = panels[id];
+      if (panel) panel.setAttribute('aria-hidden','false');
+    }));
+
+    // FAQ accordion
+    document.querySelectorAll('.faq-q').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const item = btn.closest('.faq-item');
+        const open = item.classList.toggle('open');
+        btn.setAttribute('aria-expanded', String(open));
+      })
+    });
+  </script>
+</body>
+</html>
+
