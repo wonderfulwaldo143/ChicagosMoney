@@ -9,6 +9,18 @@ set -euo pipefail
 SITE_URL="chicagosmoney.com"
 WEB_ROOT="."
 DEFAULT_REMOTE_DIR="public_html"
+# Default rsync excludes (non-web/dev files)
+RSYNC_EXCLUDES=(
+  --exclude='.git' \
+  --exclude='.github' \
+  --exclude='.gitignore' \
+  --exclude='.vscode' \
+  --exclude='.DS_Store' \
+  --exclude='.claude' \
+  --exclude='deploy.sh' \
+  --exclude='docs' \
+  --exclude='*.md'
+)
 
 # Colors for output
 RED='\033[0;31m'
@@ -168,6 +180,9 @@ sync_with_rsync() {
     return 1
   fi
 
+  read -r -p "SSH port [22]: " ssh_port
+  ssh_port=${ssh_port:-22}
+
   read -r -p "Remote web root path [${DEFAULT_REMOTE_DIR}]: " remote_path
   local normalized_path
   normalized_path=$(normalize_remote_path "${remote_path:-$DEFAULT_REMOTE_DIR}")
@@ -177,14 +192,14 @@ sync_with_rsync() {
 
   echo ""
   echo "The following command will deploy the site without creating an extra directory level:"
-  echo "  rsync -avz --delete ${WEB_ROOT}/ ${ssh_target}:${normalized_path}/"
+  echo "  rsync -avz --delete -e 'ssh -p ${ssh_port}' ${RSYNC_EXCLUDES[*]} ${WEB_ROOT}/ ${ssh_target}:${normalized_path}/"
   read -r -p "Proceed with deployment? (y/N): " confirmation
   if [[ ! "$confirmation" =~ ^[Yy]$ ]]; then
     echo -e "${YELLOW}!${NC} Deployment cancelled."
     return 1
   fi
 
-  if rsync -avz --delete "${WEB_ROOT}/" "${ssh_target}:${normalized_path}/"; then
+  if rsync -avz --delete -e "ssh -p ${ssh_port}" "${RSYNC_EXCLUDES[@]}" "${WEB_ROOT}/" "${ssh_target}:${normalized_path}/"; then
     echo -e "${GREEN}✅ Deployment complete. Copied repository contents to ${normalized_path}/ without nesting.${NC}"
     return 0
   else
