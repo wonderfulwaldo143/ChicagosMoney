@@ -120,6 +120,8 @@
             display: flex;
             align-items: center;
             cursor: pointer;
+            text-decoration: none;
+            color: inherit;
         }
         
         .logo-chicago {
@@ -1045,7 +1047,11 @@
         .contact-email:hover {
             text-decoration: underline;
         }
-        
+
+        .contact-extra {
+            margin-top: 1.5rem;
+        }
+
         .newsletter-form {
             max-width: 500px;
             margin: 0 auto;
@@ -1820,17 +1826,17 @@
     <!-- Navigation -->
     <nav class="navbar" id="navbar">
         <div class="nav-container">
-            <div class="logo">
+            <a href="/" class="logo" aria-label="Chicago's Money home">
                 <span class="logo-chicago">Chicago'</span>
                 <span class="logo-dollar">$</span>
                 <span class="logo-money">Money</span>
-            </div>
+            </a>
             
             <div class="nav-links">
                 <a href="/salary-lookup.html" class="nav-link">Salary Lookup</a>
                 <a href="#leads" class="nav-link">Business Intelligence</a>
                 <a href="/budget-dashboard.html" class="nav-link">Budget Dashboard</a>
-                <a href="#contact" class="nav-link">Contact</a>
+                <a href="/contact.html" class="nav-link">Contact</a>
                 <a href="#leads" class="nav-cta">Get Leads →</a>
             </div>
             
@@ -2133,10 +2139,14 @@
         <div class="container">
             <h2 class="section-title">Stay Informed</h2>
             <p class="contact-info">
-                Questions? Contact us at 
+                Questions? Contact us at
                 <a href="mailto:info@chicagosmoney.com" class="contact-email">info@chicagosmoney.com</a>
             </p>
-            
+
+            <div class="contact-extra">
+                <a href="/contact.html" class="btn btn-secondary">Visit the Contact Center</a>
+            </div>
+
             <form class="newsletter-form" action="https://formspree.io/f/xqadnqlb" method="POST">
                 <input type="email" name="email" class="newsletter-input" placeholder="Enter your email for updates..." required>
                 <input type="hidden" name="_subject" value="Newsletter Signup - Chicago's Money">
@@ -2153,7 +2163,7 @@
                 <ul class="footer-links">
                     <li><a href="/salary-lookup.html">Salary Lookup</a></li>
                     <li><a href="/budget-dashboard.html">Budget Dashboard</a></li>
-                    <li><a href="#contact">Contact</a></li>
+                    <li><a href="/contact.html">Contact</a></li>
                 </ul>
             </div>
             <div class="footer-section">
@@ -2167,7 +2177,7 @@
             <div class="footer-section">
                 <h4>Company</h4>
                 <ul class="footer-links">
-                    <li><a href="#contact">About Us</a></li>
+                    <li><a href="/contact.html#story">About Us</a></li>
                     <li><a href="mailto:info@chicagosmoney.com">Contact</a></li>
                     <li><a href="mailto:info@chicagosmoney.com?subject=Privacy%20Policy">Privacy Policy</a></li>
                 </ul>
