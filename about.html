@@ -1162,9 +1162,10 @@
         entries.forEach(entry => {
           if (entry.isIntersecting) {
             const counter = entry.target;
-            const target = parseInt(counter.getAttribute('data-target'));
+            const targetStr = counter.getAttribute('data-target');
+            const target = parseFloat(targetStr);
             const suffix = counter.getAttribute('data-suffix') || '';
-            const prefix = target < 100 && suffix === 'B' ? '$' : '';
+            const prefix = suffix === 'B' ? '$' : '';
 
             observer.unobserve(counter);
 
@@ -1178,7 +1179,7 @@
               }
 
               if (suffix === 'B') {
-                counter.textContent = prefix + (current / 1000000000).toFixed(1) + suffix;
+                counter.textContent = prefix + current.toFixed(1) + suffix;
               } else {
                 counter.textContent = prefix + Math.floor(current).toLocaleString() + suffix;
               }
