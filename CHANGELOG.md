@@ -18,6 +18,7 @@ All notable changes to Chicago's Money website will be documented in this file.
 - Crafted a dedicated mobile card layout for the salary search results so names, badges, and pay data read cleanly without
   impacting the desktop table design.
 - Primary navigation and footer links now route to the standalone contact center.
+- Rebuilt the `/blog.html` hub with a mobile-first layout, accessible search, social sharing, and newsletter sign-up blocks.
 
 ## [2025-09-10]
 

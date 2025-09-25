@@ -3,1246 +3,407 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chicago's Money Blog - Transparency Stories & Data Playbooks</title>
-    <meta name="description" content="Follow Chicago's Money for deep dives on city spending, salaries, and leads. Preview the first blog post and get notified when new transparency stories drop.">
+    <title>Chicago's Money Blog - Field Notes on City Spending & Leads</title>
+    <meta name="description" content="Chicago's Money editors break down city budgets, payroll trends, and lead-generation plays. Read the latest stories, browse the archive, and subscribe for transparency insights.">
+    <link rel="canonical" href="https://chicagosmoney.com/blog.html">
+    <meta property="og:title" content="Chicago's Money Blog - Field Notes on City Spending & Leads">
+    <meta property="og:description" content="Mobile-first breakdowns of Chicago's budget, payroll overtime, and business opportunities.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://chicagosmoney.com/blog.html">
+    <meta property="og:image" content="https://chicagosmoney.com/IMG/Google_AI_Studio_2025-09-02T05_11_59.448Z.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Chicago's Money Blog - Field Notes on City Spending & Leads">
+    <meta name="twitter:description" content="Stay ahead with author-led analysis on budgets, payroll, and public data outreach strategies.">
+    <meta name="twitter:image" content="https://chicagosmoney.com/IMG/Google_AI_Studio_2025-09-02T05_11_59.448Z.png">
 
-    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
-    <!-- Icons -->
-    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
-
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@motionone/dom/dist/motion.min.js"></script>
-
-    <link rel="stylesheet" href="styles.css">
     <link rel="icon" href="/IMG/chicagos_money_logo_variant_1.png" type="image/png">
-
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --navbar-height: 72px;
-        }
-
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            color: #0f172a;
-            background: #ffffff;
-            line-height: 1.6;
-            overflow-x: hidden;
-            padding-top: calc(var(--navbar-height, 72px));
-        }
-
-        a {
-            color: inherit;
-        }
-
-        .navbar {
-            background: rgba(255, 255, 255, 0.98);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border-bottom: 1px solid #e5e7eb;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 1000;
-            transition: all 0.3s ease;
-        }
-
-        .navbar.scrolled {
-            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.12);
-        }
-
-        .nav-container {
-            max-width: 1280px;
-            margin: 0 auto;
-            padding: 1rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            font-size: 1.75rem;
-            font-weight: 800;
-            display: flex;
-            align-items: center;
-            cursor: pointer;
-        }
-
-        .logo-chicago {
-            color: #0047AB;
-        }
-
-        .logo-dollar {
-            color: #00C851;
-            font-size: 2rem;
-            margin: 0 2px;
-            animation: pulse 3s ease-in-out infinite;
-        }
-
-        .logo-money {
-            color: #FFB000;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.1); opacity: 0.9; }
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 2rem;
-            align-items: center;
-        }
-
-        .nav-link {
-            color: #1a1a1a;
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.2s ease;
-            position: relative;
-        }
-
-        .nav-link:hover,
-        .nav-link.active {
-            color: #0047AB;
-        }
-
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            bottom: -4px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: #0047AB;
-            transition: width 0.3s ease;
-        }
-
-        .nav-link:hover::after,
-        .nav-link.active::after {
-            width: 100%;
-        }
-
-        .nav-cta {
-            background: linear-gradient(135deg, #0047AB, #001F3F);
-            color: white !important;
-            padding: 0.625rem 1.5rem;
-            border-radius: 8px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 4px rgba(0, 71, 171, 0.2);
-        }
-
-        .nav-cta:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 71, 171, 0.3);
-        }
-
-        .mobile-menu-btn {
-            display: none;
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 0.5rem;
-        }
-
-        .mobile-menu-btn span {
-            display: block;
-            width: 24px;
-            height: 2px;
-            background: #1a1a1a;
-            margin: 5px 0;
-            transition: all 0.3s ease;
-        }
-
-        .blog-hero {
-            position: relative;
-            padding: 6rem 1.5rem 4rem;
-            background: radial-gradient(circle at 10% 10%, rgba(0, 71, 171, 0.45), transparent 55%),
-                        linear-gradient(135deg, #001F3F, #0047AB);
-            color: white;
-            overflow: hidden;
-        }
-
-        .blog-hero::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: radial-gradient(circle at 80% 20%, rgba(255, 176, 0, 0.35), transparent 60%);
-            opacity: 0.9;
-        }
-
-        .blog-hero-content {
-            position: relative;
-            z-index: 1;
-            max-width: 1080px;
-            margin: 0 auto;
-            text-align: center;
-            display: grid;
-            gap: 1.5rem;
-        }
-
-        .blog-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            justify-content: center;
-            padding: 0.45rem 0.95rem;
-            border-radius: 999px;
-            background: rgba(255, 255, 255, 0.12);
-            color: rgba(255, 255, 255, 0.92);
-            font-size: 0.8rem;
-            letter-spacing: 0.14em;
-            text-transform: uppercase;
-        }
-
-        .blog-preview-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.45rem;
-            justify-content: center;
-            padding: 0.4rem 0.9rem;
-            border-radius: 999px;
-            background: rgba(0, 71, 171, 0.12);
-            color: #0047AB;
-            font-weight: 600;
-            font-size: 0.78rem;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-        }
-
-        .blog-title {
-            font-size: clamp(3rem, 6vw, 4.2rem);
-            font-weight: 800;
-        }
-
-        .blog-subtitle {
-            font-size: 1.15rem;
-            color: rgba(214, 224, 255, 0.85);
-            max-width: 780px;
-            margin: 0 auto;
-            line-height: 1.8;
-        }
-
-        .blog-hero-actions {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        .btn {
-            padding: 1rem 2rem;
-            border-radius: 10px;
-            font-weight: 600;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            cursor: pointer;
-            border: none;
-            font-size: 1rem;
-            position: relative;
-            overflow: hidden;
-            transform-style: preserve-3d;
-            will-change: transform;
-            --magnetic-x: 0px;
-            --magnetic-y: 0px;
-            --hover-lift: 0px;
-            transform: translate3d(calc(var(--magnetic-x)), calc(var(--magnetic-y) - var(--hover-lift)), 0);
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, #347cff, #0047AB);
-            color: white;
-            box-shadow: 0 18px 35px -18px rgba(52, 124, 255, 0.8);
-        }
-
-        .btn-primary:hover {
-            --hover-lift: 2px;
-            transform: translate3d(calc(var(--magnetic-x)), calc(var(--magnetic-y) - var(--hover-lift)), 0) scale(1.01);
-            box-shadow: 0 18px 40px -18px rgba(52, 124, 255, 0.85);
-        }
-
-        .btn-secondary {
-            background: rgba(255, 255, 255, 0.12);
-            color: rgba(214, 224, 255, 0.9);
-            border: 1px solid rgba(214, 224, 255, 0.4);
-            backdrop-filter: blur(6px);
-        }
-
-        .btn-secondary:hover {
-            background: rgba(124, 208, 255, 0.15);
-            color: #ffffff;
-            --hover-lift: 2px;
-        }
-
-        .blog-featured-section {
-            padding: 4.5rem 1.5rem;
-            background: linear-gradient(180deg, #ffffff 0%, #f5f8ff 100%);
-            border-top: 1px solid #e5e7eb;
-        }
-
-        .blog-layout {
-            max-width: 1100px;
-            margin: 0 auto;
-            display: grid;
-            gap: 2.5rem;
-            grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr);
-            align-items: start;
-        }
-
-        .blog-article {
-            background: white;
-            border: 1px solid rgba(15, 23, 42, 0.08);
-            border-radius: 28px;
-            padding: 3rem;
-            display: grid;
-            gap: 1.5rem;
-            box-shadow: 0 28px 60px -38px rgba(15, 23, 42, 0.4);
-        }
-
-        .blog-meta {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-            color: #475569;
-            font-weight: 500;
-            font-size: 0.95rem;
-        }
-
-        .blog-meta-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.4rem;
-            background: rgba(0, 71, 171, 0.12);
-            color: #0047AB;
-            padding: 0.4rem 0.85rem;
-            border-radius: 999px;
-            font-size: 0.8rem;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-        }
-
-        .blog-article-title {
-            font-size: clamp(2.1rem, 4vw, 2.9rem);
-            font-weight: 800;
-            line-height: 1.2;
-        }
-
-        .blog-article-intro {
-            font-size: 1.1rem;
-            color: #42526e;
-            line-height: 1.8;
-        }
-
-        .blog-placeholder-callout {
-            background: linear-gradient(135deg, rgba(0, 71, 171, 0.08), rgba(0, 71, 171, 0.02));
-            border: 1px solid rgba(0, 71, 171, 0.15);
-            border-radius: 20px;
-            padding: 1.75rem;
-            display: grid;
-            gap: 1rem;
-        }
-
-        .blog-placeholder-callout h3 {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: #0f172a;
-        }
-
-        .blog-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            display: grid;
-            gap: 0.85rem;
-        }
-
-        .blog-list li {
-            display: flex;
-            gap: 0.75rem;
-            align-items: flex-start;
-            color: #1f2937;
-            font-weight: 500;
-        }
-
-        .blog-list i {
-            width: 20px;
-            height: 20px;
-            color: #0047AB;
-            margin-top: 0.15rem;
-        }
-
-        .blog-article-actions {
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-        }
-
-        .blog-cta {
-            border-radius: 12px;
-        }
-
-        .blog-ghost {
-            background: rgba(15, 23, 42, 0.05);
-            color: #0047AB;
-            border: 1px solid rgba(0, 71, 171, 0.18);
-        }
-
-        .blog-ghost:hover {
-            background: rgba(0, 71, 171, 0.12);
-            color: #00357c;
-        }
-
-        .blog-aside {
-            display: grid;
-            gap: 1.5rem;
-        }
-
-        .aside-card {
-            background: white;
-            border: 1px solid rgba(15, 23, 42, 0.08);
-            border-radius: 24px;
-            padding: 2rem;
-            box-shadow: 0 24px 48px -38px rgba(15, 23, 42, 0.4);
-            display: grid;
-            gap: 1rem;
-        }
-
-        .aside-card h3 {
-            font-size: 1.35rem;
-            font-weight: 700;
-            color: #0f172a;
-        }
-
-        .aside-card p {
-            color: #475569;
-            line-height: 1.6;
-        }
-
-        .blog-secondary-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.9rem 1.4rem;
-            border-radius: 12px;
-            background: #f0f5ff;
-            color: #0047AB;
-            font-weight: 600;
-            text-decoration: none;
-            transition: all 0.2s ease;
-            box-shadow: 0 18px 45px -35px rgba(15, 23, 42, 0.55);
-        }
-
-        .blog-secondary-btn:hover {
-            background: #e3edff;
-            transform: translateY(-1px);
-        }
-
-        .aside-pill-group {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.75rem;
-        }
-
-        .aside-pill {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.55rem 0.95rem;
-            background: rgba(0, 71, 171, 0.08);
-            color: #0047AB;
-            border-radius: 999px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: all 0.2s ease;
-        }
-
-        .aside-pill:hover {
-            background: rgba(0, 71, 171, 0.14);
-            transform: translateY(-1px);
-        }
-
-        .teaser-section {
-            padding: 4rem 1.5rem 5rem;
-            background: #ffffff;
-        }
-
-        .teaser-header {
-            max-width: 900px;
-            margin: 0 auto 3rem;
-            text-align: center;
-            display: grid;
-            gap: 1rem;
-        }
-
-        .teaser-title {
-            font-size: clamp(2.2rem, 4vw, 3rem);
-            font-weight: 800;
-            color: #0f172a;
-        }
-
-        .teaser-subtitle {
-            font-size: 1.1rem;
-            color: #475569;
-            line-height: 1.7;
-        }
-
-        .teaser-grid {
-            max-width: 1100px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1.75rem;
-        }
-
-        .teaser-card {
-            background: linear-gradient(135deg, rgba(0, 71, 171, 0.08), rgba(255, 176, 0, 0.08));
-            border: 1px solid rgba(0, 71, 171, 0.14);
-            border-radius: 24px;
-            padding: 2rem;
-            display: grid;
-            gap: 1.25rem;
-            box-shadow: 0 20px 50px -35px rgba(15, 23, 42, 0.35);
-        }
-
-        .teaser-meta {
-            display: flex;
-            justify-content: space-between;
-            color: #475569;
-            font-weight: 500;
-            font-size: 0.95rem;
-        }
-
-        .teaser-card h3 {
-            font-size: 1.4rem;
-            font-weight: 700;
-            color: #0f172a;
-            line-height: 1.4;
-        }
-
-        .teaser-card p {
-            color: #475569;
-            line-height: 1.6;
-        }
-
-        .teaser-link {
-            font-weight: 600;
-            color: #0047AB;
-            text-decoration: none;
-        }
-
-        .teaser-link:hover {
-            text-decoration: underline;
-        }
-
-        .leads-section {
-            padding: 4rem 2rem;
-            background: linear-gradient(135deg, #001F3F, #0047AB);
-            color: white;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .leads-section::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1"/></svg>');
-            background-size: 100px 100px;
-        }
-
-        .leads-content {
-            max-width: 1280px;
-            margin: 0 auto;
-            position: relative;
-            z-index: 1;
-        }
-
-        .leads-header {
-            text-align: center;
-            margin-bottom: 3rem;
-        }
-
-        .leads-title {
-            font-size: clamp(2rem, 4vw, 3rem);
-            font-weight: 800;
-            margin-bottom: 1rem;
-        }
-
-        .leads-subtitle {
-            font-size: 1.25rem;
-            opacity: 0.9;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        .leads-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
-            margin-bottom: 3rem;
-        }
-
-        .lead-card {
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 12px;
-            padding: 2rem;
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .lead-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, #FFB000, #00C851);
-        }
-
-        .lead-card:hover {
-            transform: translateY(-5px);
-            background: rgba(255, 255, 255, 0.15);
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-        }
-
-        .featured-badge {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            background: #FFB000;
-            color: #1a1a1a;
-            padding: 0.25rem 0.75rem;
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 700;
-            text-transform: uppercase;
-        }
-
-        .lead-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-        }
-
-        .lead-title {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-        }
-
-        .lead-description {
-            opacity: 0.9;
-            margin-bottom: 1.5rem;
-            line-height: 1.6;
-        }
-
-        .lead-features {
-            list-style: none;
-            margin-bottom: 1.5rem;
-        }
-
-        .lead-features li {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin-bottom: 0.5rem;
-            opacity: 0.9;
-        }
-
-        .lead-price {
-            font-size: 2.5rem;
-            font-weight: 800;
-            margin-bottom: 1rem;
-        }
-
-        .lead-price span {
-            font-size: 1rem;
-            font-weight: 400;
-            opacity: 0.9;
-        }
-
-        .lead-cta {
-            width: 100%;
-            padding: 1rem;
-            background: white;
-            color: #0047AB;
-            border: none;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .lead-cta:hover {
-            background: #FFB000;
-            color: #1a1a1a;
-            transform: translateY(-2px);
-        }
-
-        .section-title {
-            font-size: clamp(2rem, 4vw, 3rem);
-            font-weight: 800;
-            margin-bottom: 1rem;
-            color: #0f172a;
-        }
-
-        .contact-section {
-            padding: 4rem 2rem;
-            background: #f8f9fa;
-            text-align: center;
-        }
-
-        .contact-info {
-            font-size: 1.25rem;
-            margin-bottom: 2rem;
-        }
-
-        .contact-email {
-            color: #0047AB;
-            font-weight: 600;
-            text-decoration: none;
-        }
-
-        .contact-email:hover {
-            text-decoration: underline;
-        }
-
-        .newsletter-form {
-            max-width: 500px;
-            margin: 0 auto;
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-        }
-
-        .newsletter-input {
-            flex: 1;
-            padding: 1rem 1.5rem;
-            border: 2px solid #e5e7eb;
-            border-radius: 8px;
-            outline: none;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-        }
-
-        .newsletter-input:focus {
-            border-color: #0047AB;
-            box-shadow: 0 0 0 3px rgba(0, 71, 171, 0.1);
-        }
-
-        .footer {
-            background: #1a1a1a;
-            color: white;
-            padding: 3rem 2rem 1.5rem;
-        }
-
-        .footer-content {
-            max-width: 1280px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            margin-bottom: 2rem;
-        }
-
-        .footer-section h4 {
-            font-size: 1.125rem;
-            margin-bottom: 1rem;
-            color: #FFB000;
-        }
-
-        .footer-links {
-            list-style: none;
-        }
-
-        .footer-links a {
-            color: rgba(255, 255, 255, 0.8);
-            text-decoration: none;
-            display: block;
-            padding: 0.25rem 0;
-            transition: all 0.2s ease;
-        }
-
-        .footer-links a:hover {
-            color: #FFB000;
-            transform: translateX(4px);
-        }
-
-        .footer-bottom {
-            text-align: center;
-            padding-top: 2rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            color: rgba(255, 255, 255, 0.6);
-        }
-
-        @media (max-width: 1024px) {
-            .blog-layout {
-                grid-template-columns: 1fr;
-            }
-
-            .blog-article {
-                padding: 2.5rem;
-            }
-
-            .blog-aside {
-                grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            }
-        }
-
-        @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-            }
-
-            .mobile-menu-btn {
-                display: block;
-            }
-
-            .blog-hero {
-                padding: 5rem 1.25rem 3.5rem;
-                text-align: left;
-            }
-
-            .blog-hero-content {
-                text-align: left;
-            }
-
-            .blog-badge {
-                justify-content: flex-start;
-            }
-
-            .blog-subtitle {
-                margin: 0;
-            }
-
-            .blog-hero-actions {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            .btn {
-                width: 100%;
-                justify-content: center;
-            }
-
-            .blog-featured-section {
-                padding: 3.5rem 1.25rem;
-            }
-
-            .blog-layout {
-                gap: 2rem;
-            }
-
-            .blog-article {
-                padding: 2.25rem;
-            }
-
-            .blog-article-actions {
-                flex-direction: column;
-            }
-
-            .blog-secondary-btn {
-                width: 100%;
-                justify-content: center;
-            }
-
-            .aside-pill-group {
-                flex-direction: column;
-            }
-
-            .teaser-section {
-                padding: 3.5rem 1.25rem 4rem;
-            }
-
-            .leads-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .footer-content {
-                grid-template-columns: 1fr;
-                text-align: center;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .blog-hero {
-                padding: 4.5rem 1rem 3rem;
-            }
-
-            .blog-featured-section {
-                padding: 3rem 1rem;
-            }
-
-            .blog-article {
-                padding: 2rem;
-            }
-
-            .blog-list li {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            .teaser-card {
-                padding: 1.75rem;
-            }
-
-            .newsletter-form {
-                gap: 0.75rem;
-            }
-
-            .newsletter-input,
-            .newsletter-form .btn {
-                width: 100%;
-            }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            *, *::before, *::after {
-                animation-duration: 0.01ms !important;
-                animation-iteration-count: 1 !important;
-                transition-duration: 0.01ms !important;
-                scroll-behavior: auto !important;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
-<body>
-    <nav class="navbar" id="navbar">
+<body class="blog-page">
+    <a class="skip-link" href="#main-content">Skip to blog content</a>
+
+    <header class="navbar" id="navbar">
         <div class="nav-container">
-            <div class="logo" onclick="window.location.href='/index.html'">
+            <a href="/" class="logo" aria-label="Chicago's Money home">
                 <span class="logo-chicago">Chicago'</span>
                 <span class="logo-dollar">$</span>
                 <span class="logo-money">Money</span>
-            </div>
-
-            <div class="nav-links">
-                <a href="/index.html" class="nav-link">Home</a>
+            </a>
+            <nav class="nav-links" aria-label="Primary">
                 <a href="/salary-lookup.html" class="nav-link">Salary Lookup</a>
                 <a href="/budget-dashboard.html" class="nav-link">Budget Dashboard</a>
-                <a href="#leads" class="nav-link">Business Intelligence</a>
-                <a href="/blog.html" class="nav-link active" aria-current="page">Blog</a>
+                <a href="/blog.html" class="nav-link" aria-current="page">Blog</a>
                 <a href="/about.html" class="nav-link">About</a>
-                <a href="#contact" class="nav-link">Contact</a>
-                <a href="#leads" class="nav-cta">Get Leads →</a>
-            </div>
-
-            <button class="mobile-menu-btn" id="mobileMenu" aria-label="Toggle navigation">
+                <a href="/contact.html" class="nav-link">Contact</a>
+                <a href="/index.html#leads" class="nav-cta">Get Leads →</a>
+            </nav>
+            <button class="mobile-menu-toggle" id="mobileMenuToggle" type="button" aria-expanded="false" aria-controls="mobileNav" aria-label="Toggle navigation">
                 <span></span>
                 <span></span>
                 <span></span>
             </button>
         </div>
+    </header>
+
+    <div class="mobile-menu-overlay" id="mobileMenuOverlay"></div>
+    <nav class="mobile-menu" id="mobileNav" aria-label="Mobile navigation">
+        <a href="/salary-lookup.html">Salary Lookup</a>
+        <a href="/budget-dashboard.html">Budget Dashboard</a>
+        <a href="/blog.html" aria-current="page">Blog</a>
+        <a href="/about.html">About</a>
+        <a href="/contact.html">Contact</a>
+        <a href="/index.html#leads">Get Leads →</a>
     </nav>
 
-    <main>
+    <main id="main-content">
         <section class="blog-hero">
             <div class="blog-hero-content">
-                <span class="blog-badge">Chicago Transparency Briefings</span>
-                <h1 class="blog-title">Chicago's Money Blog</h1>
-                <p class="blog-subtitle">Data-backed storytelling, revenue opportunities, and accountability coverage for Chicago's civic and business leaders.</p>
+                <span class="blog-hero-badge">Fresh every budget cycle</span>
+                <h1 class="blog-hero-title">Field notes for tracking <span>Chicago's money</span></h1>
+                <p class="blog-hero-subtitle">We turn raw civic data into clear playbooks for operators, watchdogs, and agencies. See what matters, get the numbers that prove it, and ship your next move faster.</p>
                 <div class="blog-hero-actions">
-                    <a href="#first-post" class="btn btn-primary" data-magnetic="0.3">
-                        <i data-lucide="bookmark-check" style="width: 20px; height: 20px;"></i>
-                        Preview our first post
-                    </a>
-                    <a href="/salary-lookup.html" class="btn btn-secondary" data-magnetic="0.22">
-                        <i data-lucide="search" style="width: 20px; height: 20px;"></i>
-                        Explore salary data
-                    </a>
+                    <a class="blog-hero-button" href="#latest">Read the latest</a>
+                    <a class="blog-hero-link" href="#newsletter">Get weekly briefings</a>
                 </div>
+                <dl class="blog-hero-stats">
+                    <div>
+                        <dt>Overtime tracked</dt>
+                        <dd>$680M citywide</dd>
+                    </div>
+                    <div>
+                        <dt>Budget items tagged</dt>
+                        <dd>120+</dd>
+                    </div>
+                    <div>
+                        <dt>Median read time</dt>
+                        <dd>5 min</dd>
+                    </div>
+                </dl>
             </div>
         </section>
 
-        <section class="blog-featured-section">
-            <div class="blog-layout">
-                <article class="blog-article" id="first-post">
-                    <div class="blog-meta">
-                        <span class="blog-meta-badge">In production</span>
-                        <span class="blog-meta-date">Scheduled April 2025</span>
-                        <span class="blog-meta-read">Estimated 5 minute read</span>
-                    </div>
-                    <h2 class="blog-article-title">Inside Chicago's 2025 Budget Priorities</h2>
-                    <p class="blog-article-intro">We're finalizing the inaugural Chicago's Money story right now. Expect a plain-language tour through the $16.6B city budget, the departments expanding fastest, and the contracts and payroll trends to monitor.</p>
-                    <div class="blog-placeholder-callout">
-                        <h3>What you'll get on launch day</h3>
-                        <ul class="blog-list">
-                            <li><i data-lucide="pie-chart"></i> Department-by-department spend shifts mapped to the 2025 plan.</li>
-                            <li><i data-lucide="briefcase"></i> Procurement leads and contract renewals with revenue potential.</li>
-                            <li><i data-lucide="users"></i> Salary and overtime storylines to power your reporting or outreach.</li>
-                        </ul>
-                    </div>
-                    <p>Bookmark this article or join the alert list below. We'll swap in the full analysis, charts, and downloadables the moment the post goes live.</p>
-                    <div class="blog-article-actions">
-                        <a href="#contact" class="btn btn-primary blog-cta" data-magnetic="0.24">
-                            <i data-lucide="bell-ring" style="width: 20px; height: 20px;"></i>
-                            Get launch alert
-                        </a>
-                        <a href="/budget-dashboard.html" class="btn blog-ghost" data-magnetic="0.18">
-                            <i data-lucide="bar-chart-3" style="width: 20px; height: 20px;"></i>
-                            Review live dashboard
-                        </a>
-                    </div>
-                </article>
-
-                <aside class="blog-aside">
-                    <div class="aside-card">
-                        <h3>Stay in the loop</h3>
-                        <p>Drop your email in the contact form below and we'll send the finished story plus monthly transparency recaps.</p>
-                        <a href="#contact" class="blog-secondary-btn">
-                            <i data-lucide="mail" style="width: 18px; height: 18px;"></i>
-                            Join the update list
-                        </a>
-                    </div>
-                    <div class="aside-card aside-card--links">
-                        <h3>Popular resources</h3>
-                        <p>These tools pair perfectly with our upcoming analyses.</p>
-                        <div class="aside-pill-group">
-                            <a href="/salary-lookup.html" class="aside-pill">
-                                <i data-lucide="search" style="width: 16px; height: 16px;"></i>
-                                Salary Lookup Lab
-                            </a>
-                            <a href="/budget-dashboard.html" class="aside-pill">
-                                <i data-lucide="pie-chart" style="width: 16px; height: 16px;"></i>
-                                Budget Dashboard
-                            </a>
-                            <a href="/index.html#leads" class="aside-pill">
-                                <i data-lucide="sparkles" style="width: 16px; height: 16px;"></i>
-                                Daily Business Leads
-                            </a>
+        <section class="blog-layout" id="latest">
+            <div class="blog-content">
+                <div class="blog-feed" aria-label="Latest stories">
+                    <article class="blog-post-card" id="budget-2025">
+                        <figure class="blog-post-media">
+                            <img src="IMG/Google_AI_Studio_2025-09-02T05_11_59.448Z.png" alt="Analyst reviewing Chicago budget documents" loading="lazy" width="640" height="360">
+                        </figure>
+                        <div class="blog-post-body">
+                            <div class="blog-post-top">
+                                <span class="blog-post-tag">Budget Watch</span>
+                                <span class="blog-post-meta">Published Feb 4, 2025 • 6 minute read</span>
+                            </div>
+                            <h2 class="blog-post-title">Inside Chicago's 2025 Budget Priorities</h2>
+                            <p class="blog-post-excerpt">A department-by-department look at the $16.6B plan, including the capital projects pulling the most funding and contract line-items poised for vendor competition.</p>
+                            <div class="blog-post-author">
+                                <img src="IMG/Google_AI_Studio_2025-09-02T05_13_56.855Z.png" alt="Portrait of Jordan Evans" loading="lazy" width="48" height="48">
+                                <div>
+                                    <p class="blog-post-author-name">Jordan Evans</p>
+                                    <p class="blog-post-author-role">Editor, Chicago's Money</p>
+                                </div>
+                            </div>
+                            <ul class="blog-post-tags" aria-label="Story tags">
+                                <li><a href="/budget-dashboard.html">Capital programs</a></li>
+                                <li><a href="/index.html#leads">Vendor watch</a></li>
+                                <li><a href="#archive">Archive</a></li>
+                            </ul>
+                            <div class="blog-post-actions">
+                                <a class="blog-post-button" href="/budget-dashboard.html">Explore supporting data</a>
+                                <div class="blog-share" aria-label="Share this story">
+                                    <a href="https://twitter.com/intent/tweet?text=Inside%20Chicago%27s%202025%20Budget%20Priorities&url=https://chicagosmoney.com/blog.html#budget-2025" target="_blank" rel="noopener">Share</a>
+                                    <a href="https://www.linkedin.com/sharing/share-offsite/?url=https://chicagosmoney.com/blog.html#budget-2025" target="_blank" rel="noopener">LinkedIn</a>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </aside>
+                    </article>
+
+                    <article class="blog-post-card" id="salary-playbook">
+                        <figure class="blog-post-media">
+                            <img src="IMG/Google_AI_Studio_2025-09-02T05_12_47.944Z.png" alt="Team planning outreach using city payroll data" loading="lazy" width="640" height="360">
+                        </figure>
+                        <div class="blog-post-body">
+                            <div class="blog-post-top">
+                                <span class="blog-post-tag">Outbound Plays</span>
+                                <span class="blog-post-meta">Published Jan 28, 2025 • 5 minute read</span>
+                            </div>
+                            <h2 class="blog-post-title">How to Turn City Payroll Data Into Daily Outreach</h2>
+                            <p class="blog-post-excerpt">Build micro-segments from open payroll records, script intros that reference overtime surges, and deliver value before the pitch. We share templates that keep response rates high.</p>
+                            <div class="blog-post-author">
+                                <img src="IMG/Google_AI_Studio_2025-09-02T05_14_02.246Z.png" alt="Portrait of Priya Desai" loading="lazy" width="48" height="48">
+                                <div>
+                                    <p class="blog-post-author-name">Priya Desai</p>
+                                    <p class="blog-post-author-role">Growth Analyst</p>
+                                </div>
+                            </div>
+                            <ul class="blog-post-tags" aria-label="Story tags">
+                                <li><a href="/salary-lookup.html">Salary lookup</a></li>
+                                <li><a href="/index.html#leads">Lead generation</a></li>
+                                <li><a href="#newsletter">Newsletter tips</a></li>
+                            </ul>
+                            <div class="blog-post-actions">
+                                <a class="blog-post-button" href="/salary-lookup.html">Launch the salary tool</a>
+                                <div class="blog-share" aria-label="Share this story">
+                                    <a href="https://twitter.com/intent/tweet?text=Turn%20city%20payroll%20data%20into%20outreach%20plays&url=https://chicagosmoney.com/blog.html#salary-playbook" target="_blank" rel="noopener">Share</a>
+                                    <a href="https://www.linkedin.com/sharing/share-offsite/?url=https://chicagosmoney.com/blog.html#salary-playbook" target="_blank" rel="noopener">LinkedIn</a>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="blog-post-card" id="permit-field-guide">
+                        <figure class="blog-post-media">
+                            <img src="IMG/Google_AI_Studio_2025-09-02T05_13_32.359Z.png" alt="Contractor walking a Chicago construction site" loading="lazy" width="640" height="360">
+                        </figure>
+                        <div class="blog-post-body">
+                            <div class="blog-post-top">
+                                <span class="blog-post-tag">Permit Intel</span>
+                                <span class="blog-post-meta">Published Jan 15, 2025 • 4 minute read</span>
+                            </div>
+                            <h2 class="blog-post-title">Field Guide: Tracking Permits Before Seasonal Demand Hits</h2>
+                            <p class="blog-post-excerpt">We map inspection surges, highlight neighborhoods primed for maintenance outreach, and share follow-up cadences that win repeat municipal business.</p>
+                            <div class="blog-post-author">
+                                <img src="IMG/Google_AI_Studio_2025-09-02T05_13_00.856Z.png" alt="Portrait of Alicia Romero" loading="lazy" width="48" height="48">
+                                <div>
+                                    <p class="blog-post-author-name">Alicia Romero</p>
+                                    <p class="blog-post-author-role">Permit Strategist</p>
+                                </div>
+                            </div>
+                            <ul class="blog-post-tags" aria-label="Story tags">
+                                <li><a href="/budget-dashboard.html">Seasonal trends</a></li>
+                                <li><a href="/index.html#leads">Opportunity leads</a></li>
+                                <li><a href="#archive">Archive</a></li>
+                            </ul>
+                            <div class="blog-post-actions">
+                                <a class="blog-post-button" href="/index.html#leads">See permit feeds</a>
+                                <div class="blog-share" aria-label="Share this story">
+                                    <a href="https://twitter.com/intent/tweet?text=Track%20Chicago%20permits%20before%20demand%20hits&url=https://chicagosmoney.com/blog.html#permit-field-guide" target="_blank" rel="noopener">Share</a>
+                                    <a href="https://www.linkedin.com/sharing/share-offsite/?url=https://chicagosmoney.com/blog.html#permit-field-guide" target="_blank" rel="noopener">LinkedIn</a>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+
+                <nav class="blog-pagination" aria-label="Pagination">
+                    <span aria-current="page">Page 1</span>
+                    <a href="#archive">Older stories</a>
+                </nav>
             </div>
+
+            <aside class="blog-sidebar">
+                <section class="blog-search" aria-labelledby="blog-search-label">
+                    <h2 id="blog-search-label">Search the blog</h2>
+                    <form role="search" aria-label="Search blog" action="https://www.google.com/search" method="get">
+                        <label class="blog-search-label" for="blog-search">Search Chicago's Money blog</label>
+                        <div class="blog-search-field">
+                            <input id="blog-search" type="search" name="q" placeholder="Try 'overtime spending'" required>
+                            <input type="hidden" name="sitesearch" value="chicagosmoney.com/blog.html">
+                            <button type="submit">Search</button>
+                        </div>
+                    </form>
+                </section>
+
+                <section class="blog-sidebar-card" aria-labelledby="blog-categories">
+                    <h2 id="blog-categories">Categories</h2>
+                    <ul class="blog-category-list">
+                        <li><a href="#budget-2025">Budget Watch <span aria-hidden="true">(1)</span><span class="visually-hidden"> – one article</span></a></li>
+                        <li><a href="#salary-playbook">Outbound Plays <span aria-hidden="true">(1)</span><span class="visually-hidden"> – one article</span></a></li>
+                        <li><a href="#permit-field-guide">Permit Intel <span aria-hidden="true">(1)</span><span class="visually-hidden"> – one article</span></a></li>
+                    </ul>
+                </section>
+
+                <section class="blog-sidebar-card" aria-labelledby="recent-updates">
+                    <h2 id="recent-updates">Recent updates</h2>
+                    <ul class="blog-recent-list">
+                        <li>
+                            <a href="#budget-2025">
+                                <span class="blog-recent-title">Overtime climb: where the $680M went</span>
+                                <span class="blog-recent-meta">Data companion • Feb 4</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#salary-playbook">
+                                <span class="blog-recent-title">Email scripts for city payroll teams</span>
+                                <span class="blog-recent-meta">Toolkit • Jan 28</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#permit-field-guide">
+                                <span class="blog-recent-title">Where permits jump before spring</span>
+                                <span class="blog-recent-meta">Guide • Jan 15</span>
+                            </a>
+                        </li>
+                    </ul>
+                </section>
+
+                <section class="blog-sidebar-card" id="newsletter" aria-labelledby="newsletter-title">
+                    <h2 id="newsletter-title">Get maintenance intel first</h2>
+                    <p>Weekly digest of budget shifts, overtime spikes, and procurement leads straight to your inbox.</p>
+                    <form class="blog-newsletter-form" action="https://formspree.io/f/xqadnqlb" method="POST">
+                        <label class="blog-newsletter-label" for="newsletter-email">Email address</label>
+                        <input type="email" id="newsletter-email" name="email" placeholder="you@agency.com" required>
+                        <button type="submit">Notify me</button>
+                    </form>
+                </section>
+
+                <section class="blog-sidebar-card" aria-labelledby="blog-tags">
+                    <h2 id="blog-tags">Popular tags</h2>
+                    <div class="blog-tag-cloud">
+                        <a href="/salary-lookup.html">salary transparency</a>
+                        <a href="/budget-dashboard.html">capital projects</a>
+                        <a href="/index.html#leads">procurement leads</a>
+                        <a href="#permit-field-guide">seasonal planning</a>
+                        <a href="#budget-2025">overtime</a>
+                    </div>
+                </section>
+            </aside>
         </section>
 
-        <section class="teaser-section">
-            <div class="teaser-header">
-                <span class="blog-preview-badge">Editorial roadmap</span>
-                <h2 class="teaser-title">Upcoming stories on deck</h2>
-                <p class="teaser-subtitle">Here's what our newsroom-quality analysts are drafting while the first post ships. Tell us which playbooks you need next.</p>
-            </div>
-            <div class="teaser-grid">
-                <article class="teaser-card">
-                    <div class="teaser-meta">
-                        <span>Drafting</span>
-                        <span>Data Playbook</span>
-                    </div>
-                    <h3>Price civic contracts with payroll signals</h3>
-                    <p>Use overtime surges, headcount shifts, and capital project data to estimate where new vendor spend is about to land.</p>
-                    <a href="#contact" class="teaser-link">Request early access →</a>
-                </article>
-                <article class="teaser-card">
-                    <div class="teaser-meta">
-                        <span>Reporting</span>
-                        <span>Watchlist</span>
-                    </div>
-                    <h3>Chicago departments with overtime overruns</h3>
-                    <p>We'll spotlight the agencies burning through overtime budgets and the supervisors to speak with before the next hearing.</p>
-                    <a href="#contact" class="teaser-link">Nominate a department →</a>
-                </article>
-                <article class="teaser-card">
-                    <div class="teaser-meta">
-                        <span>Research</span>
-                        <span>Lead Gen</span>
-                    </div>
-                    <h3>New business formation heat map</h3>
-                    <p>Track newly registered businesses, their locations, and owner contacts so your sales team can reach them first.</p>
-                    <a href="/index.html#leads" class="teaser-link">Explore the leads offering →</a>
-                </article>
+        <section class="blog-archive" id="archive" aria-labelledby="blog-archive-title">
+            <div class="blog-archive-inner">
+                <h2 id="blog-archive-title">Archive</h2>
+                <p class="blog-archive-subtitle">Catch up on past signals and frameworks. Each entry links back to live datasets so you can run the numbers yourself.</p>
+                <ul class="blog-archive-list">
+                    <li>
+                        <a href="#salary-playbook">
+                            <span class="blog-archive-title">Outbound Plays: Payroll + overtime combos that convert</span>
+                            <span class="blog-archive-meta">Playbook • Jan 2025</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#permit-field-guide">
+                            <span class="blog-archive-title">Permit Intel: Map the inspections before the rush</span>
+                            <span class="blog-archive-meta">Guide • Jan 2025</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#budget-2025">
+                            <span class="blog-archive-title">Budget Watch: The $16.6B city spending stack</span>
+                            <span class="blog-archive-meta">Analysis • Feb 2025</span>
+                        </a>
+                    </li>
+                </ul>
+                <a class="blog-archive-cta" href="/index.html#contact">Share a story idea →</a>
             </div>
         </section>
     </main>
 
-    <section id="leads" class="leads-section">
-        <div class="leads-content">
-            <div class="leads-header">
-                <h2 class="leads-title">Business Intelligence That Pays For Itself</h2>
-                <p class="leads-subtitle">Get fresh Chicago business leads before your competitors. Updated daily from public records.</p>
-            </div>
-
-            <div class="leads-grid">
-                <div class="lead-card lead-card--new-business">
-                    <div class="lead-icon">🏢</div>
-                    <h3 class="lead-title">New Businesses</h3>
-                    <p class="lead-description">300+ new business registrations weekly with owner names, addresses, and contact info.</p>
-                    <ul class="lead-features">
-                        <li><i data-lucide="check" style="width: 16px; height: 16px;"></i> Owner contact details</li>
-                        <li><i data-lucide="check" style="width: 16px; height: 16px;"></i> Business type & size</li>
-                        <li><i data-lucide="check" style="width: 16px; height: 16px;"></i> Registration date</li>
-                    </ul>
-                    <div class="lead-price">$49<span>/month</span></div>
-                    <button class="lead-cta" onclick="window.location.href='mailto:info@chicagosmoney.com?subject=New Business Leads Subscription'">Get Started</button>
-                </div>
-
-                <div class="lead-card lead-card--construction featured">
-                    <span class="featured-badge">Most Popular</span>
-                    <div class="lead-icon">🔨</div>
-                    <h3 class="lead-title">Construction Permits</h3>
-                    <p class="lead-description">Every permit filed with contractor info, project value, and detailed scope of work.</p>
-                    <ul class="lead-features">
-                        <li><i data-lucide="check" style="width: 16px; height: 16px;"></i> Project values</li>
-                        <li><i data-lucide="check" style="width: 16px; height: 16px;"></i> Contractor details</li>
-                        <li><i data-lucide="check" style="width: 16px; height: 16px;"></i> Work descriptions</li>
-                    </ul>
-                    <div class="lead-price">$99<span>/month</span></div>
-                    <button class="lead-cta" onclick="window.location.href='mailto:info@chicagosmoney.com?subject=Construction Permits Subscription'">Get Started</button>
-                </div>
-
-                <div class="lead-card lead-card--restaurant">
-                    <div class="lead-icon">🍕</div>
-                    <h3 class="lead-title">Restaurant Violations</h3>
-                    <p class="lead-description">Failed health inspections with violations, contact info, and inspection dates.</p>
-                    <ul class="lead-features">
-                        <li><i data-lucide="check" style="width: 16px; height: 16px;"></i> Violation details</li>
-                        <li><i data-lucide="check" style="width: 16px; height: 16px;"></i> Owner contacts</li>
-                        <li><i data-lucide="check" style="width: 16px; height: 16px;"></i> Inspection history</li>
-                    </ul>
-                    <div class="lead-price">$49<span>/month</span></div>
-                    <button class="lead-cta" onclick="window.location.href='mailto:info@chicagosmoney.com?subject=Restaurant Violations Subscription'">Get Started</button>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="contact" class="contact-section">
-        <div class="container">
-            <h2 class="section-title">Stay Informed</h2>
-            <p class="contact-info">
-                Questions? Contact us at
-                <a href="mailto:info@chicagosmoney.com" class="contact-email">info@chicagosmoney.com</a>
-            </p>
-
-            <form class="newsletter-form" action="https://formspree.io/f/xqadnqlb" method="POST">
-                <input type="email" name="email" class="newsletter-input" placeholder="Enter your email for updates..." required>
-                <input type="hidden" name="_subject" value="Blog Newsletter Signup - Chicago's Money">
-                <button type="submit" class="btn btn-primary">Subscribe</button>
-            </form>
-        </div>
-    </section>
-
-    <footer class="footer">
-        <div class="footer-content">
-            <div class="footer-section">
-                <h4>For Citizens</h4>
-                <ul class="footer-links">
-                    <li><a href="/salary-lookup.html">Salary Lookup</a></li>
-                    <li><a href="/budget-dashboard.html">Budget Dashboard</a></li>
-                    <li><a href="/blog.html">Transparency Blog</a></li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h4>For Businesses</h4>
-                <ul class="footer-links">
-                    <li><a href="#leads">Business Leads</a></li>
-                    <li><a href="#leads">Construction Permits</a></li>
-                    <li><a href="#leads">Violation Alerts</a></li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h4>Company</h4>
-                <ul class="footer-links">
-                    <li><a href="#contact">About Us</a></li>
-                    <li><a href="mailto:info@chicagosmoney.com">Contact</a></li>
-                    <li><a href="mailto:info@chicagosmoney.com?subject=Privacy%20Policy">Privacy Policy</a></li>
-                </ul>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            © 2025 Chicago's Money. All rights reserved.
+    <footer class="blog-footer">
+        <div class="blog-footer-inner">
+            <p>© <span id="blogYear"></span> Chicago's Money. Transparency first.</p>
+            <a href="/index.html">Back to homepage</a>
         </div>
     </footer>
 
     <script>
-        if (typeof lucide !== 'undefined') {
-            lucide.createIcons();
+        const menuToggle = document.getElementById('mobileMenuToggle');
+        const menuOverlay = document.getElementById('mobileMenuOverlay');
+        const mobileNav = document.getElementById('mobileNav');
+
+        function closeMenu() {
+            menuToggle.classList.remove('active');
+            mobileNav.classList.remove('active');
+            menuOverlay.classList.remove('active');
+            menuToggle.setAttribute('aria-expanded', 'false');
         }
 
-        window.addEventListener('scroll', function() {
-            const navbar = document.getElementById('navbar');
-            if (navbar && window.scrollY > 50) {
-                navbar.classList.add('scrolled');
-            } else if (navbar) {
-                navbar.classList.remove('scrolled');
-            }
-        });
-
-        const mobileMenuBtn = document.getElementById('mobileMenu');
-        let menuTimeout;
-
-        function closeMobileMenu() {
-            const navLinks = document.querySelector('.nav-links');
-            if (navLinks && window.innerWidth <= 768) {
-                navLinks.style.display = 'none';
-            }
-            if (menuTimeout) {
-                clearTimeout(menuTimeout);
-            }
+        function openMenu() {
+            menuToggle.classList.add('active');
+            mobileNav.classList.add('active');
+            menuOverlay.classList.add('active');
+            menuToggle.setAttribute('aria-expanded', 'true');
         }
 
-        if (mobileMenuBtn) {
-            mobileMenuBtn.onclick = function() {
-                const navLinks = document.querySelector('.nav-links');
-                if (!navLinks) return;
-                const isOpen = navLinks.style.display === 'flex';
-
+        if (menuToggle) {
+            menuToggle.addEventListener('click', () => {
+                const isOpen = menuToggle.classList.contains('active');
                 if (isOpen) {
-                    closeMobileMenu();
+                    closeMenu();
                 } else {
-                    navLinks.style.display = 'flex';
-                    navLinks.style.position = 'absolute';
-                    navLinks.style.top = '100%';
-                    navLinks.style.left = '0';
-                    navLinks.style.right = '0';
-                    navLinks.style.background = 'white';
-                    navLinks.style.flexDirection = 'column';
-                    navLinks.style.padding = '1rem';
-                    navLinks.style.boxShadow = '0 4px 6px rgba(0, 0, 0, 0.1)';
-                    navLinks.style.zIndex = '999';
-
-                    if (menuTimeout) clearTimeout(menuTimeout);
-                    menuTimeout = setTimeout(closeMobileMenu, 3000);
-                }
-            };
-        }
-
-        const navLinks = document.querySelectorAll('.nav-link, .nav-cta');
-        navLinks.forEach(function(link) {
-            link.addEventListener('click', function() {
-                if (window.innerWidth <= 768) {
-                    closeMobileMenu();
+                    openMenu();
                 }
             });
-        });
+        }
 
-        document.addEventListener('click', function(event) {
-            const navLinksDiv = document.querySelector('.nav-links');
-            const mobileBtn = document.getElementById('mobileMenu');
+        if (menuOverlay) {
+            menuOverlay.addEventListener('click', closeMenu);
+        }
 
-            if (navLinksDiv && mobileBtn && window.innerWidth <= 768) {
-                if (!navLinksDiv.contains(event.target) && !mobileBtn.contains(event.target)) {
-                    closeMobileMenu();
-                }
+        if (mobileNav) {
+            mobileNav.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', closeMenu);
+            });
+        }
+
+        const yearTarget = document.getElementById('blogYear');
+        if (yearTarget) {
+            yearTarget.textContent = new Date().getFullYear();
+        }
+    </script>
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Blog",
+        "name": "Chicago's Money Blog",
+        "description": "Chicago's Money editors translate budgets, payroll data, and public records into actionable playbooks for operators and agencies.",
+        "url": "https://chicagosmoney.com/blog.html",
+        "publisher": {
+            "@type": "Organization",
+            "name": "Chicago's Money",
+            "url": "https://chicagosmoney.com/",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https://chicagosmoney.com/IMG/chicagos_money_logo_variant_1.png"
             }
-        });
+        },
+        "blogPost": [
+            {
+                "@type": "BlogPosting",
+                "headline": "Inside Chicago's 2025 Budget Priorities",
+                "description": "Department-by-department analysis of the $16.6B spending plan with capital projects and competitive contracts highlighted.",
+                "image": "https://chicagosmoney.com/IMG/Google_AI_Studio_2025-09-02T05_11_59.448Z.png",
+                "author": {
+                    "@type": "Person",
+                    "name": "Jordan Evans"
+                },
+                "datePublished": "2025-02-04",
+                "timeRequired": "PT6M",
+                "url": "https://chicagosmoney.com/blog.html#budget-2025"
+            },
+            {
+                "@type": "BlogPosting",
+                "headline": "How to Turn City Payroll Data Into Daily Outreach",
+                "description": "Playbook for turning open payroll and overtime signals into high-converting outreach lists.",
+                "image": "https://chicagosmoney.com/IMG/Google_AI_Studio_2025-09-02T05_12_47.944Z.png",
+                "author": {
+                    "@type": "Person",
+                    "name": "Priya Desai"
+                },
+                "datePublished": "2025-01-28",
+                "timeRequired": "PT5M",
+                "url": "https://chicagosmoney.com/blog.html#salary-playbook"
+            },
+            {
+                "@type": "BlogPosting",
+                "headline": "Field Guide: Tracking Permits Before Seasonal Demand Hits",
+                "description": "Guide to spotting permit surges and planning outreach before seasonal demand spikes.",
+                "image": "https://chicagosmoney.com/IMG/Google_AI_Studio_2025-09-02T05_13_32.359Z.png",
+                "author": {
+                    "@type": "Person",
+                    "name": "Alicia Romero"
+                },
+                "datePublished": "2025-01-15",
+                "timeRequired": "PT4M",
+                "url": "https://chicagosmoney.com/blog.html#permit-field-guide"
+            }
+        ]
+    }
     </script>
 </body>
 </html>
