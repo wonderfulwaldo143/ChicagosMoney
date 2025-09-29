@@ -165,9 +165,9 @@ RewriteRule \.(jpg|jpeg|png|gif|webp|svg)$ - [F]
     RewriteCond %{HTTPS} off
     RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=301,L]
     
-    # Force www
-    RewriteCond %{HTTP_HOST} ^chicagosmoney\.com [NC]
-    RewriteRule ^(.*)$ https://www.chicagosmoney.com/$1 [L,R=301]
+    # Force no-www (fixes GTM tracking consistency)
+    RewriteCond %{HTTP_HOST} ^www\.chicagosmoney\.com$ [NC]
+    RewriteRule ^(.*)$ https://chicagosmoney.com/$1 [L,R=301]
     
     # Remove trailing slash
     RewriteCond %{REQUEST_FILENAME} !-d
