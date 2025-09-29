@@ -1,24 +1,23 @@
-name: Deploy to Hostinger (ChicagosMoney)
+name: Deploy via lftp (SFTP)
 on:
   push:
     branches: [main]
-    paths:
-      - '**/*'
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
-      - name: Upload via pure SFTP (no SSH)
-        uses: wlixcc/SFTP-Deploy-Action@v1.2.6
-        with:
-          server: ${{ secrets.HOSTINGER_FTP_SERVER }}   # e.g. 82.25.81.222
-          port: 65002
-          username: ${{ secrets.HOSTINGER_FTP_USERNAME }}  # EXACT username from hPanel
-          password: ${{ secrets.HOSTINGER_FTP_PASSWORD }}
-          sftp_only: true
-          # 'rsyncArgs' is OK for local filtering; remote path must ALREADY exist
-          rsyncArgs: '--exclude=.git --exclude=.github --exclude=.DS_Store'
-          local_path: './'
-          remote_path: '/home/u476428393/public_html'
+      - name: Install lftp
+        run: sudo apt-get update && sudo apt-get install -y lftp
+      - name: Mirror to Hostinger
+        env:
+          HOST: ${{ secrets.HOSTINGER_FTP_SERVER }}
+          USER: ${{ secrets.HOSTINGER_FTP_USERNAME }}
+          PASS: ${{ secrets.HOSTINGER_FTP_PASSWORD }}
+        run: |
+          lftp -u "$USER","$PASS" -p 65002 sftp://$HOST -e "
+            set sftp:auto-confirm yes;
+            mirror -Rnev --only-newer --ignore-time --parallel=4 \
+              --exclude-glob .git --exclude-glob .github \
+              ./ /home/u476428393/public_html/;
+            quit"
