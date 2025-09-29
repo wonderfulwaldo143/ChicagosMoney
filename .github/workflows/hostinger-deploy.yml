@@ -1,47 +1,24 @@
-name: Deploy to Hostinger
-
+name: Deploy to Hostinger (ChicagosMoney)
 on:
   push:
-    branches:
-      - main
+    branches: [main]
     paths:
-      - '*.html'
-      - '*.css'
-      - '*.js'
-      - '*.json'
-      - '*.xml'
-      - '*.txt'
-      - '*.php'
-      - '.htaccess'
-      - 'IMG/**'
-      - 'icons/**'
-      - 'api/**'
-      - '.github/workflows/hostinger-deploy.yml'
-  workflow_dispatch:
-
+      - '**/*'
 jobs:
   deploy:
-    name: Upload site to Hostinger
     runs-on: ubuntu-latest
-    timeout-minutes: 15
-    concurrency:
-      group: hostinger-deploy-${{ github.ref }}
-      cancel-in-progress: true
-
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 1
+      - uses: actions/checkout@v4
 
-      - name: Deploy via SFTP
-        uses: wlixcc/SFTP-Deploy-Action@v1.2.5
+      - name: Upload via pure SFTP (no SSH)
+        uses: wlixcc/SFTP-Deploy-Action@v1.2.6
         with:
-          username: ${{ secrets.HOSTINGER_FTP_USERNAME }}
-          password: ${{ secrets.HOSTINGER_FTP_PASSWORD }}
-          server: ${{ secrets.HOSTINGER_FTP_SERVER }}
+          server: ${{ secrets.HOSTINGER_FTP_SERVER }}   # e.g. 82.25.81.222
           port: 65002
-          local_path: ./
-          remote_path: /home/u476428393/websites/SqQqgFb2r/public_html/
-          args: "-o StrictHostKeyChecking=no"
-          rsyncArgs: '--exclude=.git --exclude=.github --exclude=.gitignore --exclude=deploy.sh --exclude=docs --exclude=.DS_Store'
+          username: ${{ secrets.HOSTINGER_FTP_USERNAME }}  # EXACT username from hPanel
+          password: ${{ secrets.HOSTINGER_FTP_PASSWORD }}
+          sftp_only: true
+          # 'rsyncArgs' is OK for local filtering; remote path must ALREADY exist
+          rsyncArgs: '--exclude=.git --exclude=.github --exclude=.DS_Store'
+          local_path: './'
+          remote_path: '/home/u476428393/public_html'
