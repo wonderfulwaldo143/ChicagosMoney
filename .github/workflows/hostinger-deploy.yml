@@ -17,7 +17,7 @@ jobs:
         run: |
           lftp -u "$USER","$PASS" -p 65002 sftp://$HOST -e "
             set sftp:auto-confirm yes;
-            mirror -Rnev --only-newer --ignore-time --parallel=4 \
+            mirror -Rnev --ignore-time --parallel=4 \
               --exclude-glob .git --exclude-glob .github \
               ./ /home/u476428393/public_html/;
             quit"
