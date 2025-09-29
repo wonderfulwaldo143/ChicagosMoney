@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-PRX5GJ6W');</script>
+    <!-- End Google Tag Manager -->
+    <title>Google Tag Manager Test - Chicago's Money</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .status {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .warning { background: #fff3cd; color: #856404; border: 1px solid #ffeaa7; }
+        .error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .info { background: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover { background: #0056b3; }
+        .code-block {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 5px;
+            padding: 15px;
+            font-family: monospace;
+            margin: 10px 0;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PRX5GJ6W"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
+    <div class="test-container">
+        <h1>🔍 Google Tag Manager Verification Test</h1>
+        <p>This page helps verify that Google Tag Manager and Google Analytics are properly installed and working.</p>
+
+        <div id="gtm-status" class="status info">Checking Google Tag Manager...</div>
+        <div id="ga4-status" class="status info">Checking Google Analytics 4...</div>
+        <div id="dataLayer-status" class="status info">Checking DataLayer...</div>
+
+        <h2>Test Actions</h2>
+        <button onclick="testPageView()">Test Page View Event</button>
+        <button onclick="testCustomEvent()">Test Custom Event</button>
+        <button onclick="checkDataLayer()">Check DataLayer</button>
+        <button onclick="runFullTest()">Run Full Test</button>
+
+        <h2>Configuration Details</h2>
+        <div class="code-block">
+            <strong>GTM Container ID:</strong> GTM-PRX5GJ6W<br>
+            <strong>GA4 Measurement ID:</strong> G-WSXXL0P3ZG<br>
+            <strong>Expected DataLayer:</strong> window.dataLayer
+        </div>
+
+        <h2>Test Results</h2>
+        <div id="test-results"></div>
+
+        <h2>Instructions</h2>
+        <ol>
+            <li>Open your browser's Developer Tools (F12)</li>
+            <li>Go to the Console tab</li>
+            <li>Click "Run Full Test" above</li>
+            <li>Check for any error messages</li>
+            <li>Verify that GTM and GA4 are loaded</li>
+        </ol>
+
+        <h2>Next Steps</h2>
+        <ul>
+            <li>Use Google Tag Assistant Chrome extension for detailed verification</li>
+            <li>Check Google Analytics Real-Time reports</li>
+            <li>Use GTM Preview mode to test tag firing</li>
+            <li>Verify tracking on your live site</li>
+        </ul>
+    </div>
+
+    <script>
+        // Test functions
+        function testPageView() {
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'page_view', {
+                    page_title: 'GTM Test Page',
+                    page_location: window.location.href
+                });
+                addResult('✅ Page view event sent successfully', 'success');
+            } else {
+                addResult('❌ gtag function not found', 'error');
+            }
+        }
+
+        function testCustomEvent() {
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'test_event', {
+                    event_category: 'testing',
+                    event_label: 'manual_test',
+                    value: 1
+                });
+                addResult('✅ Custom event sent successfully', 'success');
+            } else {
+                addResult('❌ gtag function not found', 'error');
+            }
+        }
+
+        function checkDataLayer() {
+            if (typeof window.dataLayer !== 'undefined') {
+                addResult('✅ DataLayer found with ' + window.dataLayer.length + ' items', 'success');
+                console.log('DataLayer contents:', window.dataLayer);
+            } else {
+                addResult('❌ DataLayer not found', 'error');
+            }
+        }
+
+        function runFullTest() {
+            clearResults();
+            
+            // Check GTM
+            if (typeof window.dataLayer !== 'undefined') {
+                document.getElementById('gtm-status').innerHTML = '✅ Google Tag Manager: Loaded';
+                document.getElementById('gtm-status').className = 'status success';
+            } else {
+                document.getElementById('gtm-status').innerHTML = '❌ Google Tag Manager: Not Found';
+                document.getElementById('gtm-status').className = 'status error';
+            }
+
+            // Check GA4
+            if (typeof gtag !== 'undefined') {
+                document.getElementById('ga4-status').innerHTML = '✅ Google Analytics 4: Loaded';
+                document.getElementById('ga4-status').className = 'status success';
+            } else {
+                document.getElementById('ga4-status').innerHTML = '❌ Google Analytics 4: Not Found';
+                document.getElementById('ga4-status').className = 'status error';
+            }
+
+            // Check DataLayer
+            if (typeof window.dataLayer !== 'undefined' && window.dataLayer.length > 0) {
+                document.getElementById('dataLayer-status').innerHTML = '✅ DataLayer: Active with ' + window.dataLayer.length + ' items';
+                document.getElementById('dataLayer-status').className = 'status success';
+            } else {
+                document.getElementById('dataLayer-status').innerHTML = '❌ DataLayer: Empty or not found';
+                document.getElementById('dataLayer-status').className = 'status error';
+            }
+
+            // Additional checks
+            setTimeout(() => {
+                // Check if GTM script loaded
+                const gtmScript = document.querySelector('script[src*="googletagmanager.com"]');
+                if (gtmScript) {
+                    addResult('✅ GTM script tag found in DOM', 'success');
+                } else {
+                    addResult('❌ GTM script tag not found in DOM', 'error');
+                }
+
+                // Check for GA4 configuration
+                const ga4Config = window.dataLayer?.find(item => item.gtag_id);
+                if (ga4Config) {
+                    addResult('✅ GA4 configuration found in DataLayer', 'success');
+                } else {
+                    addResult('⚠️ GA4 configuration not found in DataLayer', 'warning');
+                }
+            }, 1000);
+        }
+
+        function addResult(message, type) {
+            const resultsDiv = document.getElementById('test-results');
+            const resultDiv = document.createElement('div');
+            resultDiv.className = 'status ' + type;
+            resultDiv.innerHTML = message;
+            resultsDiv.appendChild(resultDiv);
+        }
+
+        function clearResults() {
+            document.getElementById('test-results').innerHTML = '';
+        }
+
+        // Auto-run test on page load
+        window.addEventListener('load', () => {
+            setTimeout(runFullTest, 2000); // Wait 2 seconds for scripts to load
+        });
+
+        // Console logging for debugging
+        console.log('🔍 GTM Test Page Loaded');
+        console.log('GTM Container ID: GTM-PRX5GJ6W');
+        console.log('GA4 Measurement ID: G-WSXXL0P3ZG');
+        console.log('DataLayer:', window.dataLayer);
+    </script>
+</body>
+</html>
