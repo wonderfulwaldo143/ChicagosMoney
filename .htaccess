@@ -222,17 +222,16 @@ FileETag None
 # FILE ACCESS
 # ===================================================================
 
-# Protect sensitive files (but allow version.txt for deployment verification)
-<FilesMatch "(^\.htaccess|\.htpasswd|\.git|\.env|composer\.(json|lock)|package\.(json|lock)|yarn\.lock|webpack\.config\.js|gulpfile\.js|Gruntfile\.js|.*\.md$)">
-    Order allow,deny
-    Deny from all
-</FilesMatch>
-
-# Explicitly allow version.txt
+# Explicitly allow version.txt FIRST (before any deny rules)
 <Files "version.txt">
-    Order allow,deny
-    Allow from all
+    Require all granted
+    Header set Content-Type "text/plain; charset=utf-8"
 </Files>
+
+# Protect sensitive files (but version.txt is already allowed above)
+<FilesMatch "(^\.htaccess|\.htpasswd|\.git|\.env|composer\.(json|lock)|package\.(json|lock)|yarn\.lock|webpack\.config\.js|gulpfile\.js|Gruntfile\.js|.*\.md$)">
+    Require all denied
+</FilesMatch>
 
 # Allow access to well-known files
 <IfModule mod_alias.c>

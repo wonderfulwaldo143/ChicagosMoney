@@ -11,6 +11,7 @@ on:
       - '**/*.xml'
       - '**/*.txt'
       - '**/*.php'
+      - 'deploy-info.php'
       - '**/.htaccess'
       - '.htaccess'
       - 'IMG/**'
@@ -45,10 +46,19 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y lftp
 
-      - name: Generate version file
+      - name: Generate version file and add cache busting
         run: |
-          echo "${{ github.sha }} $(date -u +'%Y-%m-%dT%H:%M:%SZ')" > version.txt
+          VERSION="${{ github.sha }}"
+          TIMESTAMP="$(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+
+          echo "$VERSION $TIMESTAMP" > version.txt
           echo "📝 Generated version.txt: $(cat version.txt)"
+
+          # Add version comments to CSS and JS files for cache verification
+          echo "/* Version: $VERSION - $TIMESTAMP */" | cat - styles.css > temp && mv temp styles.css
+          echo "/* Version: $VERSION - $TIMESTAMP */" | cat - script.js > temp && mv temp script.js
+
+          echo "✅ Added version stamps to static assets"
 
       - name: Deploy to Hostinger
         env:
@@ -106,8 +116,12 @@ jobs:
 
       - name: Verify live site updated
         run: |
-          echo "⏳ Waiting 10 seconds for file propagation..."
-          sleep 10
+          echo "⏳ Waiting 15 seconds for file propagation and CDN..."
+          sleep 15
+
+          EXPECTED_SHA="${{ github.sha }}"
+          MAX_ATTEMPTS=3
+          ATTEMPT=1
 
           echo "🔍 Verifying homepage is accessible..."
           if curl -sS -f -o /dev/null "https://chicagosmoney.com/?cb=${{ github.run_id }}"; then
@@ -118,33 +132,53 @@ jobs:
           fi
 
           echo ""
-          echo "🔍 Checking if version.txt is accessible..."
-          URL="https://chicagosmoney.com/version.txt?cb=${{ github.run_id }}"
+          echo "🔍 Checking CSS file for version stamp..."
+          curl -sS "https://chicagosmoney.com/styles.css?cb=${{ github.run_id }}" | head -3
 
-          HTTP_CODE=$(curl -sS -w "%{http_code}" -o /tmp/live_version.txt "$URL")
-          echo "📊 HTTP Status: $HTTP_CODE"
-
-          # Check if we got actual version.txt content (not HTML)
-          if [ "$HTTP_CODE" = "200" ] && grep -q "^[0-9a-f]\{40\}" /tmp/live_version.txt 2>/dev/null; then
-            echo "✅ version.txt accessible and valid"
-            echo "📄 Content: $(cat /tmp/live_version.txt)"
-
-            if grep -q "${{ github.sha }}" /tmp/live_version.txt; then
-              echo "✅ Live version matches this build: ${{ github.sha }}"
-            else
-              echo "⚠️  Version mismatch (may indicate caching or race condition)"
-              echo "   Expected: ${{ github.sha }}"
-              echo "   Got: $(cat /tmp/live_version.txt)"
-            fi
+          if curl -sS "https://chicagosmoney.com/styles.css?cb=${{ github.run_id }}" | head -1 | grep -q "$EXPECTED_SHA"; then
+            echo "✅ CSS contains current version stamp"
           else
-            echo "⚠️  version.txt not accessible or returned HTML (common on .htaccess 404 redirect)"
-            if [ -f /tmp/live_version.txt ]; then
-              echo "📄 First 150 chars of response:"
-              head -c 150 /tmp/live_version.txt | tr '\n' ' '
-              echo ""
-            fi
-            echo "ℹ️  This is expected if ErrorDocument 404 redirects to index.html"
+            echo "⚠️  CSS may be cached (old version)"
           fi
 
           echo ""
-          echo "✅ Deployment verification complete - site is live!"
+          echo "🔍 Attempting to verify version.txt (up to $MAX_ATTEMPTS tries)..."
+
+          while [ $ATTEMPT -le $MAX_ATTEMPTS ]; do
+            echo "🔄 Attempt $ATTEMPT of $MAX_ATTEMPTS..."
+
+            URL="https://chicagosmoney.com/version.txt?cb=${{ github.run_id }}_${ATTEMPT}"
+            HTTP_CODE=$(curl -sS -w "%{http_code}" -o /tmp/live_version.txt "$URL")
+
+            # Check if we got actual version.txt content (not HTML)
+            if [ "$HTTP_CODE" = "200" ] && grep -q "^[0-9a-f]\{40\}" /tmp/live_version.txt 2>/dev/null; then
+              echo "✅ version.txt accessible and valid"
+              echo "📄 Content: $(cat /tmp/live_version.txt)"
+
+              if grep -q "$EXPECTED_SHA" /tmp/live_version.txt; then
+                echo "✅ Live version matches this build!"
+                break
+              else
+                echo "⚠️  Version mismatch - may be cached"
+                echo "   Expected: $EXPECTED_SHA"
+                echo "   Got: $(cat /tmp/live_version.txt)"
+              fi
+            else
+              echo "⚠️  HTTP $HTTP_CODE - version.txt returned HTML or is inaccessible"
+              if [ -f /tmp/live_version.txt ]; then
+                echo "📄 First 100 chars:"
+                head -c 100 /tmp/live_version.txt | tr '\n' ' '
+                echo ""
+              fi
+            fi
+
+            ATTEMPT=$((ATTEMPT + 1))
+            if [ $ATTEMPT -le $MAX_ATTEMPTS ]; then
+              echo "⏳ Waiting 10 seconds before retry..."
+              sleep 10
+            fi
+          done
+
+          echo ""
+          echo "ℹ️  If version.txt shows old version, clear CDN cache at Hostinger control panel"
+          echo "✅ Deployment verification complete - files uploaded successfully!"
