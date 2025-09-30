@@ -1,19 +1,22 @@
 name: Deploy to Hostinger
+
 on:
   push:
     branches: [main]
     paths:
-      - '**.html'
-      - '**.css'
-      - '**.js'
-      - '**.json'
-      - '**.xml'
-      - '**.txt'
-      - '**.php'
+      - '**/*.html'
+      - '**/*.css'
+      - '**/*.js'
+      - '**/*.json'
+      - '**/*.xml'
+      - '**/*.txt'
+      - '**/*.php'
       - '.htaccess'
       - 'IMG/**'
       - 'icons/**'
       - 'api/**'
+      - 'assets/**'
+      - 'images/**'
       - '.github/workflows/hostinger-deploy.yml'
   workflow_dispatch:
 
@@ -35,6 +38,37 @@ jobs:
       - name: Install lftp
         run: sudo apt-get update && sudo apt-get install -y lftp
 
+      # Optional: enable this to see what would upload/delete
+      # - name: Dry-run (mirror -n)
+      #   env:
+      #     HOST: ${{ secrets.HOSTINGER_FTP_SERVER }}
+      #     USER: ${{ secrets.HOSTINGER_FTP_USERNAME }}
+      #     PASS: ${{ secrets.HOSTINGER_FTP_PASSWORD }}
+      #   run: |
+      #     lftp -u "$USER","$PASS" -p 65002 sftp://$HOST <<EOF
+      #     set sftp:auto-confirm yes
+      #     set net:max-retries 3
+      #     set net:timeout 30
+      #     set net:reconnect-interval-base 5
+      #     set xfer:clobber on
+      #     cd /home/u476428393/public_html/
+      #     mirror -Rnev --dry-run \
+      #       --exclude-glob .git \
+      #       --exclude-glob .github \
+      #       --exclude-glob .gitignore \
+      #       --exclude-glob .DS_Store \
+      #       --exclude-glob '*.md' \
+      #       --exclude-glob 'deploy*.sh' \
+      #       --exclude-glob '.claude' \
+      #       --exclude-glob 'docs' \
+      #       --exclude-glob '.deploy-trigger' \
+      #       --exclude-glob 'backups' \
+      #       --exclude-glob 'logs' \
+      #       --exclude-glob '.well-known' \
+      #       . .
+      #     bye
+      #     EOF
+
       - name: Deploy to Hostinger
         env:
           HOST: ${{ secrets.HOSTINGER_FTP_SERVER }}
@@ -43,25 +77,31 @@ jobs:
         run: |
           echo "🚀 Starting deployment..."
 
-          lftp -u "$USER","$PASS" -p 65002 sftp://$HOST <<'EOF'
-            set sftp:auto-confirm yes
-            set xfer:clobber on
+          lftp -u "$USER","$PASS" -p 65002 sftp://$HOST <<EOF
+          set sftp:auto-confirm yes
+          set net:max-retries 3
+          set net:timeout 30
+          set net:reconnect-interval-base 5
+          set xfer:clobber on
 
-            cd /home/u476428393/public_html/
+          cd /home/u476428393/public_html/
 
-            mirror -Rnev --delete --no-empty-dirs --parallel=4 \
-              --exclude-glob .git \
-              --exclude-glob .github \
-              --exclude-glob .gitignore \
-              --exclude-glob .DS_Store \
-              --exclude-glob '*.md' \
-              --exclude-glob deploy.sh \
-              --exclude-glob .claude \
-              --exclude-glob docs \
-              --exclude-glob .deploy-trigger \
-              . .
+          mirror -Rnev --delete --no-empty-dirs --parallel=4 \
+            --exclude-glob .git \
+            --exclude-glob .github \
+            --exclude-glob .gitignore \
+            --exclude-glob .DS_Store \
+            --exclude-glob '*.md' \
+            --exclude-glob 'deploy*.sh' \
+            --exclude-glob '.claude' \
+            --exclude-glob 'docs' \
+            --exclude-glob '.deploy-trigger' \
+            --exclude-glob 'backups' \
+            --exclude-glob 'logs' \
+            --exclude-glob '.well-known' \
+            . .
 
-            bye
+          bye
           EOF
 
           echo "✅ Deployment complete"
