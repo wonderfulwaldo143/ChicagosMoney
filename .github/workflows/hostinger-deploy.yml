@@ -15,13 +15,29 @@ jobs:
           USER: ${{ secrets.HOSTINGER_FTP_USERNAME }}
           PASS: ${{ secrets.HOSTINGER_FTP_PASSWORD }}
         run: |
-          lftp -u "$USER","$PASS" -p 65002 sftp://$HOST -e "
-            set sftp:auto-confirm yes;
-            set xfer:clobber on;
-            cd /home/u476428393/public_html/;
-            put -O . index.html;
-            lcd .;
+          echo "Starting deployment..."
+          echo "Local index.html size: $(wc -c < index.html) bytes"
+          echo "Local index.html checksum: $(md5sum index.html)"
+
+          lftp -u "$USER","$PASS" -p 65002 sftp://$HOST <<'EOF'
+            set sftp:auto-confirm yes
+            set xfer:clobber on
+            set cmd:verbose yes
+
+            cd /home/u476428393/public_html/
+
+            echo "Uploading index.html..."
+            put -O . index.html
+
+            echo "Verifying upload..."
+            cls -l index.html
+
+            echo "Syncing other files..."
             mirror -Rnev --delete --no-empty-dirs --parallel=4 \
-              --exclude-glob .git --exclude-glob .github --exclude-glob index.html \
-              . .;
-            quit"
+              --exclude-glob .git --exclude-glob .github \
+              . .
+
+            bye
+          EOF
+
+          echo "Deployment complete"
