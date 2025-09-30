@@ -1,3 +1,43 @@
+name: Deploy to Hostinger
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '**/*.html'
+      - '**/*.css'
+      - '**/*.js'
+      - '**/*.json'
+      - '**/*.xml'
+      - '**/*.txt'
+      - '**/*.php'
+      - '.htaccess'
+      - 'IMG/**'
+      - 'icons/**'
+      - 'api/**'
+      - 'assets/**'
+      - 'images/**'
+      - '.github/workflows/hostinger-deploy.yml'
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Deploy via SFTP
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    concurrency:
+      group: hostinger-deploy-${{ github.ref }}
+      cancel-in-progress: true
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Install lftp
+        run: sudo apt-get update && sudo apt-get install -y lftp
+
       - name: Deploy to Hostinger
         env:
           HOST: ${{ secrets.HOSTINGER_FTP_SERVER }}
@@ -11,33 +51,33 @@
           set net:timeout 30
           set net:reconnect-interval-base 5
           set xfer:clobber on
+
           cd /home/u476428393/public_html/
+
           mirror -Rnev --delete --no-empty-dirs --parallel=4 \
-            --exclude-glob '.git' \
-            --exclude-glob '.git/**' \
-            --exclude-glob '.github' \
-            --exclude-glob '.github/**' \
-            --exclude-glob '.vscode' \
-            --exclude-glob '.vscode/**' \
-            --exclude-glob '.gitignore' \
-            --exclude-glob '.DS_Store' \
+            --exclude-glob .git \
+            --exclude-glob .github \
+            --exclude-glob .vscode \
+            --exclude-glob .gitignore \
+            --exclude-glob .DS_Store \
             --exclude-glob '*.md' \
             --exclude-glob 'deploy*.sh' \
             --exclude-glob '.claude' \
-            --exclude-glob '.claude/**' \
             --exclude-glob 'docs' \
-            --exclude-glob 'docs/**' \
-            --exclude-glob '.deploy-trigger' \
             --exclude-glob 'backups' \
-            --exclude-glob 'backups/**' \
             --exclude-glob 'logs' \
-            --exclude-glob 'logs/**' \
-            --exclude-glob '.well-known' \
-            --exclude-glob '*.bak' \
             . .
-          cls -l
-          cat .htaccess | sed -n '1,20p'
+
           bye
-          EOF     # ← keep this indented exactly like the lines above
+          EOF
 
           echo "✅ Deployment complete"
+
+      - name: Verify live site updated
+        run: |
+          echo "⏳ Waiting 10 seconds for changes to propagate..."
+          sleep 10
+          echo "🔍 Fetching live homepage..."
+          curl -sS https://chicagosmoney.com/ | tee /tmp/live.html
+          echo "✅ Checking for index.html markers..."
+          grep -q '<title>Chicago' /tmp/live.html || { echo "❌ Not updated"; head -c 500 /tmp/live.html; exit 1; }
