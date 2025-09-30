@@ -223,7 +223,17 @@ FileETag None
 <Files "version.txt">
     Require all granted
     Header set Content-Type "text/plain; charset=utf-8"
+    Header set Cache-Control "no-store, no-cache, must-revalidate, max-age=0"
+    Header set Pragma "no-cache"
+    Header set Expires "0"
 </Files>
+
+# Disable all caching for testing
+<FilesMatch "\.(txt|html|php)$">
+    Header set Cache-Control "no-store, no-cache, must-revalidate, max-age=0"
+    Header set Pragma "no-cache"
+    Header set Expires "0"
+</FilesMatch>
 
 # Protect sensitive files (but version.txt is already allowed above)
 <FilesMatch "(^\.htaccess|\.htpasswd|\.git|\.env|composer\.(json|lock)|package\.(json|lock)|yarn\.lock|webpack\.config\.js|gulpfile\.js|Gruntfile\.js|.*\.md$)">
