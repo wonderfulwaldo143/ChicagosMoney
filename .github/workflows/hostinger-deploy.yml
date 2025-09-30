@@ -1,3 +1,43 @@
+name: Deploy to Hostinger
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '**/*.html'
+      - '**/*.css'
+      - '**/*.js'
+      - '**/*.json'
+      - '**/*.xml'
+      - '**/*.txt'
+      - '**/*.php'
+      - '.htaccess'
+      - 'IMG/**'
+      - 'icons/**'
+      - 'api/**'
+      - 'assets/**'
+      - 'images/**'
+      - '.github/workflows/hostinger-deploy.yml'
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Deploy via SFTP
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    concurrency:
+      group: hostinger-deploy-${{ github.ref }}
+      cancel-in-progress: true
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Install lftp
+        run: sudo apt-get update && sudo apt-get install -y lftp
+
       - name: Deploy to Hostinger
         env:
           HOST: ${{ secrets.HOSTINGER_FTP_SERVER }}
@@ -11,7 +51,9 @@
           set net:timeout 30
           set net:reconnect-interval-base 5
           set xfer:clobber on
+
           cd /home/u476428393/public_html/
+
           mirror -Rnev --delete --no-empty-dirs --parallel=4 \
             --exclude-regex '(^|/)\.(git|github|vscode|claude)(/|$)' \
             --exclude-regex '(^|/)(backups|logs|docs)(/|$)' \
@@ -30,6 +72,15 @@
           rm -rf .git .github .vscode .claude
 
           bye
-          EOF     # ← keep this indented exactly like the lines above
+          EOF
 
           echo "✅ Deployment complete"
+
+      - name: Verify live site updated
+        run: |
+          echo "⏳ Waiting 10 seconds for changes to propagate..."
+          sleep 10
+          echo "🔍 Fetching live homepage..."
+          curl -sS https://chicagosmoney.com/ | tee /tmp/live.html
+          echo "✅ Checking for index.html markers..."
+          grep -q '<title>Chicago' /tmp/live.html || { echo "❌ Not updated"; head -c 500 /tmp/live.html; exit 1; }
