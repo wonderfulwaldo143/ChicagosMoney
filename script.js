@@ -564,7 +564,8 @@ document.querySelectorAll('.nav-link').forEach(link => {
 // Register Service Worker for PWA support
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js')
+        // Add version querystring to force SW update on changes
+        navigator.serviceWorker.register('/sw.js?v=2025-09-30a')
             .then(registration => {
                 console.log('ServiceWorker registered:', registration);
                 

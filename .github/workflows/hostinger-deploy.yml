@@ -38,6 +38,11 @@ jobs:
       - name: Install lftp
         run: sudo apt-get update && sudo apt-get install -y lftp
 
+      - name: Generate version file
+        run: |
+          echo "${{ github.sha }} $(date -u +'%Y-%m-%dT%H:%M:%SZ')" > version.txt
+          echo "📝 Generated version.txt: $(cat version.txt)"
+
       - name: Deploy to Hostinger
         env:
           HOST: ${{ secrets.HOSTINGER_FTP_SERVER }}
@@ -82,9 +87,24 @@ jobs:
 
       - name: Verify live site updated
         run: |
-          echo "⏳ Waiting 5 seconds..."
+          echo "⏳ Waiting 5 seconds for propagation..."
           sleep 5
+
+          echo "🔍 Verifying version.txt matches this build..."
+          URL="https://chicagosmoney.com/version.txt?__=${{ github.run_id }}"
+          curl -sS -D /tmp/headers.txt -H 'Cache-Control: no-cache' "$URL" | tee /tmp/live_version.txt
+
+          echo ""
+          echo "---- Response headers ----"
+          cat /tmp/headers.txt
+
+          test -s /tmp/live_version.txt || { echo "❌ version.txt missing"; exit 1; }
+          grep -q "${{ github.sha }}" /tmp/live_version.txt || { echo "❌ Live version does not match build SHA"; cat /tmp/live_version.txt; exit 1; }
+
+          echo "✅ Live version matches: ${{ github.sha }}"
+
+          echo ""
           echo "🔍 Fetching live homepage..."
           curl -sS https://chicagosmoney.com/ | tee /tmp/live.html
-          echo "✅ Checking for index.html markers..."
-          grep -q '<title>Chicago' /tmp/live.html || { echo "❌ Not updated"; head -c 500 /tmp/live.html; exit 1; }
+          grep -q '<title>Chicago' /tmp/live.html || { echo "❌ Homepage not updated"; head -c 500 /tmp/live.html; exit 1; }
+          echo "✅ Homepage verified"

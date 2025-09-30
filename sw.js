@@ -1,7 +1,8 @@
 // Chicago's Money Service Worker v1.0
 // Provides offline support and caching for PWA
+// BUMP CACHE_NAME ON EVERY DEPLOY
 
-const CACHE_NAME = 'cm-v6-2025-09-30';
+const CACHE_NAME = 'cm-v9-2025-09-30a';
 const urlsToCache = [
   '/',
   '/budget-dashboard.html',
@@ -12,35 +13,34 @@ const urlsToCache = [
   'https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=Bebas+Neue&display=swap'
 ];
 
-// Install Service Worker
+// Install Service Worker - take over immediately
 self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then(cache => {
-        console.log('Opened cache');
+        console.log('Opened cache:', CACHE_NAME);
         return cache.addAll(urlsToCache);
       })
       .catch(err => console.log('Cache install error:', err))
   );
-  // Force the waiting service worker to become active immediately
   self.skipWaiting();
 });
 
-// Activate Service Worker
+// Activate Service Worker - delete old caches and claim clients
 self.addEventListener('activate', event => {
   event.waitUntil(
     (async () => {
-      const cacheNames = await caches.keys();
+      const keys = await caches.keys();
       await Promise.all(
-        cacheNames.map(cacheName => {
-          if (cacheName !== CACHE_NAME) {
-            console.log('Deleting old cache:', cacheName);
-            return caches.delete(cacheName);
+        keys.map(key => {
+          if (key !== CACHE_NAME) {
+            console.log('Deleting old cache:', key);
+            return caches.delete(key);
           }
         })
       );
-      // Take control of all clients immediately
       await self.clients.claim();
+      console.log('Service worker activated:', CACHE_NAME);
     })()
   );
 });
