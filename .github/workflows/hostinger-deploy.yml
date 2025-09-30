@@ -17,9 +17,11 @@ jobs:
         run: |
           lftp -u "$USER","$PASS" -p 65002 sftp://$HOST -e "
             set sftp:auto-confirm yes;
+            set xfer:clobber on;
             cd /home/u476428393/public_html/;
-            put index.html;
-            mirror -Rnev --delete --parallel=4 \
-              --exclude-glob .git --exclude-glob .github --exclude index.html \
-              ./ /home/u476428393/public_html/;
+            put -O . index.html;
+            lcd .;
+            mirror -Rnev --delete --no-empty-dirs --parallel=4 \
+              --exclude-glob .git --exclude-glob .github --exclude-glob index.html \
+              . .;
             quit"
