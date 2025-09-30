@@ -198,9 +198,6 @@ RewriteRule \.(jpg|jpeg|png|gif|webp|svg)$ - [F]
     # Block bad bots
     RewriteCond %{HTTP_USER_AGENT} (ahrefs|mj12bot|semrush|dotbot|rogerbot) [NC]
     RewriteRule .* - [F,L]
-    
-    # Redirect 404 to homepage (optional - remove if you want real 404s)
-    ErrorDocument 404 /index.html
 </IfModule>
 
 # ===================================================================

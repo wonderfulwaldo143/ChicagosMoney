@@ -51,14 +51,28 @@ jobs:
           VERSION="${{ github.sha }}"
           TIMESTAMP="$(date -u +'%Y-%m-%dT%H:%M:%SZ')"
 
+          # Update version.txt
           echo "$VERSION $TIMESTAMP" > version.txt
           echo "📝 Generated version.txt: $(cat version.txt)"
 
           # Add version comments to CSS and JS files for cache verification
-          echo "/* Version: $VERSION - $TIMESTAMP */" | cat - styles.css > temp && mv temp styles.css
-          echo "/* Version: $VERSION - $TIMESTAMP */" | cat - script.js > temp && mv temp script.js
+          COMMENT="/* Deployed: $VERSION at $TIMESTAMP */"
 
-          echo "✅ Added version stamps to static assets"
+          # Add comment to CSS (if not already present)
+          if ! head -1 styles.css | grep -q "Deployed:"; then
+            { echo "$COMMENT"; cat styles.css; } > styles.css.tmp && mv styles.css.tmp styles.css
+            echo "✅ Added version stamp to styles.css"
+          fi
+
+          # Add comment to JS (if not already present)
+          if ! head -1 script.js | grep -q "Deployed:"; then
+            { echo "$COMMENT"; cat script.js; } > script.js.tmp && mv script.js.tmp script.js
+            echo "✅ Added version stamp to script.js"
+          fi
+
+          # Show first line of each file for verification
+          echo "📄 styles.css first line: $(head -1 styles.css)"
+          echo "📄 script.js first line: $(head -1 script.js)"
 
       - name: Deploy to Hostinger
         env:
