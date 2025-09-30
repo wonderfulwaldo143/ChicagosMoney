@@ -38,21 +38,6 @@ jobs:
       - name: Install lftp
         run: sudo apt-get update && sudo apt-get install -y lftp
 
-      - name: One-time remote cleanup (md, DS_Store, deploy.sh)
-        env:
-          HOST: ${{ secrets.HOSTINGER_FTP_SERVER }}
-          USER: ${{ secrets.HOSTINGER_FTP_USERNAME }}
-          PASS: ${{ secrets.HOSTINGER_FTP_PASSWORD }}
-        run: |
-          lftp -u "$USER","$PASS" -p 65002 sftp://$HOST <<'EOF'
-          set sftp:auto-confirm yes
-          cd /home/u476428393/public_html/
-          rm -f .DS_Store deploy.sh
-          rm -f *.md
-          rm -f IMG/*.md api/*.md icons/*.md || :
-          bye
-          EOF
-
       - name: Deploy to Hostinger
         env:
           HOST: ${{ secrets.HOSTINGER_FTP_SERVER }}
@@ -60,6 +45,7 @@ jobs:
           PASS: ${{ secrets.HOSTINGER_FTP_PASSWORD }}
         run: |
           echo "🚀 Starting deployment..."
+
           lftp -u "$USER","$PASS" -p 65002 sftp://$HOST <<'EOF'
           set sftp:auto-confirm yes
           set net:max-retries 3
@@ -69,22 +55,25 @@ jobs:
 
           cd /home/u476428393/public_html/
 
+          # ================================
+          # ONE-TIME CLEANUP  (REMOVE AFTER SUCCESSFUL RUN)
+          # Delete junk that previously leaked to prod
+          rm -f .DS_Store deploy.sh || :
+          rm -f *.md || :
+          rm -f IMG/*.md api/*.md icons/*.md || :
+          # ================================
+
+          # Deploy
           mirror -Rnev --delete --no-empty-dirs --parallel=4 \
-            -x '(^|/)\.(git|github|vscode|claude)(/|$)' \
-            -x '(^|/)(backups|logs|docs)(/|$)' \
-            -X '.gitignore' \
+            -x '(^|/)\.(git|github|vscode)(/|$)' \
+            -x '(^|/)(backups|logs)(/|$)' \
             -X '.DS_Store' \
             -X '*.md' \
-            -X '*.bak' \
             -X 'deploy*.sh' \
             -X '.deploy-trigger' \
+            -X 'docs/**' \
             -X '.well-known/**' \
             . .
-          cls -l
-          cat .htaccess | sed -n '1,20p'
-
-          echo "🧹 Cleaning up leaked directories..."
-          rm -rf .git .github .vscode .claude
 
           bye
           EOF
@@ -93,8 +82,8 @@ jobs:
 
       - name: Verify live site updated
         run: |
-          echo "⏳ Waiting 10 seconds for changes to propagate..."
-          sleep 10
+          echo "⏳ Waiting 5 seconds..."
+          sleep 5
           echo "🔍 Fetching live homepage..."
           curl -sS https://chicagosmoney.com/ | tee /tmp/live.html
           echo "✅ Checking for index.html markers..."
