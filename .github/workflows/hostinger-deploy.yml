@@ -94,7 +94,7 @@ jobs:
           echo "   User: $USER"
           echo "   Remote Dir: $REMOTE_DIR"
 
-          lftp -u "$USER","$PASS" sftp://"$HOST":"$PORT" <<'EOF'
+          lftp -u "$USER","$PASS" sftp://"$HOST":"$PORT" <<EOF
           set net:timeout 30
           set net:max-retries 3
           set net:reconnect-interval-base 5
@@ -108,6 +108,7 @@ jobs:
             --parallel=4 \
             --continue \
             --verbose \
+            --delete \
             --exclude-glob .git* \
             --exclude-glob .github/ \
             --exclude-glob node_modules/ \
@@ -118,7 +119,9 @@ jobs:
             --exclude-glob .deploy-trigger \
             --exclude-glob docs/ \
             --exclude-glob backups/ \
-            --exclude-glob logs/
+            --exclude-glob logs/ \
+            $GITHUB_WORKSPACE/ \
+            /home/u476428393/public_html/
 
           bye
           EOF
