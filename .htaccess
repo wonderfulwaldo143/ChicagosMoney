@@ -155,6 +155,14 @@ RewriteRule \.(jpg|jpeg|png|gif|webp|svg)$ - [F]
         Header set Expires 0
     </FilesMatch>
 
+    # Don't cache version.txt (for deployment verification)
+    <Files "version.txt">
+        Header set Cache-Control "no-cache, no-store, must-revalidate, max-age=0"
+        Header set Pragma "no-cache"
+        Header set Expires 0
+        Header set Content-Type "text/plain; charset=utf-8"
+    </Files>
+
     # Never cache service worker (critical for updates)
     <Files "sw.js">
         Header set Cache-Control "no-store, no-cache, must-revalidate, max-age=0"
@@ -214,11 +222,17 @@ FileETag None
 # FILE ACCESS
 # ===================================================================
 
-# Protect sensitive files
+# Protect sensitive files (but allow version.txt for deployment verification)
 <FilesMatch "(^\.htaccess|\.htpasswd|\.git|\.env|composer\.(json|lock)|package\.(json|lock)|yarn\.lock|webpack\.config\.js|gulpfile\.js|Gruntfile\.js|.*\.md$)">
     Order allow,deny
     Deny from all
 </FilesMatch>
+
+# Explicitly allow version.txt
+<Files "version.txt">
+    Order allow,deny
+    Allow from all
+</Files>
 
 # Allow access to well-known files
 <IfModule mod_alias.c>

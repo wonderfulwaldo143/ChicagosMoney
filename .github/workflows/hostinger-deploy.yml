@@ -109,37 +109,42 @@ jobs:
           echo "⏳ Waiting 10 seconds for file propagation..."
           sleep 10
 
+          echo "🔍 Verifying homepage is accessible..."
+          if curl -sS -f -o /dev/null "https://chicagosmoney.com/?cb=${{ github.run_id }}"; then
+            echo "✅ Homepage is accessible"
+          else
+            echo "❌ Homepage check failed"
+            exit 1
+          fi
+
+          echo ""
           echo "🔍 Checking if version.txt is accessible..."
           URL="https://chicagosmoney.com/version.txt?cb=${{ github.run_id }}"
 
           HTTP_CODE=$(curl -sS -w "%{http_code}" -o /tmp/live_version.txt "$URL")
-          echo "HTTP Status: $HTTP_CODE"
+          echo "📊 HTTP Status: $HTTP_CODE"
 
-          if [ "$HTTP_CODE" = "200" ]; then
-            echo "✅ version.txt accessible"
-            echo "Content:"
-            cat /tmp/live_version.txt
+          # Check if we got actual version.txt content (not HTML)
+          if [ "$HTTP_CODE" = "200" ] && grep -q "^[0-9a-f]\{40\}" /tmp/live_version.txt 2>/dev/null; then
+            echo "✅ version.txt accessible and valid"
+            echo "📄 Content: $(cat /tmp/live_version.txt)"
 
             if grep -q "${{ github.sha }}" /tmp/live_version.txt; then
-              echo "✅ Live version matches build: ${{ github.sha }}"
+              echo "✅ Live version matches this build: ${{ github.sha }}"
             else
-              echo "⚠️  Version mismatch, but deployment succeeded"
-              echo "Expected: ${{ github.sha }}"
-              echo "Got: $(cat /tmp/live_version.txt)"
+              echo "⚠️  Version mismatch (may indicate caching or race condition)"
+              echo "   Expected: ${{ github.sha }}"
+              echo "   Got: $(cat /tmp/live_version.txt)"
             fi
           else
-            echo "⚠️  version.txt returned HTTP $HTTP_CODE (may be normal on first deploy)"
-            echo "First 200 chars of response:"
-            head -c 200 /tmp/live_version.txt
+            echo "⚠️  version.txt not accessible or returned HTML (common on .htaccess 404 redirect)"
+            if [ -f /tmp/live_version.txt ]; then
+              echo "📄 First 150 chars of response:"
+              head -c 150 /tmp/live_version.txt | tr '\n' ' '
+              echo ""
+            fi
+            echo "ℹ️  This is expected if ErrorDocument 404 redirects to index.html"
           fi
 
           echo ""
-          echo "🔍 Verifying homepage is accessible..."
-          if curl -sS -f -o /dev/null https://chicagosmoney.com/; then
-            echo "✅ Homepage is accessible"
-          else
-            echo "⚠️  Homepage check failed, but deployment completed"
-          fi
-
-          echo ""
-          echo "✅ Deployment verification complete"
+          echo "✅ Deployment verification complete - site is live!"
