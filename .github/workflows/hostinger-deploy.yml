@@ -60,33 +60,42 @@ jobs:
         run: |
           set +e
           echo "🚀 Starting deployment..."
-          lftp -u "$USER","$PASS" sftp://"$HOST":"$PORT" -e "
-            set net:timeout 30;
-            set net:max-retries 3;
-            set net:reconnect-interval-base 5;
-            set sftp:auto-confirm yes;
-            set xfer:clobber on;
-            mkdir -p $REMOTE_DIR;
-            cd $REMOTE_DIR;
-            lcd $GITHUB_WORKSPACE;
-            mirror -R \
-              --parallel=4 \
-              --continue \
-              --only-newer \
-              --verbose \
-              --exclude-glob .git* \
-              --exclude-glob .github/ \
-              --exclude-glob node_modules/ \
-              --exclude-glob '*.map' \
-              --exclude-glob '*.md' \
-              --exclude-glob deploy.sh \
-              --exclude-glob .DS_Store \
-              --exclude-glob .deploy-trigger \
-              --exclude-glob docs/ \
-              --exclude-glob backups/ \
-              --exclude-glob logs/;
-            bye
-          "
+          echo "📋 Connection details:"
+          echo "   Host: $HOST"
+          echo "   Port: $PORT"
+          echo "   User: $USER"
+          echo "   Remote Dir: $REMOTE_DIR"
+
+          lftp -u "$USER","$PASS" sftp://"$HOST":"$PORT" <<'EOF'
+          set net:timeout 30
+          set net:max-retries 3
+          set net:reconnect-interval-base 5
+          set sftp:auto-confirm yes
+          set xfer:clobber on
+
+          cd /home/u476428393/public_html
+          lcd $GITHUB_WORKSPACE
+
+          mirror -R \
+            --parallel=4 \
+            --continue \
+            --only-newer \
+            --verbose \
+            --exclude-glob .git* \
+            --exclude-glob .github/ \
+            --exclude-glob node_modules/ \
+            --exclude-glob '*.map' \
+            --exclude-glob '*.md' \
+            --exclude-glob deploy.sh \
+            --exclude-glob .DS_Store \
+            --exclude-glob .deploy-trigger \
+            --exclude-glob docs/ \
+            --exclude-glob backups/ \
+            --exclude-glob logs/
+
+          bye
+          EOF
+
           STATUS=$?
           # lftp exit 1 is commonly benign (e.g., trying to remove non-existent file).
           if [ $STATUS -ne 0 ] && [ $STATUS -ne 1 ]; then
