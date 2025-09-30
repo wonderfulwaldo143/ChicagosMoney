@@ -2,11 +2,12 @@
 // Aggregated payroll summary endpoint for the budget dashboard.
 // Returns JSON with total payroll, overtime and headcount.
 
-header('Access-Control-Allow-Origin: *');
-header('Content-Type: application/json; charset=utf-8');
+// Load configuration
+require_once __DIR__ . '/../config/config.php';
+set_cors_headers();
 
-$APP_TOKEN = 'bctos95775igogxkalare3rhu';
-$DATASET = 'https://data.cityofchicago.org/resource/xzkq-xp2w.json';
+$APP_TOKEN = SOCRATA_APP_TOKEN;
+$DATASET = 'https://' . SOCRATA_API_DOMAIN . '/resource/xzkq-xp2w.json';
 
 $summary = [
   'payroll' => null,

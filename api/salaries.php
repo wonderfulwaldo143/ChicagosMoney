@@ -7,7 +7,11 @@
 //
 // SECURITY: Only forwards to data.cityofchicago.org/resource/xzkq-xp2w.(json|csv)
 
-$APP_TOKEN = 'bctos95775igogxkalare3rhu';
+// Load configuration
+require_once __DIR__ . '/../config/config.php';
+set_cors_headers();
+
+$APP_TOKEN = SOCRATA_APP_TOKEN;
 
 if (!isset($_GET['url'])) {
   http_response_code(400);
@@ -103,7 +107,6 @@ $contentType = (strpos($parts['path'], '.csv') !== false)
   : 'application/json; charset=utf-8';
 
 if ($http >= 200 && $http < 300) {
-  header('Access-Control-Allow-Origin: *');
   header('Content-Type: ' . $contentType);
   echo $resp;
   exit;

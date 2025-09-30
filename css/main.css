@@ -1,0 +1,19 @@
+/**
+ * Chicago's Money - Main CSS
+ * Modular CSS architecture for better maintainability
+ */
+
+/* Core - Foundation */
+@import 'core/variables.css';
+@import 'core/reset.css';
+
+/* Components - Reusable UI elements */
+@import 'components/navigation.css';
+
+/* Layouts - Page structure */
+
+/* Pages - Page-specific styles */
+
+/* Utilities - Helper classes and animations */
+
+/* Keep existing styles.css for now - will gradually migrate */

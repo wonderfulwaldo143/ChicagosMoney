@@ -1,5 +1,22 @@
-# macOS Finder metadata
-**/.DS_Store
+# Environment files - NEVER commit these
+config/.env
+.env
 
-# Local Claude configuration
-.claude/
+# MacOS
+.DS_Store
+
+# IDE
+.vscode/
+.idea/
+
+# Logs
+*.log
+
+# Dependencies
+node_modules/
+
+# Backup files
+*.bak
+*.backup
+*_backup.*
+*_old.*
