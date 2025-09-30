@@ -1,7 +1,7 @@
 // Chicago's Money Service Worker v1.0
 // Provides offline support and caching for PWA
 
-const CACHE_NAME = 'chicagos-money-v4';
+const CACHE_NAME = 'chicagos-money-v5';
 const urlsToCache = [
   '/',
   '/budget-dashboard.html',

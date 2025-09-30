@@ -77,7 +77,7 @@ jobs:
         run: |
           echo "🚀 Starting deployment..."
 
-          lftp -u "$USER","$PASS" -p 65002 sftp://$HOST <<EOF
+          lftp -u "$USER","$PASS" -p 65002 sftp://$HOST <<'EOF'
           set sftp:auto-confirm yes
           set net:max-retries 3
           set net:timeout 30
@@ -87,21 +87,54 @@ jobs:
           cd /home/u476428393/public_html/
 
           mirror -Rnev --delete --no-empty-dirs --parallel=4 \
-            --exclude-glob .git \
-            --exclude-glob .github \
-            --exclude-glob .gitignore \
-            --exclude-glob .DS_Store \
+            --exclude-glob '.git' \
+            --exclude-glob '.git/**' \
+            --exclude-glob '.github' \
+            --exclude-glob '.github/**' \
+            --exclude-glob '.vscode' \
+            --exclude-glob '.vscode/**' \
+            --exclude-glob '.gitignore' \
+            --exclude-glob '.DS_Store' \
             --exclude-glob '*.md' \
             --exclude-glob 'deploy*.sh' \
             --exclude-glob '.claude' \
+            --exclude-glob '.claude/**' \
             --exclude-glob 'docs' \
+            --exclude-glob 'docs/**' \
             --exclude-glob '.deploy-trigger' \
             --exclude-glob 'backups' \
+            --exclude-glob 'backups/**' \
             --exclude-glob 'logs' \
+            --exclude-glob 'logs/**' \
             --exclude-glob '.well-known' \
+            --exclude-glob '*.bak' \
             . .
 
+          cls -l
+          cat .htaccess | sed -n '1,20p'
+
           bye
-          EOF
+EOF
 
           echo "✅ Deployment complete"
+
+      - name: Verify live site updated
+        run: |
+          echo "⏳ Waiting 10 seconds for changes to propagate..."
+          sleep 10
+
+          echo "🔍 Fetching live homepage..."
+          curl -sS https://chicagosmoney.com/ | tee /tmp/live.html
+
+          echo ""
+          echo "✅ Checking for index.html markers..."
+
+          # Check for unique string from new index.html (adjust this to match your actual content)
+          if grep -q '<title>Chicago' /tmp/live.html; then
+            echo "✅ SUCCESS: Live site is serving index.html"
+          else
+            echo "❌ FAILURE: Live site may not be serving updated index.html"
+            echo "First 500 chars of response:"
+            head -c 500 /tmp/live.html
+            exit 1
+          fi
