@@ -74,6 +74,10 @@ jobs:
           echo "📄 styles.css first line: $(head -1 styles.css)"
           echo "📄 script.js first line: $(head -1 script.js)"
 
+          # Create a timestamp file to verify uploads
+          echo "Deployed: $VERSION at $TIMESTAMP" > .last-deploy
+          echo "📝 Created .last-deploy marker"
+
       - name: Deploy to Hostinger
         env:
           HOST: ${{ secrets.HOSTINGER_FTP_SERVER }}
@@ -103,7 +107,6 @@ jobs:
           mirror -R \
             --parallel=4 \
             --continue \
-            --only-newer \
             --verbose \
             --exclude-glob .git* \
             --exclude-glob .github/ \

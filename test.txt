@@ -1,0 +1,4 @@
+DEPLOYMENT TEST - If you see this, files ARE being uploaded!
+Generated: 2025-09-30T18:45:00Z
+Commit: 39fd8cd
+This is a plain text file that should bypass ALL caching.
