@@ -38,6 +38,21 @@ jobs:
       - name: Install lftp
         run: sudo apt-get update && sudo apt-get install -y lftp
 
+      - name: One-time remote cleanup (md, DS_Store, deploy.sh)
+        env:
+          HOST: ${{ secrets.HOSTINGER_FTP_SERVER }}
+          USER: ${{ secrets.HOSTINGER_FTP_USERNAME }}
+          PASS: ${{ secrets.HOSTINGER_FTP_PASSWORD }}
+        run: |
+          lftp -u "$USER","$PASS" -p 65002 sftp://$HOST <<'EOF'
+          set sftp:auto-confirm yes
+          cd /home/u476428393/public_html/
+          rm -f .DS_Store deploy.sh
+          rm -f *.md
+          rm -f IMG/*.md api/*.md icons/*.md || :
+          bye
+          EOF
+
       - name: Deploy to Hostinger
         env:
           HOST: ${{ secrets.HOSTINGER_FTP_SERVER }}

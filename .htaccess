@@ -154,7 +154,14 @@ RewriteRule \.(jpg|jpeg|png|gif|webp|svg)$ - [F]
         Header set Pragma "no-cache"
         Header set Expires 0
     </FilesMatch>
-    
+
+    # Never cache service worker (critical for updates)
+    <Files "sw.js">
+        Header set Cache-Control "no-store, no-cache, must-revalidate, max-age=0"
+        Header set Pragma "no-cache"
+        Header set Expires 0
+    </Files>
+
     # 1 week for manifest
     <FilesMatch "manifest\.json$">
         Header set Cache-Control "public, max-age=604800"

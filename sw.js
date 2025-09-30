@@ -1,7 +1,7 @@
 // Chicago's Money Service Worker v1.0
 // Provides offline support and caching for PWA
 
-const CACHE_NAME = 'chicagos-money-v5';
+const CACHE_NAME = 'cm-v6-2025-09-30';
 const urlsToCache = [
   '/',
   '/budget-dashboard.html',
@@ -22,15 +22,16 @@ self.addEventListener('install', event => {
       })
       .catch(err => console.log('Cache install error:', err))
   );
-  // Force the waiting service worker to become active
+  // Force the waiting service worker to become active immediately
   self.skipWaiting();
 });
 
 // Activate Service Worker
 self.addEventListener('activate', event => {
   event.waitUntil(
-    caches.keys().then(cacheNames => {
-      return Promise.all(
+    (async () => {
+      const cacheNames = await caches.keys();
+      await Promise.all(
         cacheNames.map(cacheName => {
           if (cacheName !== CACHE_NAME) {
             console.log('Deleting old cache:', cacheName);
@@ -38,10 +39,10 @@ self.addEventListener('activate', event => {
           }
         })
       );
-    })
+      // Take control of all clients immediately
+      await self.clients.claim();
+    })()
   );
-  // Claim all clients
-  self.clients.claim();
 });
 
 // Fetch event - Network first, fallback to cache
