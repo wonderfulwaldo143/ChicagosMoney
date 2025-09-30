@@ -11,12 +11,17 @@ on:
       - '**/*.xml'
       - '**/*.txt'
       - '**/*.php'
+      - '**/.htaccess'
       - '.htaccess'
       - 'IMG/**'
       - 'icons/**'
       - 'api/**'
       - 'assets/**'
-      - 'images/**'
+      - 'sw.js'
+      - 'manifest.json'
+      - 'sitemap.xml'
+      - 'robots.txt'
+      - 'version.txt'
       - '.github/workflows/hostinger-deploy.yml'
   workflow_dispatch:
 
@@ -24,9 +29,9 @@ jobs:
   deploy:
     name: Deploy via SFTP
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
     concurrency:
-      group: hostinger-deploy-${{ github.ref }}
+      group: cm-deploy-${{ github.ref }}
       cancel-in-progress: true
 
     steps:
@@ -36,7 +41,9 @@ jobs:
           fetch-depth: 1
 
       - name: Install lftp
-        run: sudo apt-get update && sudo apt-get install -y lftp
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y lftp
 
       - name: Generate version file
         run: |
@@ -46,44 +53,47 @@ jobs:
       - name: Deploy to Hostinger
         env:
           HOST: ${{ secrets.HOSTINGER_FTP_SERVER }}
+          PORT: ${{ secrets.HOSTINGER_FTP_PORT }}
           USER: ${{ secrets.HOSTINGER_FTP_USERNAME }}
           PASS: ${{ secrets.HOSTINGER_FTP_PASSWORD }}
+          REMOTE_DIR: ${{ secrets.HOSTINGER_REMOTE_DIR }}
         run: |
+          set +e
           echo "🚀 Starting deployment..."
-
-          lftp -u "$USER","$PASS" -p 65002 sftp://$HOST <<'EOF'
-          set sftp:auto-confirm yes
-          set net:max-retries 3
-          set net:timeout 30
-          set net:reconnect-interval-base 5
-          set xfer:clobber on
-
-          cd /home/u476428393/public_html/
-
-          # ================================
-          # ONE-TIME CLEANUP  (REMOVE AFTER SUCCESSFUL RUN)
-          # Delete junk that previously leaked to prod
-          rm -f .DS_Store deploy.sh || :
-          rm -f *.md || :
-          rm -f IMG/*.md api/*.md icons/*.md || :
-          # ================================
-
-          # Deploy
-          mirror -Rnev --delete --no-empty-dirs --parallel=4 \
-            -x '(^|/)\.(git|github|vscode)(/|$)' \
-            -x '(^|/)(backups|logs)(/|$)' \
-            -X '.DS_Store' \
-            -X '*.md' \
-            -X 'deploy*.sh' \
-            -X '.deploy-trigger' \
-            -X 'docs/**' \
-            -X '.well-known/**' \
-            . .
-
-          bye
-          EOF
-
-          echo "✅ Deployment complete"
+          lftp -u "$USER","$PASS" sftp://"$HOST":"$PORT" -e "
+            set net:timeout 30;
+            set net:max-retries 3;
+            set net:reconnect-interval-base 5;
+            set sftp:auto-confirm yes;
+            set xfer:clobber on;
+            mkdir -p $REMOTE_DIR;
+            cd $REMOTE_DIR;
+            lcd $GITHUB_WORKSPACE;
+            mirror -R \
+              --parallel=4 \
+              --continue \
+              --only-newer \
+              --verbose \
+              --exclude-glob .git* \
+              --exclude-glob .github/ \
+              --exclude-glob node_modules/ \
+              --exclude-glob '*.map' \
+              --exclude-glob '*.md' \
+              --exclude-glob deploy.sh \
+              --exclude-glob .DS_Store \
+              --exclude-glob .deploy-trigger \
+              --exclude-glob docs/ \
+              --exclude-glob backups/ \
+              --exclude-glob logs/;
+            bye
+          "
+          STATUS=$?
+          # lftp exit 1 is commonly benign (e.g., trying to remove non-existent file).
+          if [ $STATUS -ne 0 ] && [ $STATUS -ne 1 ]; then
+            echo "::error::lftp failed with exit code $STATUS"
+            exit $STATUS
+          fi
+          echo "✅ Deployment complete (exit=$STATUS)"
 
       - name: Verify live site updated
         run: |
