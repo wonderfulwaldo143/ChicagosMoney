@@ -13,30 +13,22 @@
           set xfer:clobber on
           cd /home/u476428393/public_html/
           mirror -Rnev --delete --no-empty-dirs --parallel=4 \
-            --exclude-glob '.git' \
-            --exclude-glob '.git/**' \
-            --exclude-glob '.github' \
-            --exclude-glob '.github/**' \
-            --exclude-glob '.vscode' \
-            --exclude-glob '.vscode/**' \
+            --exclude-regex '(^|/)\.(git|github|vscode|claude)(/|$)' \
+            --exclude-regex '(^|/)(backups|logs|docs)(/|$)' \
             --exclude-glob '.gitignore' \
             --exclude-glob '.DS_Store' \
             --exclude-glob '*.md' \
-            --exclude-glob 'deploy*.sh' \
-            --exclude-glob '.claude' \
-            --exclude-glob '.claude/**' \
-            --exclude-glob 'docs' \
-            --exclude-glob 'docs/**' \
-            --exclude-glob '.deploy-trigger' \
-            --exclude-glob 'backups' \
-            --exclude-glob 'backups/**' \
-            --exclude-glob 'logs' \
-            --exclude-glob 'logs/**' \
-            --exclude-glob '.well-known' \
             --exclude-glob '*.bak' \
+            --exclude-glob 'deploy*.sh' \
+            --exclude-glob '.deploy-trigger' \
+            --exclude-glob '.well-known/**' \
             . .
           cls -l
           cat .htaccess | sed -n '1,20p'
+
+          echo "🧹 Cleaning up leaked directories..."
+          rm -rf .git .github .vscode .claude
+
           bye
           EOF     # ← keep this indented exactly like the lines above
 
