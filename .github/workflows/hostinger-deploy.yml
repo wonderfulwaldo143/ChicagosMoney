@@ -1,43 +1,67 @@
-name: Deploy via lftp (SFTP)
+name: Deploy to Hostinger
 on:
   push:
     branches: [main]
+    paths:
+      - '**.html'
+      - '**.css'
+      - '**.js'
+      - '**.json'
+      - '**.xml'
+      - '**.txt'
+      - '**.php'
+      - '.htaccess'
+      - 'IMG/**'
+      - 'icons/**'
+      - 'api/**'
+      - '.github/workflows/hostinger-deploy.yml'
+  workflow_dispatch:
+
 jobs:
   deploy:
+    name: Deploy via SFTP
     runs-on: ubuntu-latest
+    timeout-minutes: 15
+    concurrency:
+      group: hostinger-deploy-${{ github.ref }}
+      cancel-in-progress: true
+
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
       - name: Install lftp
         run: sudo apt-get update && sudo apt-get install -y lftp
-      - name: Mirror to Hostinger
+
+      - name: Deploy to Hostinger
         env:
           HOST: ${{ secrets.HOSTINGER_FTP_SERVER }}
           USER: ${{ secrets.HOSTINGER_FTP_USERNAME }}
           PASS: ${{ secrets.HOSTINGER_FTP_PASSWORD }}
         run: |
-          echo "Starting deployment..."
-          echo "Local index.html size: $(wc -c < index.html) bytes"
-          echo "Local index.html checksum: $(md5sum index.html)"
+          echo "🚀 Starting deployment..."
 
           lftp -u "$USER","$PASS" -p 65002 sftp://$HOST <<'EOF'
             set sftp:auto-confirm yes
             set xfer:clobber on
-            set cmd:verbose yes
 
             cd /home/u476428393/public_html/
 
-            echo "Uploading index.html..."
-            put -O . index.html
-
-            echo "Verifying upload..."
-            cls -l index.html
-
-            echo "Syncing other files..."
             mirror -Rnev --delete --no-empty-dirs --parallel=4 \
-              --exclude-glob .git --exclude-glob .github \
+              --exclude-glob .git \
+              --exclude-glob .github \
+              --exclude-glob .gitignore \
+              --exclude-glob .DS_Store \
+              --exclude-glob '*.md' \
+              --exclude-glob deploy.sh \
+              --exclude-glob .claude \
+              --exclude-glob docs \
+              --exclude-glob .deploy-trigger \
               . .
 
             bye
           EOF
 
-          echo "Deployment complete"
+          echo "✅ Deployment complete"
