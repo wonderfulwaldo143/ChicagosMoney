@@ -1607,45 +1607,60 @@
         }
         
         .contact-info {
-            font-size: 1.25rem;
-            margin-bottom: 2rem;
+            font-size: 1.125rem;
+            margin-bottom: 2.5rem;
+            color: #4b5563;
+            line-height: 1.6;
         }
-        
+
         .contact-email {
             color: #0047AB;
             font-weight: 600;
             text-decoration: none;
+            transition: color 0.2s ease;
         }
-        
+
         .contact-email:hover {
+            color: #003380;
             text-decoration: underline;
         }
 
         .contact-extra {
-            margin-top: 1.5rem;
+            margin: 2.5rem 0;
         }
 
         .newsletter-form {
-            max-width: 500px;
+            max-width: 600px;
             margin: 0 auto;
             display: flex;
             gap: 1rem;
             flex-wrap: wrap;
+            background: #f9fafb;
+            padding: 2rem;
+            border-radius: 12px;
+            border: 1px solid #e5e7eb;
         }
-        
+
         .newsletter-input {
             flex: 1;
-            padding: 1rem 1.5rem;
-            border: 2px solid #e5e7eb;
+            min-width: 280px;
+            padding: 0.875rem 1.25rem;
+            border: 2px solid #d1d5db;
             border-radius: 8px;
             outline: none;
             font-size: 1rem;
             transition: all 0.3s ease;
+            background: white;
         }
-        
+
         .newsletter-input:focus {
             border-color: #0047AB;
             box-shadow: 0 0 0 3px rgba(0, 71, 171, 0.1);
+        }
+
+        .newsletter-form .btn {
+            min-width: 140px;
+            padding: 0.875rem 2rem;
         }
         
         /* Footer */
