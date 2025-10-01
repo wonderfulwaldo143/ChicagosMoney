@@ -104,25 +104,36 @@ jobs:
           cd /home/u476428393/public_html
           lcd $GITHUB_WORKSPACE
 
+          # First, remove problem directories if they exist
+          rm -rf .git .github .vscode .claude ChicagosMoenyRepo node_modules docs backups logs
+
+          # Then sync with excludes
           mirror -R \
             --parallel=4 \
             --continue \
             --verbose \
             --delete \
-            --exclude ^\.git/ \
-            --exclude ^\.git$ \
-            --exclude ^\.github/ \
-            --exclude ^node_modules/ \
-            --exclude \.map$ \
-            --exclude \.md$ \
-            --exclude ^deploy\.sh$ \
-            --exclude ^\.DS_Store$ \
-            --exclude ^\.deploy-trigger$ \
-            --exclude ^\.gitignore$ \
-            --exclude ^\.gitattributes$ \
-            --exclude ^docs/ \
-            --exclude ^backups/ \
-            --exclude ^logs/ \
+            --exclude-glob=.git \
+            --exclude-glob=.git/** \
+            --exclude-glob=.github \
+            --exclude-glob=.github/** \
+            --exclude-glob=.vscode \
+            --exclude-glob=.vscode/** \
+            --exclude-glob=.claude \
+            --exclude-glob=.claude/** \
+            --exclude-glob=node_modules/** \
+            --exclude-glob=docs/** \
+            --exclude-glob=backups/** \
+            --exclude-glob=logs/** \
+            --exclude-glob=ChicagosMoenyRepo \
+            --exclude-glob=ChicagosMoenyRepo/** \
+            --exclude-glob=*.map \
+            --exclude-glob=*.md \
+            --exclude-glob=deploy.sh \
+            --exclude-glob=.DS_Store \
+            --exclude-glob=.deploy-trigger \
+            --exclude-glob=.gitignore \
+            --exclude-glob=.gitattributes \
             . \
             /home/u476428393/public_html/
 
