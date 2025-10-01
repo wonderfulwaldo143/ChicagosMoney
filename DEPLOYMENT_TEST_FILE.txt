@@ -1,0 +1,2 @@
+This file was created at 2025-10-01 to test deployment location.
+If you can see this file in the File Manager, then deployments are working to this location!
