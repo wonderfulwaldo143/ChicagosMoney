@@ -101,13 +101,8 @@ jobs:
           set sftp:auto-confirm yes
           set xfer:clobber on
 
-          # Print current directory to see where we are
-          pwd
-          ls -la
-
-          # Try to change to the correct public_html
-          # On Hostinger agency plans, sites are often in websites/domain.com/public_html
-          cd websites/chicagosmoney.com/public_html || cd websites/chicagosmoney.com || cd domains/chicagosmoney.com/public_html || cd public_html || cd /home/u476428393/public_html || cd ~/public_html
+          # Change to the correct document root
+          cd /home/u476428393/websites/SqQqgFb2r/public_html
           pwd
           ls -la | head -20
 
