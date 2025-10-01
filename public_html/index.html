@@ -240,7 +240,19 @@
             z-index: 1000;
             transition: all 0.3s ease;
         }
-        
+
+        .scroll-progress {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #0047AB, #00C851, #FFB000);
+            transform-origin: left;
+            transform: scaleX(0);
+            transition: transform 0.1s ease-out;
+            z-index: 1001;
+        }
+
         .navbar.scrolled {
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         }
@@ -613,11 +625,13 @@
             border-radius: 16px;
             padding: 2rem 1.75rem;
             box-shadow: 0 20px 40px -20px rgba(12, 20, 60, 0.7);
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             animation: scaleIn 0.6s ease-out 0.6s both;
             position: relative;
             overflow: hidden;
             border: 1px solid rgba(124, 208, 255, 0.08);
+            transform-style: preserve-3d;
+            perspective: 1000px;
         }
 
         .stat-card::before {
@@ -629,10 +643,25 @@
             height: 3px;
             background: linear-gradient(90deg, rgba(124, 208, 255, 0), rgba(124, 208, 255, 0.7), rgba(0, 200, 81, 0));
         }
-        
+
+        .stat-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(124, 208, 255, 0.15), transparent 50%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+        .stat-card:hover::after {
+            opacity: 1;
+        }
+
         .stat-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.15);
+            transform: translateY(-8px) rotateX(2deg) rotateY(2deg);
+            box-shadow: 0 30px 60px -20px rgba(52, 124, 255, 0.4), 0 10px 40px -10px rgba(0, 200, 81, 0.2);
+            border-color: rgba(124, 208, 255, 0.2);
         }
         
         .stat-number {
@@ -688,10 +717,33 @@
             box-shadow: 0 18px 35px -18px rgba(52, 124, 255, 0.8);
         }
 
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.3), transparent 70%);
+            transform: scale(0);
+            transition: transform 0.5s ease-out;
+            border-radius: inherit;
+        }
+
+        .btn-primary:active::before {
+            transform: scale(2.5);
+            transition: transform 0s;
+        }
+
         .btn-primary:hover {
             --hover-lift: 2px;
-            transform: translate3d(calc(var(--magnetic-x)), calc(var(--magnetic-y) - var(--hover-lift)), 0) scale(1.01);
-            box-shadow: 0 18px 40px -18px rgba(52, 124, 255, 0.8);
+            transform: translate3d(calc(var(--magnetic-x)), calc(var(--magnetic-y) - var(--hover-lift)), 0) scale(1.02);
+            box-shadow: 0 22px 50px -20px rgba(52, 124, 255, 1), 0 0 30px -10px rgba(52, 124, 255, 0.6);
+        }
+
+        .btn-primary svg {
+            transition: transform 0.3s ease;
+        }
+
+        .btn-primary:hover svg {
+            transform: translateX(4px);
         }
 
         .btn-secondary {
@@ -701,11 +753,27 @@
             backdrop-filter: blur(6px);
         }
 
+        .btn-secondary::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle, rgba(124, 208, 255, 0.2), transparent 70%);
+            transform: scale(0);
+            transition: transform 0.5s ease-out;
+            border-radius: inherit;
+        }
+
+        .btn-secondary:active::before {
+            transform: scale(2.5);
+            transition: transform 0s;
+        }
+
         .btn-secondary:hover {
-            background: rgba(124, 208, 255, 0.12);
+            background: rgba(124, 208, 255, 0.15);
             color: #c4e4ff;
             --hover-lift: 2px;
-
+            border-color: rgba(124, 208, 255, 0.5);
+            box-shadow: 0 8px 30px -10px rgba(124, 208, 255, 0.4);
         }
         
         /* Search Section */
@@ -1413,6 +1481,21 @@
             height: 4px;
             background: linear-gradient(90deg, #FFB000, #00C851);
         }
+
+        .lead-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(
+                600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+                rgba(255, 255, 255, 0.15),
+                transparent 40%
+            );
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            pointer-events: none;
+            border-radius: 16px;
+        }
         
         /* Enhanced hover and touch states */
         .lead-card:hover {
@@ -1420,6 +1503,10 @@
             background: rgba(255, 255, 255, 0.18);
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25),
                        0 0 0 1px rgba(255, 255, 255, 0.1);
+        }
+
+        .lead-card:hover::after {
+            opacity: 1;
         }
 
         @media (hover: none) and (pointer: coarse) {
@@ -2157,6 +2244,53 @@
             100% { background-position: -200% 0; }
         }
         
+        /* Back to Top Button */
+        .back-to-top {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #0047AB, #001F3F);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 20px rgba(0, 71, 171, 0.4);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 999;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .back-to-top:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 6px 30px rgba(0, 71, 171, 0.6);
+        }
+
+        .back-to-top:active {
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            .back-to-top {
+                bottom: 1.5rem;
+                right: 1.5rem;
+                width: 45px;
+                height: 45px;
+            }
+        }
+
         /* Accessibility */
         .sr-only {
             position: absolute;
@@ -2731,6 +2865,7 @@
     
     <!-- Navigation -->
     <nav class="navbar" id="navbar">
+        <div class="scroll-progress" id="scroll-progress"></div>
         <div class="nav-container">
             <a href="/" class="logo" aria-label="Chicago's Money home">
                 <img src="/IMG/chicagos_money_logo_variant_1.png" alt="Chicago's Money - Track City Spending and Business Leads" style="display: none;" width="600" height="600">
@@ -3742,6 +3877,30 @@
             updateOffsets();
         })();
 
+        // Scroll progress indicator
+        (function initScrollProgress() {
+            const progressBar = document.getElementById('scroll-progress');
+            if (!progressBar) return;
+
+            let ticking = false;
+            const updateProgress = () => {
+                const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+                const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                const scrolled = (winScroll / height);
+                progressBar.style.transform = `scaleX(${scrolled})`;
+                ticking = false;
+            };
+
+            window.addEventListener('scroll', () => {
+                if (!ticking) {
+                    window.requestAnimationFrame(updateProgress);
+                    ticking = true;
+                }
+            }, { passive: true });
+
+            updateProgress();
+        })();
+
         // Alert ticker controls
         (function initAlertTickerControls() {
             const alertBar = document.querySelector('.alert-bar');
@@ -3828,6 +3987,58 @@
                     });
                 });
             }
+
+            // Mouse tracking for card shine effects
+            if (window.matchMedia('(pointer:fine)').matches) {
+                const cards = document.querySelectorAll('.lead-card, .stat-card');
+                cards.forEach((card) => {
+                    card.addEventListener('mousemove', (e) => {
+                        const rect = card.getBoundingClientRect();
+                        const x = ((e.clientX - rect.left) / rect.width) * 100;
+                        const y = ((e.clientY - rect.top) / rect.height) * 100;
+                        card.style.setProperty('--mouse-x', `${x}%`);
+                        card.style.setProperty('--mouse-y', `${y}%`);
+                    });
+                    card.addEventListener('mouseleave', () => {
+                        card.style.setProperty('--mouse-x', '50%');
+                        card.style.setProperty('--mouse-y', '50%');
+                    });
+                });
+            }
+
+            // Counting animation for stat numbers
+            function animateValue(element, start, end, duration) {
+                let startTimestamp = null;
+                const step = (timestamp) => {
+                    if (!startTimestamp) startTimestamp = timestamp;
+                    const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                    const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+                    const current = Math.floor(easeOutQuart * (end - start) + start);
+                    element.textContent = current.toLocaleString() + (element.dataset.suffix || '');
+                    if (progress < 1) {
+                        window.requestAnimationFrame(step);
+                    }
+                };
+                window.requestAnimationFrame(step);
+            }
+
+            // Trigger counting animation on scroll into view
+            const statObserver = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting && !entry.target.dataset.counted) {
+                        const target = entry.target;
+                        target.dataset.counted = 'true';
+                        const finalValue = parseInt(target.textContent.replace(/,/g, '').replace(/\D/g, ''));
+                        const suffix = target.textContent.replace(/[\d,]/g, '');
+                        target.dataset.suffix = suffix;
+                        animateValue(target, 0, finalValue, 2000);
+                    }
+                });
+            }, { threshold: 0.5 });
+
+            document.querySelectorAll('.stat-number').forEach((stat) => {
+                statObserver.observe(stat);
+            });
 
             // Premium animations using Motion One
             if (!reduceMotion && window.motion) {
@@ -4074,6 +4285,61 @@
                 }
             }
         });
+
+        // Back to top button
+        (function initBackToTop() {
+            const backToTopBtn = document.createElement('button');
+            backToTopBtn.className = 'back-to-top';
+            backToTopBtn.setAttribute('aria-label', 'Back to top');
+            backToTopBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"></polyline></svg>';
+            document.body.appendChild(backToTopBtn);
+
+            let ticking = false;
+            const toggleButton = () => {
+                const scrolled = window.scrollY;
+                if (scrolled > 300) {
+                    backToTopBtn.classList.add('visible');
+                } else {
+                    backToTopBtn.classList.remove('visible');
+                }
+                ticking = false;
+            };
+
+            window.addEventListener('scroll', () => {
+                if (!ticking) {
+                    window.requestAnimationFrame(toggleButton);
+                    ticking = true;
+                }
+            }, { passive: true });
+
+            backToTopBtn.addEventListener('click', () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        })();
+
+        // Subtle parallax effect for hero section
+        (function initParallax() {
+            const hero = document.querySelector('.hero');
+            if (!hero || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+            let ticking = false;
+            const handleScroll = () => {
+                const scrolled = window.scrollY;
+                const speed = 0.5;
+                hero.style.transform = `translateY(${scrolled * speed}px)`;
+                ticking = false;
+            };
+
+            window.addEventListener('scroll', () => {
+                if (!ticking) {
+                    window.requestAnimationFrame(handleScroll);
+                    ticking = true;
+                }
+            }, { passive: true });
+        })();
     </script>
 
 </body>
