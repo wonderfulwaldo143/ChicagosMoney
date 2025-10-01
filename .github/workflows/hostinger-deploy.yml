@@ -106,12 +106,13 @@ jobs:
           pwd
           ls -la | head -20
 
-          lcd $GITHUB_WORKSPACE
+          # Set local directory to public_html subdirectory in repo
+          lcd $GITHUB_WORKSPACE/public_html
 
-          # First, remove problem directories if they exist
+          # First, remove problem directories if they exist on server
           rm -rf .git .github .vscode .claude ChicagosMoenyRepo node_modules docs backups logs
 
-          # Then sync with excludes
+          # Then sync with excludes - mirror local public_html to remote current directory
           mirror -R \
             --parallel=4 \
             --continue \
