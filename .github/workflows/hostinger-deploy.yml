@@ -109,18 +109,21 @@ jobs:
             --continue \
             --verbose \
             --delete \
-            --exclude-glob .git* \
-            --exclude-glob .github/ \
-            --exclude-glob node_modules/ \
-            --exclude-glob '*.map' \
-            --exclude-glob '*.md' \
-            --exclude-glob deploy.sh \
-            --exclude-glob .DS_Store \
-            --exclude-glob .deploy-trigger \
-            --exclude-glob docs/ \
-            --exclude-glob backups/ \
-            --exclude-glob logs/ \
-            $GITHUB_WORKSPACE/ \
+            --exclude ^\.git/ \
+            --exclude ^\.git$ \
+            --exclude ^\.github/ \
+            --exclude ^node_modules/ \
+            --exclude \.map$ \
+            --exclude \.md$ \
+            --exclude ^deploy\.sh$ \
+            --exclude ^\.DS_Store$ \
+            --exclude ^\.deploy-trigger$ \
+            --exclude ^\.gitignore$ \
+            --exclude ^\.gitattributes$ \
+            --exclude ^docs/ \
+            --exclude ^backups/ \
+            --exclude ^logs/ \
+            . \
             /home/u476428393/public_html/
 
           bye
