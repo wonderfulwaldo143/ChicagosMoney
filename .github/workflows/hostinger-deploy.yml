@@ -101,7 +101,14 @@ jobs:
           set sftp:auto-confirm yes
           set xfer:clobber on
 
-          cd /home/u476428393/public_html
+          # Print current directory to see where we are
+          pwd
+          ls -la
+
+          # Try to change to public_html
+          cd public_html || cd /home/u476428393/public_html || cd ~/public_html
+          pwd
+
           lcd $GITHUB_WORKSPACE
 
           # First, remove problem directories if they exist
@@ -135,7 +142,7 @@ jobs:
             --exclude-glob=.gitignore \
             --exclude-glob=.gitattributes \
             . \
-            /home/u476428393/public_html/
+            .
 
           bye
           EOF
