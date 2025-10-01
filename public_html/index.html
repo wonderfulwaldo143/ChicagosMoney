@@ -11,7 +11,7 @@
     'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
     })(window,document,'script','dataLayer','GTM-PRX5GJ6W');</script>
     <!-- End Google Tag Manager -->
-    <meta name="description" content="Discover Chicago city employees making $300K+. Get fresh business leads daily. Your competitive advantage in Chicago business.">
+    <meta name="description" content="Search 35,847+ Chicago city employee salaries FREE. Get daily business leads from permits, violations, and new registrations. Your competitive edge starts here.">
     <link rel="canonical" href="https://chicagosmoney.com/">
     <meta property="og:title" content="Chicago's Money - Chicago Business Intelligence & Salary Insights">
     <meta property="og:description" content="Unlock Chicago salary data and premium local business intelligence feeds for new businesses, construction permits, and restaurant violations.">
@@ -169,6 +169,20 @@
                     }
                 }
             ]
+        }
+    </script>
+
+    <!-- Breadcrumb Schema -->
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            "itemListElement": [{
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://chicagosmoney.com/"
+            }]
         }
     </script>
 
@@ -1592,7 +1606,103 @@
             border-top: 1px solid rgba(255, 255, 255, 0.1);
             color: rgba(255, 255, 255, 0.6);
         }
-        
+
+        /* FAQ Section */
+        .faq-section {
+            padding: 4rem 2rem;
+            background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .faq-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .faq-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .faq-title {
+            font-size: clamp(2rem, 4vw, 2.75rem);
+            font-weight: 800;
+            color: #0f172a;
+            margin-bottom: 1rem;
+        }
+
+        .faq-subtitle {
+            font-size: 1.125rem;
+            color: #6b7280;
+        }
+
+        .faq-list {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .faq-item {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .faq-item:hover {
+            box-shadow: 0 8px 24px -8px rgba(0, 71, 171, 0.15);
+            border-color: rgba(0, 71, 171, 0.2);
+        }
+
+        .faq-question {
+            width: 100%;
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: none;
+            border: none;
+            cursor: pointer;
+            text-align: left;
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #1a1a1a;
+            transition: all 0.2s ease;
+        }
+
+        .faq-question:hover {
+            color: #0047AB;
+        }
+
+        .faq-icon {
+            width: 24px;
+            height: 24px;
+            flex-shrink: 0;
+            transition: transform 0.3s ease;
+        }
+
+        .faq-item.active .faq-icon {
+            transform: rotate(180deg);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+            padding: 0 2rem;
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 500px;
+            padding: 0 2rem 1.5rem 2rem;
+        }
+
+        .faq-answer p {
+            color: #42526e;
+            line-height: 1.7;
+            margin: 0;
+        }
+
         /* Mobile Responsive */
         @media (max-width: 768px) {
             .nav-links {
@@ -2623,6 +2733,7 @@
     <nav class="navbar" id="navbar">
         <div class="nav-container">
             <a href="/" class="logo" aria-label="Chicago's Money home">
+                <img src="/IMG/chicagos_money_logo_variant_1.png" alt="Chicago's Money - Track City Spending and Business Leads" style="display: none;" width="600" height="600">
                 <span class="logo-chicago">Chicago'</span>
                 <span class="logo-dollar">$</span>
                 <span class="logo-money">Money</span>
@@ -3095,7 +3206,67 @@
             </div>
         </div>
     </section>
-    
+
+    <!-- FAQ Section -->
+    <section id="faq" class="faq-section">
+        <div class="faq-container">
+            <div class="faq-header">
+                <h2 class="faq-title">Frequently Asked Questions</h2>
+                <p class="faq-subtitle">Everything you need to know about Chicago's salary data and business intelligence</p>
+            </div>
+
+            <div class="faq-list">
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFAQ(this)">
+                        <span>How can I search Chicago city employee salaries?</span>
+                        <svg class="faq-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <div class="faq-answer">
+                        <p>You can search Chicago city employee salaries for free using our salary lookup tool. It provides real-time access to 35,847+ employee records from the official City of Chicago public data portal, including names, job titles, departments, and compensation details.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFAQ(this)">
+                        <span>What is the highest salary for a Chicago city employee?</span>
+                        <svg class="faq-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <div class="faq-answer">
+                        <p>The highest salary for a Chicago city employee is currently $300,044. You can view the complete list of top earners using our salary lookup tool filtered by annual salary.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFAQ(this)">
+                        <span>How often is the Chicago salary data updated?</span>
+                        <svg class="faq-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Our Chicago salary data is updated in real-time from the City of Chicago's official Socrata dataset. Every search queries the most current public records available.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button class="faq-question" onclick="toggleFAQ(this)">
+                        <span>Can I download Chicago salary data as a CSV?</span>
+                        <svg class="faq-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Yes, our salary lookup tool includes one-click CSV download functionality for any search query, allowing you to export up to 50,000 records for deeper analysis in Excel or other tools.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Contact Section -->
     <section id="contact" class="contact-section">
         <div class="container">
@@ -3159,6 +3330,22 @@
     </footer>
     
     <script>
+        // FAQ Toggle Function
+        function toggleFAQ(button) {
+            const faqItem = button.closest('.faq-item');
+            const wasActive = faqItem.classList.contains('active');
+
+            // Close all FAQ items
+            document.querySelectorAll('.faq-item').forEach(item => {
+                item.classList.remove('active');
+            });
+
+            // Open clicked item if it wasn't already active
+            if (!wasActive) {
+                faqItem.classList.add('active');
+            }
+        }
+
         // Salary search widget (live Socrata integration)
         (function() {
             const widget = document.getElementById('salaryWidget');
