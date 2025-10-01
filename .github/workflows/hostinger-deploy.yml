@@ -51,31 +51,27 @@ jobs:
           VERSION="${{ github.sha }}"
           TIMESTAMP="$(date -u +'%Y-%m-%dT%H:%M:%SZ')"
 
-          # Update version.txt
-          echo "$VERSION $TIMESTAMP" > version.txt
-          echo "📝 Generated version.txt: $(cat version.txt)"
+          # Update version.txt in public_html
+          echo "$VERSION $TIMESTAMP" > public_html/version.txt
+          echo "📝 Generated version.txt: $(cat public_html/version.txt)"
 
           # Add version comments to CSS and JS files for cache verification
           COMMENT="/* Deployed: $VERSION at $TIMESTAMP */"
 
-          # Add comment to CSS (if not already present)
-          if ! head -1 styles.css | grep -q "Deployed:"; then
-            { echo "$COMMENT"; cat styles.css; } > styles.css.tmp && mv styles.css.tmp styles.css
+          # Add comment to CSS (if exists and not already present)
+          if [ -f public_html/styles.css ] && ! head -1 public_html/styles.css | grep -q "Deployed:"; then
+            { echo "$COMMENT"; cat public_html/styles.css; } > public_html/styles.css.tmp && mv public_html/styles.css.tmp public_html/styles.css
             echo "✅ Added version stamp to styles.css"
           fi
 
-          # Add comment to JS (if not already present)
-          if ! head -1 script.js | grep -q "Deployed:"; then
-            { echo "$COMMENT"; cat script.js; } > script.js.tmp && mv script.js.tmp script.js
+          # Add comment to JS (if exists and not already present)
+          if [ -f public_html/script.js ] && ! head -1 public_html/script.js | grep -q "Deployed:"; then
+            { echo "$COMMENT"; cat public_html/script.js; } > public_html/script.js.tmp && mv public_html/script.js.tmp public_html/script.js
             echo "✅ Added version stamp to script.js"
           fi
 
-          # Show first line of each file for verification
-          echo "📄 styles.css first line: $(head -1 styles.css)"
-          echo "📄 script.js first line: $(head -1 script.js)"
-
           # Create a timestamp file to verify uploads
-          echo "Deployed: $VERSION at $TIMESTAMP" > .last-deploy
+          echo "Deployed: $VERSION at $TIMESTAMP" > public_html/.last-deploy
           echo "📝 Created .last-deploy marker"
 
       - name: Deploy to Hostinger
@@ -102,7 +98,7 @@ jobs:
           set xfer:clobber on
 
           # Change to the correct document root
-          cd /home/u476428393/websites/SqQqgFb2r/public_html
+          cd $REMOTE_DIR
           pwd
           ls -la | head -20
 
