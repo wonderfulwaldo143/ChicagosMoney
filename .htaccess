@@ -182,7 +182,13 @@ RewriteRule \.(jpg|jpeg|png|gif|webp|svg)$ - [F]
 
 <IfModule mod_rewrite.c>
     RewriteEngine On
-    
+
+    # Exclude deployment verification files from all rewrites
+    RewriteCond %{REQUEST_URI} ^/version\.txt$ [OR]
+    RewriteCond %{REQUEST_URI} ^/whereami\.php$ [OR]
+    RewriteCond %{REQUEST_URI} ^/\.last-deploy$
+    RewriteRule ^ - [L]
+
     # Force HTTPS
     RewriteCond %{HTTPS} off
     RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=301,L]
