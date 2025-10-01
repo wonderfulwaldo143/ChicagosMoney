@@ -21,7 +21,23 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Chicago's Money - Chicago Business Intelligence & Salary Insights">
     <meta name="twitter:description" content="Daily Chicago business leads plus transparent city salary data to power your growth campaigns.">
-    <meta name="keywords" content="Chicago business intelligence, Chicago business leads, construction permits Chicago, restaurant violation leads, Chicago data feeds">
+
+    <!-- SEO Meta Tags -->
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+    <meta name="googlebot" content="index, follow">
+    <meta name="author" content="Chicago's Money">
+    <meta property="og:locale" content="en_US">
+    <meta name="theme-color" content="#0047AB">
+
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+
+    <!-- Sitemap -->
+    <link rel="sitemap" type="application/xml" href="/sitemap.xml">
+
     <script type="application/ld+json">
         {
             "@context": "https://schema.org",
@@ -57,12 +73,115 @@
             "url": "https://chicagosmoney.com/#leads"
         }
     </script>
-    
+
+    <!-- Organization Schema -->
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            "name": "Chicago's Money",
+            "url": "https://chicagosmoney.com",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https://chicagosmoney.com/IMG/chicagos_money_logo_variant_1.png",
+                "width": 600,
+                "height": 600
+            },
+            "description": "Chicago city salary data, business intelligence, and local business leads platform",
+            "address": {
+                "@type": "PostalAddress",
+                "addressLocality": "Chicago",
+                "addressRegion": "IL",
+                "addressCountry": "US"
+            },
+            "contactPoint": {
+                "@type": "ContactPoint",
+                "email": "info@chicagosmoney.com",
+                "contactType": "Customer Service",
+                "areaServed": "US"
+            },
+            "sameAs": [
+                "https://twitter.com/chicagosmoney",
+                "https://linkedin.com/company/chicagosmoney"
+            ]
+        }
+    </script>
+
+    <!-- WebSite Schema with SearchAction -->
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            "name": "Chicago's Money",
+            "url": "https://chicagosmoney.com",
+            "description": "Track Chicago city employee salaries and get fresh business intelligence leads",
+            "publisher": {
+                "@type": "Organization",
+                "name": "Chicago's Money"
+            },
+            "potentialAction": {
+                "@type": "SearchAction",
+                "target": {
+                    "@type": "EntryPoint",
+                    "urlTemplate": "https://chicagosmoney.com/salary-lookup.html?name={search_term_string}"
+                },
+                "query-input": "required name=search_term_string"
+            }
+        }
+    </script>
+
+    <!-- FAQ Schema -->
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "mainEntity": [
+                {
+                    "@type": "Question",
+                    "name": "How can I search Chicago city employee salaries?",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "You can search Chicago city employee salaries for free using our salary lookup tool. It provides real-time access to 35,847+ employee records from the official City of Chicago public data portal, including names, job titles, departments, and compensation details."
+                    }
+                },
+                {
+                    "@type": "Question",
+                    "name": "What is the highest salary for a Chicago city employee?",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "The highest salary for a Chicago city employee is currently $300,044. You can view the complete list of top earners using our salary lookup tool filtered by annual salary."
+                    }
+                },
+                {
+                    "@type": "Question",
+                    "name": "How often is the Chicago salary data updated?",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "Our Chicago salary data is updated in real-time from the City of Chicago's official Socrata dataset. Every search queries the most current public records available."
+                    }
+                },
+                {
+                    "@type": "Question",
+                    "name": "Can I download Chicago salary data as a CSV?",
+                    "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": "Yes, our salary lookup tool includes one-click CSV download functionality for any search query, allowing you to export up to 50,000 records for deeper analysis in Excel or other tools."
+                    }
+                }
+            ]
+        }
+    </script>
+
+    <!-- Preload Critical Resources -->
+    <link rel="preload" href="styles.css" as="style">
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" as="style">
+    <link rel="preload" href="/IMG/chicagos_money_logo_variant_1.png" as="image">
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-    
+
     <!-- Icons -->
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
     
