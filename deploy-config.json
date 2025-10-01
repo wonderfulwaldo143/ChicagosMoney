@@ -1,0 +1,96 @@
+{
+  "site": {
+    "name": "Chicago's Money",
+    "url": "chicagosmoney.com",
+    "local_path": ".",
+    "remote_path": "public_html"
+  },
+  "hostinger": {
+    "plan": "Agency",
+    "features": [
+      "Client & Team Collaboration",
+      "Full Website Isolation", 
+      "Up to 200 websites",
+      "Priority 24/7 Support",
+      "SSH/SFTP Access"
+    ],
+    "ssh_port": 22,
+    "sftp_port": 65002,
+    "deployment_methods": [
+      "hPanel File Manager",
+      "SSH/SFTP",
+      "rsync",
+      "DeployHQ Integration",
+      "DeployBot Integration"
+    ]
+  },
+  "deployment": {
+    "method": "rsync",
+    "ssh_port": 22,
+    "sftp_port": 65002,
+    "backup_before_deploy": true,
+    "excludes": [
+      ".git",
+      ".github",
+      ".gitignore",
+      ".vscode",
+      ".DS_Store",
+      ".claude",
+      "deploy.sh",
+      "deploy-config.json",
+      "deploy-quick.sh",
+      "test-deployment.sh",
+      "DEPLOYMENT_GUIDE.md",
+      "docs",
+      "*.md",
+      "node_modules",
+      ".env",
+      "backups",
+      "*.log",
+      "*.tmp"
+    ],
+    "includes": [
+      "*.html",
+      "*.css",
+      "*.js",
+      "*.php",
+      "*.json",
+      "*.xml",
+      "*.txt",
+      "*.png",
+      "*.jpg",
+      "*.jpeg",
+      "*.webp",
+      "*.svg",
+      "*.ico",
+      "IMG/",
+      "icons/",
+      "api/",
+      "css/",
+      "templates/",
+      "config/"
+    ]
+  },
+  "pre_deploy": {
+    "update_version": true,
+    "update_service_worker": true,
+    "check_files": true,
+    "create_backup": true,
+    "validate_seo": true
+  },
+  "post_deploy": {
+    "clear_cache": true,
+    "test_urls": [
+      "https://chicagosmoney.com/",
+      "https://chicagosmoney.com/deploy-info.php"
+    ],
+    "notify_success": true,
+    "update_sitemap": false
+  },
+  "agency_features": {
+    "client_collaboration": true,
+    "website_isolation": true,
+    "priority_support": true,
+    "referral_program": true
+  }
+}
