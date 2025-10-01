@@ -105,9 +105,10 @@ jobs:
           pwd
           ls -la
 
-          # Try to change to public_html
-          cd public_html || cd /home/u476428393/public_html || cd ~/public_html
+          # Try to change to the correct public_html (addon domain pattern first)
+          cd domains/chicagosmoney.com/public_html || cd public_html || cd /home/u476428393/public_html || cd ~/public_html
           pwd
+          ls -la | head -20
 
           lcd $GITHUB_WORKSPACE
 
