@@ -105,8 +105,9 @@ jobs:
           pwd
           ls -la
 
-          # Try to change to the correct public_html (addon domain pattern first)
-          cd domains/chicagosmoney.com/public_html || cd public_html || cd /home/u476428393/public_html || cd ~/public_html
+          # Try to change to the correct public_html
+          # On Hostinger agency plans, sites are often in websites/domain.com/public_html
+          cd websites/chicagosmoney.com/public_html || cd websites/chicagosmoney.com || cd domains/chicagosmoney.com/public_html || cd public_html || cd /home/u476428393/public_html || cd ~/public_html
           pwd
           ls -la | head -20
 
