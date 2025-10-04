@@ -1177,6 +1177,87 @@
             transform: translateY(-1px);
         }
 
+        .blog-recent-posts {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .blog-recent-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 0.5rem;
+        }
+
+        .blog-post-card {
+            background: white;
+            border: 1px solid rgba(15, 23, 42, 0.08);
+            border-radius: 16px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            display: grid;
+            gap: 0.75rem;
+        }
+
+        .blog-post-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 28px -12px rgba(15, 23, 42, 0.25);
+            border-color: rgba(0, 71, 171, 0.2);
+        }
+
+        .blog-post-meta {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.85rem;
+            color: #64748b;
+            font-weight: 500;
+        }
+
+        .blog-post-date,
+        .blog-post-read-time {
+            display: flex;
+            align-items: center;
+        }
+
+        .blog-post-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .blog-post-title a {
+            color: #0f172a;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        .blog-post-title a:hover {
+            color: #0047AB;
+        }
+
+        .blog-post-excerpt {
+            color: #475569;
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        .blog-post-tags {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .blog-tag {
+            display: inline-flex;
+            padding: 0.35rem 0.75rem;
+            background: rgba(0, 71, 171, 0.08);
+            color: #0047AB;
+            border-radius: 999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+        }
+
         .search-bar {
             display: flex;
             background: white;
@@ -1888,7 +1969,19 @@
                 width: 100%;
                 justify-content: center;
             }
-            
+
+            .blog-post-card {
+                padding: 1.25rem;
+            }
+
+            .blog-recent-title {
+                font-size: 1.25rem;
+            }
+
+            .blog-post-title {
+                font-size: 1.05rem;
+            }
+
             .search-bar {
                 flex-direction: column;
             }
@@ -2138,6 +2231,15 @@
 
             .salary-promo-actions {
                 flex-direction: column;
+            }
+
+            .blog-preview-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .blog-post-card {
+                padding: 1.25rem;
             }
 
             .footer-content {
@@ -2893,6 +2995,7 @@
                 <a href="/salary-lookup.html" class="nav-link">Salary Lookup</a>
                 <a href="#leads" class="nav-link">Business Intelligence</a>
                 <a href="/budget-dashboard.html" class="nav-link">Budget Dashboard</a>
+                <a href="#blog" class="nav-link">Blog</a>
                 <a href="/about.html" class="nav-link">About</a>
                 <a href="#contact" class="nav-link">Contact</a>
                 <a href="#leads" class="nav-cta">Get Leads →</a>
@@ -3073,27 +3176,76 @@
         <div class="blog-preview-inner">
             <div class="blog-preview-header">
                 <span class="blog-preview-badge">Fresh insights</span>
-                <h2 class="blog-preview-title">Introducing the Chicago's Money blog</h2>
-                <p class="blog-preview-subtitle">We're opening a new space to translate Chicago's complex budgets, payroll data, and procurement activity into clear stories you can act on.</p>
+                <h2 class="blog-preview-title">The Chicago's Money Blog</h2>
+                <p class="blog-preview-subtitle">Expert analysis and actionable insights from Chicago's budget data, salary records, and procurement trends. Learn what the numbers mean for your business.</p>
             </div>
 
             <div class="blog-preview-grid">
                 <article class="blog-featured">
-                    <span class="blog-featured-badge">Coming Soon</span>
+                    <span class="blog-featured-badge">Featured Post</span>
                     <div class="blog-featured-meta">
-                        <span>Publishing April 2025</span>
-                        <span>5 minute read</span>
+                        <span>April 2025</span>
+                        <span>8 minute read</span>
                     </div>
                     <h3 class="blog-featured-title">Inside Chicago's 2025 Budget Priorities</h3>
-                    <p class="blog-featured-excerpt">Our first post is nearly ready. Expect a guided walkthrough of the $16.6B spending plan, which departments are growing fastest, and the contracts to watch. Bookmark the story now and come back for the full breakdown.</p>
+                    <p class="blog-featured-excerpt">A comprehensive breakdown of Chicago's $16.6B budget allocation. Discover which departments are expanding, where new contracts are emerging, and the hidden opportunities in the city's spending patterns that most businesses miss.</p>
                     <div class="blog-featured-foot">
-                        <a href="/blog.html#first-post" class="btn blog-primary-btn" data-magnetic="0.22">
+                        <a href="/blog.html#budget-priorities-2025" class="btn blog-primary-btn" data-magnetic="0.22">
                             <i data-lucide="notebook-text" style="width: 20px; height: 20px;"></i>
-                            Preview the Post
+                            Read Full Article
                         </a>
-                        <p class="blog-featured-note">We update this spotlight the moment the article goes live—check back soon or join our list below.</p>
+                        <p class="blog-featured-note">Get expert analysis on Chicago's budget trends and actionable business insights.</p>
                     </div>
                 </article>
+
+                <div class="blog-recent-posts">
+                    <h4 class="blog-recent-title">Recent Articles</h4>
+
+                    <article class="blog-post-card">
+                        <div class="blog-post-meta">
+                            <span class="blog-post-date">March 2025</span>
+                            <span class="blog-post-read-time">6 min read</span>
+                        </div>
+                        <h5 class="blog-post-title">
+                            <a href="/blog.html#overtime-analysis">Overtime Economics: Which Departments Are Spending the Most?</a>
+                        </h5>
+                        <p class="blog-post-excerpt">Police and Fire departments account for 69% of the city's $680M overtime budget. Learn what this means for contractors and service providers.</p>
+                        <div class="blog-post-tags">
+                            <span class="blog-tag">Payroll Analysis</span>
+                            <span class="blog-tag">Departments</span>
+                        </div>
+                    </article>
+
+                    <article class="blog-post-card">
+                        <div class="blog-post-meta">
+                            <span class="blog-post-date">March 2025</span>
+                            <span class="blog-post-read-time">5 min read</span>
+                        </div>
+                        <h5 class="blog-post-title">
+                            <a href="/blog.html#procurement-guide">How to Win City Contracts: A Data-Driven Guide</a>
+                        </h5>
+                        <p class="blog-post-excerpt">Using procurement data to identify contract opportunities before they're widely advertised. A step-by-step playbook for vendors.</p>
+                        <div class="blog-post-tags">
+                            <span class="blog-tag">Business Strategy</span>
+                            <span class="blog-tag">Contracts</span>
+                        </div>
+                    </article>
+
+                    <article class="blog-post-card">
+                        <div class="blog-post-meta">
+                            <span class="blog-post-date">February 2025</span>
+                            <span class="blog-post-read-time">7 min read</span>
+                        </div>
+                        <h5 class="blog-post-title">
+                            <a href="/blog.html#salary-trends">Chicago Salary Trends 2024: What the Data Reveals</a>
+                        </h5>
+                        <p class="blog-post-excerpt">An in-depth look at compensation patterns across city departments, including what drives the highest-paid positions and regional comparisons.</p>
+                        <div class="blog-post-tags">
+                            <span class="blog-tag">Salary Data</span>
+                            <span class="blog-tag">Trends</span>
+                        </div>
+                    </article>
+                </div>
 
                 <aside class="blog-preview-sidebar">
                     <div class="blog-card">
