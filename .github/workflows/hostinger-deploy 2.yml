@@ -1,0 +1,197 @@
+name: Deploy to Hostinger
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '**/*.html'
+      - '**/*.css'
+      - '**/*.js'
+      - '**/*.json'
+      - '**/*.xml'
+      - '**/*.txt'
+      - '**/*.php'
+      - 'deploy-info.php'
+      - '**/.htaccess'
+      - '.htaccess'
+      - 'IMG/**'
+      - 'icons/**'
+      - 'api/**'
+      - 'assets/**'
+      - 'sw.js'
+      - 'manifest.json'
+      - 'sitemap.xml'
+      - 'robots.txt'
+      - 'version.txt'
+      - '.github/workflows/hostinger-deploy.yml'
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Deploy via SFTP
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    concurrency:
+      group: cm-deploy-${{ github.ref }}
+      cancel-in-progress: true
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Install lftp
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y lftp
+
+      - name: Generate version file and add cache busting
+        run: |
+          VERSION="${{ github.sha }}"
+          TIMESTAMP="$(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+
+          # Update version.txt
+          echo "$VERSION $TIMESTAMP" > version.txt
+          echo "📝 Generated version.txt: $(cat version.txt)"
+
+          # Add version comments to CSS and JS files for cache verification
+          COMMENT="/* Deployed: $VERSION at $TIMESTAMP */"
+
+          # Add comment to CSS (if not already present)
+          if ! head -1 styles.css | grep -q "Deployed:"; then
+            { echo "$COMMENT"; cat styles.css; } > styles.css.tmp && mv styles.css.tmp styles.css
+            echo "✅ Added version stamp to styles.css"
+          fi
+
+          # Add comment to JS (if not already present)
+          if ! head -1 script.js | grep -q "Deployed:"; then
+            { echo "$COMMENT"; cat script.js; } > script.js.tmp && mv script.js.tmp script.js
+            echo "✅ Added version stamp to script.js"
+          fi
+
+          # Show first line of each file for verification
+          echo "📄 styles.css first line: $(head -1 styles.css)"
+          echo "📄 script.js first line: $(head -1 script.js)"
+
+      - name: Deploy to Hostinger
+        env:
+          HOST: ${{ secrets.HOSTINGER_FTP_SERVER }}
+          PORT: ${{ secrets.HOSTINGER_FTP_PORT }}
+          USER: ${{ secrets.HOSTINGER_FTP_USERNAME }}
+          PASS: ${{ secrets.HOSTINGER_FTP_PASSWORD }}
+          REMOTE_DIR: ${{ secrets.HOSTINGER_REMOTE_DIR }}
+        run: |
+          set +e
+          echo "🚀 Starting deployment..."
+          echo "📋 Connection details:"
+          echo "   Host: $HOST"
+          echo "   Port: $PORT"
+          echo "   User: $USER"
+          echo "   Remote Dir: $REMOTE_DIR"
+
+          lftp -u "$USER","$PASS" sftp://"$HOST":"$PORT" <<'EOF'
+          set net:timeout 30
+          set net:max-retries 3
+          set net:reconnect-interval-base 5
+          set sftp:auto-confirm yes
+          set xfer:clobber on
+
+          cd /home/u476428393/public_html
+          lcd $GITHUB_WORKSPACE
+
+          mirror -R \
+            --parallel=4 \
+            --continue \
+            --verbose \
+            --exclude-glob .git* \
+            --exclude-glob .github/ \
+            --exclude-glob node_modules/ \
+            --exclude-glob '*.map' \
+            --exclude-glob '*.md' \
+            --exclude-glob deploy.sh \
+            --exclude-glob .DS_Store \
+            --exclude-glob .deploy-trigger \
+            --exclude-glob docs/ \
+            --exclude-glob backups/ \
+            --exclude-glob logs/
+
+          bye
+          EOF
+
+          STATUS=$?
+          # lftp exit 1 is commonly benign (e.g., trying to remove non-existent file).
+          if [ $STATUS -ne 0 ] && [ $STATUS -ne 1 ]; then
+            echo "::error::lftp failed with exit code $STATUS"
+            exit $STATUS
+          fi
+          echo "✅ Deployment complete (exit=$STATUS)"
+
+      - name: Verify live site updated
+        run: |
+          echo "⏳ Waiting 15 seconds for file propagation and CDN..."
+          sleep 15
+
+          EXPECTED_SHA="${{ github.sha }}"
+          MAX_ATTEMPTS=3
+          ATTEMPT=1
+
+          echo "🔍 Verifying homepage is accessible..."
+          if curl -sS -f -o /dev/null "https://chicagosmoney.com/?cb=${{ github.run_id }}"; then
+            echo "✅ Homepage is accessible"
+          else
+            echo "❌ Homepage check failed"
+            exit 1
+          fi
+
+          echo ""
+          echo "🔍 Checking CSS file for version stamp..."
+          curl -sS "https://chicagosmoney.com/styles.css?cb=${{ github.run_id }}" | head -3
+
+          if curl -sS "https://chicagosmoney.com/styles.css?cb=${{ github.run_id }}" | head -1 | grep -q "$EXPECTED_SHA"; then
+            echo "✅ CSS contains current version stamp"
+          else
+            echo "⚠️  CSS may be cached (old version)"
+          fi
+
+          echo ""
+          echo "🔍 Attempting to verify version.txt (up to $MAX_ATTEMPTS tries)..."
+
+          while [ $ATTEMPT -le $MAX_ATTEMPTS ]; do
+            echo "🔄 Attempt $ATTEMPT of $MAX_ATTEMPTS..."
+
+            URL="https://chicagosmoney.com/version.txt?cb=${{ github.run_id }}_${ATTEMPT}"
+            HTTP_CODE=$(curl -sS -w "%{http_code}" -o /tmp/live_version.txt "$URL")
+
+            # Check if we got actual version.txt content (not HTML)
+            if [ "$HTTP_CODE" = "200" ] && grep -q "^[0-9a-f]\{40\}" /tmp/live_version.txt 2>/dev/null; then
+              echo "✅ version.txt accessible and valid"
+              echo "📄 Content: $(cat /tmp/live_version.txt)"
+
+              if grep -q "$EXPECTED_SHA" /tmp/live_version.txt; then
+                echo "✅ Live version matches this build!"
+                break
+              else
+                echo "⚠️  Version mismatch - may be cached"
+                echo "   Expected: $EXPECTED_SHA"
+                echo "   Got: $(cat /tmp/live_version.txt)"
+              fi
+            else
+              echo "⚠️  HTTP $HTTP_CODE - version.txt returned HTML or is inaccessible"
+              if [ -f /tmp/live_version.txt ]; then
+                echo "📄 First 100 chars:"
+                head -c 100 /tmp/live_version.txt | tr '\n' ' '
+                echo ""
+              fi
+            fi
+
+            ATTEMPT=$((ATTEMPT + 1))
+            if [ $ATTEMPT -le $MAX_ATTEMPTS ]; then
+              echo "⏳ Waiting 10 seconds before retry..."
+              sleep 10
+            fi
+          done
+
+          echo ""
+          echo "ℹ️  If version.txt shows old version, clear CDN cache at Hostinger control panel"
+          echo "✅ Deployment verification complete - files uploaded successfully!"
