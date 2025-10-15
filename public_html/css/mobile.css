@@ -274,6 +274,12 @@ main {
     transition: transform var(--transition-snappy), border-color var(--transition-snappy);
 }
 
+.nav-list a.is-active {
+    border-color: rgba(56, 189, 248, 0.32);
+    background: rgba(15, 23, 42, 0.92);
+    color: #e0f2fe;
+}
+
 .nav-list a div {
     display: grid;
     gap: 0.25rem;
@@ -860,6 +866,126 @@ details.faq-item p {
     font-weight: 700;
     color: #a5f3fc;
     margin-top: 0.05rem;
+}
+
+.search-form {
+    display: grid;
+    gap: 1rem;
+}
+
+.input-stack {
+    display: grid;
+    gap: 0.4rem;
+}
+
+.search-label {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--text-muted);
+}
+
+.search-input {
+    width: 100%;
+    padding: 0.85rem 1rem;
+    border-radius: 16px;
+    border: 1px solid rgba(148, 163, 184, 0.25);
+    background: rgba(15, 23, 42, 0.85);
+    color: var(--text-primary);
+    font-size: 1rem;
+}
+
+.search-input::placeholder {
+    color: rgba(148, 163, 184, 0.6);
+}
+
+.segmented-control {
+    display: flex;
+    background: rgba(15, 23, 42, 0.8);
+    border-radius: 999px;
+    border: 1px solid rgba(148, 163, 184, 0.25);
+    padding: 0.3rem;
+    gap: 0.3rem;
+}
+
+.segment {
+    flex: 1;
+    border: none;
+    background: transparent;
+    color: var(--text-secondary);
+    font-weight: 600;
+    font-size: 0.85rem;
+    padding: 0.45rem 0.6rem;
+    border-radius: 999px;
+    transition: background var(--transition-snappy), color var(--transition-snappy);
+}
+
+.segment.is-active {
+    background: rgba(56, 189, 248, 0.18);
+    color: #dbeafe;
+}
+
+.results-wrapper {
+    display: grid;
+    gap: 1rem;
+}
+
+.results-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 0.75rem;
+}
+
+.result-item {
+    padding: 0.85rem 1rem;
+    border-radius: var(--radius-md);
+    background: rgba(10, 18, 34, 0.92);
+    border: 1px solid rgba(148, 163, 184, 0.18);
+    display: grid;
+    gap: 0.45rem;
+}
+
+.result-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.5rem;
+    font-weight: 700;
+    color: #e0f2fe;
+}
+
+.result-header span {
+    font-family: 'JetBrains Mono', 'Inter', monospace;
+    font-size: 0.95rem;
+    color: #c1f3ff;
+}
+
+.result-body {
+    display: grid;
+    gap: 0.3rem;
+    color: var(--text-secondary);
+    font-size: 0.92rem;
+}
+
+.result-meta {
+    font-size: 0.82rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: rgba(148, 163, 184, 0.72);
+}
+
+.result-empty {
+    padding: 1rem;
+    border-radius: var(--radius-md);
+    background: rgba(10, 18, 34, 0.92);
+    border: 1px solid rgba(148, 163, 184, 0.18);
+    color: var(--text-secondary);
+    text-align: center;
+}
+
+.results-wrapper .btn {
+    justify-self: center;
 }
 
 @media (min-width: 480px) {

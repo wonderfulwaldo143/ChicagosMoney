@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>Chicago's Money — On-The-Go Mission Brief</title>
+    <meta name="description" content="Understand how Chicago's Money turns open data into fast-moving intelligence for field teams, journalists, and civic operators.">
+    <link rel="canonical" href="https://chicagosmoney.com/mobile-about.html">
+    <meta property="og:title" content="Chicago's Money — Mission & Data Stack">
+    <meta property="og:description" content="Meet the Chicago's Money team, data sources, and toolkit purpose-built for mobile operators tracking city spending.">
+    <meta property="og:url" content="https://chicagosmoney.com/mobile-about.html">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://chicagosmoney.com/IMG/chicagos_money_logo_variant_1.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="preload" href="css/mobile.css" as="style">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/mobile.css">
+    <script src="js/mobile-shared.js" defer></script>
+</head>
+<body>
+    <header class="mobile-header">
+        <a href="/" class="brand">
+            <span class="brand-logo">
+                <img src="IMG/chicagos_money_logo_variant_1.png" alt="Chicago's Money logo" width="28" height="28">
+            </span>
+            <span class="brand-copy">
+                <span>Chicago, IL</span>
+                <span>Chicago's Money</span>
+            </span>
+        </a>
+        <button type="button" class="nav-toggle" aria-controls="mobile-nav" aria-expanded="false" data-nav-toggle>
+            <span class="nav-toggle-lines">
+                <span></span>
+                <span></span>
+                <span></span>
+            </span>
+        </button>
+    </header>
+
+    <nav id="mobile-nav" class="nav-sheet" data-open="false" aria-hidden="true">
+        <h3>Navigate</h3>
+        <div class="nav-list">
+            <a href="mobile-salary.html" data-close-nav="true" data-nav-link>
+                <div>
+                    <strong>Salary Lookup</strong>
+                    <p>Search and export real-time city payroll data.</p>
+                </div>
+                <span class="transport-badge">Live</span>
+            </a>
+            <a href="mobile-budget.html" data-close-nav="true" data-nav-link>
+                <div>
+                    <strong>Budget Dashboard</strong>
+                    <p>Swipe-ready budget snapshots for field briefings.</p>
+                </div>
+                <span class="transport-badge">Beta</span>
+            </a>
+            <a href="mobile-blog.html" data-close-nav="true" data-nav-link>
+                <div>
+                    <strong>Market Intel</strong>
+                    <p>Playbooks for outreach teams working Chicago.</p>
+                </div>
+                <span class="transport-badge">Read</span>
+            </a>
+            <a href="mobile-about.html" data-close-nav="true" data-nav-link>
+                <div>
+                    <strong>About</strong>
+                    <p>Mission, data stack, and field partners.</p>
+                </div>
+                <span class="transport-badge">Story</span>
+            </a>
+            <a href="mobile-contact.html" data-close-nav="true" data-nav-link>
+                <div>
+                    <strong>Contact</strong>
+                    <p>Request data drops, partnerships, or press kits.</p>
+                </div>
+                <span class="transport-badge">Hello</span>
+            </a>
+        </div>
+        <div class="nav-foot">
+            <button type="button" class="nav-dismiss" data-close-nav="true">Close menu</button>
+            <button type="button" class="nav-dismiss" data-desktop-pref="true">View desktop site</button>
+            <a href="mailto:info@chicagosmoney.com" data-close-nav="true">info@chicagosmoney.com</a>
+            <a href="mobile-about.html" data-close-nav="true" data-nav-link>About the project</a>
+        </div>
+    </nav>
+
+    <main>
+        <section class="section-card hero-card" id="mission">
+            <span class="badge">Field briefing</span>
+            <h1 class="hero-title">Built for operators turning Chicago data into action</h1>
+            <p class="hero-subtitle">Chicago's Money started as a Bronzeville spreadsheet for community organizers. It now powers outreach teams, lenders, and journalists who need transparent salary, permit, and budget intelligence while they move across the city.</p>
+            <div class="stats-scroll" aria-label="About metrics">
+                <article class="stat-chip">
+                    <strong>35,847</strong>
+                    <span>Payroll rows tracked</span>
+                    <p>Nightly syncs to the official Socrata dataset with rank, department, and compensation context.</p>
+                </article>
+                <article class="stat-chip">
+                    <strong>11 feeds</strong>
+                    <span>Data pipelines</span>
+                    <p>Permits, business registrations, inspections, FOIA releases, and Council agendas.</p>
+                </article>
+                <article class="stat-chip">
+                    <strong>4 minutes</strong>
+                    <span>Average lead prep</span>
+                    <p>Mobile templates let reps brief a neighborhood before a meeting or canvass.</p>
+                </article>
+            </div>
+        </section>
+
+        <section class="section-card" id="approach">
+            <h2>How we work the open-data stack</h2>
+            <div class="section-grid">
+                <div class="card">
+                    <span>Data plumbing</span>
+                    <strong>Direct Socrata pulls</strong>
+                    <p>We ingest payroll, permits, inspections, and Council votes directly from the City of Chicago and Cook County datasets.</p>
+                </div>
+                <div class="card">
+                    <span>QA &amp; context</span>
+                    <strong>Editorial checkpoints</strong>
+                    <p>Data journalists annotate anomalies, overtime spikes, and policy changes so mobile readers see what matters.</p>
+                </div>
+                <div class="card">
+                    <span>Delivery</span>
+                    <strong>Tap-first packaging</strong>
+                    <p>Every feed is compressed into cards, swipable streams, or SMS-ready recaps for field usage.</p>
+                </div>
+            </div>
+            <div class="supporting-text">
+                <strong>Core tools:</strong>
+                <span>PostgreSQL materialized views, serverless fetchers, and a mobile-optimized CDN cache keep payloads light and current.</span>
+            </div>
+        </section>
+
+        <section class="section-card">
+            <h2>Who we serve daily</h2>
+            <div class="feature-list">
+                <article class="feature-card">
+                    <div class="feature-meta">
+                        <span class="inline-icon">📰</span>
+                        <span>Newsrooms</span>
+                    </div>
+                    <h3>Budget explainers in minutes</h3>
+                    <p>Pull vetted salary context with quotes, ordinance references, and timeline markers for newsroom alerts.</p>
+                </article>
+                <article class="feature-card">
+                    <div class="feature-meta">
+                        <span class="inline-icon">🏢</span>
+                        <span>Deal teams</span>
+                    </div>
+                    <h3>Fresh permit &amp; prospecting feeds</h3>
+                    <p>Target renovation permits, new LLCs, or food inspections to power lender and agency outreach.</p>
+                </article>
+                <article class="feature-card">
+                    <div class="feature-meta">
+                        <span class="inline-icon">🤝</span>
+                        <span>Community orgs</span>
+                    </div>
+                    <h3>Ward-level accountability</h3>
+                    <p>Track staffing changes, contract approvals, and overtime in neighborhood context for board meetings.</p>
+                </article>
+            </div>
+        </section>
+
+        <section class="section-card">
+            <h2>Snapshots from the field</h2>
+            <div class="two-column">
+                <div class="col">
+                    <h3>Bronzeville pilot</h3>
+                    <p>Weekly canvassing kit pairing salary highlights with upcoming zoning hearings for small-business owners.</p>
+                    <ul class="list-check">
+                        <li>Automated ward briefings delivered by SMS.</li>
+                        <li>Hot sheets for Invest South/West projects.</li>
+                        <li>Permit alerts cross-referenced with vendors.</li>
+                    </ul>
+                </div>
+                <div class="col">
+                    <h3>Loop newsroom desk</h3>
+                    <p>Rapid-fire Council updates that turn into explainers about budget amendments and payroll votes.</p>
+                    <ul class="list-check">
+                        <li>Calendar hooks for Finance Committee hearings.</li>
+                        <li>Overtime spikes flagged within 15 minutes.</li>
+                        <li>Source notes linked to ordinance PDFs.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section class="section-card">
+            <h2>Timeline</h2>
+            <div class="insight-list">
+                <article class="insight-item">
+                    <span class="marker"></span>
+                    <div>
+                        <h4>2021 · Excel sheets in Bronzeville</h4>
+                        <p>Community organizers needed quick answers on which departments were adding headcount and overtime. Chicago's Money launched as a volunteer spreadsheet.</p>
+                    </div>
+                </article>
+                <article class="insight-item">
+                    <span class="marker"></span>
+                    <div>
+                        <h4>2023 · APIs &amp; nightly syncs</h4>
+                        <p>We deployed serverless collectors to keep salary and permit feeds within a 24-hour freshness window.</p>
+                    </div>
+                </article>
+                <article class="insight-item">
+                    <span class="marker"></span>
+                    <div>
+                        <h4>2024 · Mobile command center</h4>
+                        <p>The mobile experience shipped so canvassers, reporters, and lenders could operate the entire intelligence stack from their phones.</p>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section class="section-card">
+            <h2>Questions we hear the most</h2>
+            <div class="faq-group">
+                <details class="faq-item">
+                    <summary>How fast do salary updates publish?</summary>
+                    <p>Employment changes sync within hours of hitting the city portal. Nightly automation confirms new hires, retirements, and overtime adjustments.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>Can we request custom views?</summary>
+                    <p>Yes. Agencies and civic partners can commission ward, department, or compliance views delivered via daily SMS or Slack webhooks.</p>
+                </details>
+                <details class="faq-item">
+                    <summary>Do you cover Cook County or State of Illinois data?</summary>
+                    <p>Cook County payroll is in beta with similar mobile packaging. State-level feeds are available for enterprise partners; ask for access in the contact form.</p>
+                </details>
+            </div>
+        </section>
+
+        <section class="section-card cta-card" id="cta">
+            <h2>Ride along with our daily drops</h2>
+            <p>Subscribe for mobile briefings that track payroll changes, budget votes, permit filings, and neighborhood momentum.</p>
+            <div class="cta-actions">
+                <a class="btn btn-primary" href="mobile-contact.html">Talk with the team</a>
+                <a class="btn btn-outline" href="mailto:info@chicagosmoney.com?subject=Chicago%20Data%20Briefings">Request a briefing sample</a>
+            </div>
+            <p class="cta-note">Delivered each weekday by 7:30am CT with optional SMS alerts when major records drop.</p>
+        </section>
+    </main>
+
+    <div class="bottom-dock" role="navigation" aria-label="Primary actions">
+        <a class="dock-btn primary" href="mobile-salary.html" data-nav-link>Salary lab</a>
+        <a class="dock-btn secondary" href="mobile-contact.html" data-nav-link>Partner up</a>
+        <a class="dock-btn secondary" href="/?view=desktop" data-desktop-pref="true">Desktop site</a>
+    </div>
+</body>
+</html>

@@ -19,6 +19,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/mobile.css">
+    <script src="js/mobile-shared.js" defer></script>
 </head>
 <body>
     <header class="mobile-header">
@@ -43,28 +44,35 @@
     <nav id="mobile-nav" class="nav-sheet" data-open="false" aria-hidden="true">
         <h3>Navigate</h3>
         <div class="nav-list">
-            <a href="salary-lookup.html" data-close-nav="true">
+            <a href="mobile-salary.html" data-close-nav="true" data-nav-link>
                 <div>
                     <strong>Salary Lookup</strong>
                     <p>Search 35K+ Chicago city salaries with filters.</p>
                 </div>
                 <span class="transport-badge">Live</span>
             </a>
-            <a href="budget-dashboard.html" data-close-nav="true">
+            <a href="mobile-budget.html" data-close-nav="true" data-nav-link>
                 <div>
                     <strong>Budget Dashboard</strong>
                     <p>Mobile dashboards built for on-site conversations.</p>
                 </div>
                 <span class="transport-badge">Beta</span>
             </a>
-            <a href="blog.html" data-close-nav="true">
+            <a href="mobile-blog.html" data-close-nav="true" data-nav-link>
                 <div>
                     <strong>Market Intel</strong>
                     <p>Playbooks for growth teams working Chicago.</p>
                 </div>
                 <span class="transport-badge">Read</span>
             </a>
-            <a href="contact.html" data-close-nav="true">
+            <a href="mobile-about.html" data-close-nav="true" data-nav-link>
+                <div>
+                    <strong>About</strong>
+                    <p>Mission, data sources, and Chicago timeline.</p>
+                </div>
+                <span class="transport-badge">Story</span>
+            </a>
+            <a href="mobile-contact.html" data-close-nav="true" data-nav-link>
                 <div>
                     <strong>Contact</strong>
                     <p>Request a curated daily drop or bespoke feed.</p>
@@ -76,7 +84,7 @@
             <button type="button" class="nav-dismiss" data-close-nav="true">Close menu</button>
             <button type="button" class="nav-dismiss" data-desktop-pref="true">View desktop site</button>
             <a href="mailto:info@chicagosmoney.com" data-close-nav="true">info@chicagosmoney.com</a>
-            <a href="about.html" data-close-nav="true">About the project</a>
+            <a href="mobile-about.html" data-close-nav="true" data-nav-link>About the project</a>
         </div>
     </nav>
 
@@ -86,7 +94,7 @@
             <h1 class="hero-title">Chicago business intelligence built for <span>mobile teams</span></h1>
             <p class="hero-subtitle">Lookup salaries, monitor permits, and track new businesses in seconds. All optimized for tap-first workflows.</p>
             <div class="hero-actions">
-                <a class="btn btn-primary" href="salary-lookup.html">Search salaries</a>
+                <a class="btn btn-primary" href="mobile-salary.html">Search salaries</a>
                 <a class="btn btn-ghost" href="#lead-feeds">Get business leads</a>
             </div>
             <div class="stats-scroll" aria-label="Key platform stats">
@@ -293,87 +301,10 @@
     </main>
 
     <div class="bottom-dock" role="navigation" aria-label="Primary actions">
-        <a class="dock-btn primary" href="salary-lookup.html">Search salaries</a>
-        <a class="dock-btn secondary" href="contact.html">Talk to the team</a>
+        <a class="dock-btn primary" href="mobile-salary.html" data-nav-link>Search salaries</a>
+        <a class="dock-btn secondary" href="mobile-contact.html" data-nav-link>Talk to the team</a>
         <a class="dock-btn secondary" href="/?view=desktop" data-desktop-pref="true">Desktop site</a>
     </div>
 
-    <script>
-        (function () {
-            const PREF_KEY = 'cm-prefers-desktop';
-
-            try {
-                const params = new URLSearchParams(window.location.search);
-                const viewPref = params.get('view');
-                if (viewPref === 'mobile') {
-                    localStorage.removeItem(PREF_KEY);
-                } else if (viewPref === 'desktop') {
-                    localStorage.setItem(PREF_KEY, '1');
-                }
-                if (viewPref !== null) {
-                    params.delete('view');
-                    const updatedQuery = params.toString();
-                    const nextUrl = window.location.pathname + (updatedQuery ? '?' + updatedQuery : '') + window.location.hash;
-                    window.history.replaceState({}, '', nextUrl);
-                }
-            } catch (error) {
-                console.warn('Mobile preference handling failed:', error);
-            }
-
-            const navToggle = document.querySelector('[data-nav-toggle]');
-            const navSheet = document.getElementById('mobile-nav');
-
-            const setNavState = (open) => {
-                if (!navSheet || !navToggle) return;
-                navSheet.dataset.open = open ? 'true' : 'false';
-                navSheet.setAttribute('aria-hidden', open ? 'false' : 'true');
-                navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
-                document.body.classList.toggle('nav-open', open);
-            };
-
-            if (navToggle && navSheet) {
-                navToggle.addEventListener('click', () => {
-                    const isOpen = navSheet.dataset.open === 'true';
-                    setNavState(!isOpen);
-                });
-
-                navSheet.addEventListener('click', (event) => {
-                    const target = event.target;
-                    if (!(target instanceof HTMLElement)) return;
-                    if (target.dataset.closeNav === 'true' || target === navSheet) {
-                        setNavState(false);
-                    }
-                });
-
-                navSheet.addEventListener('transitionend', () => {
-                    if (navSheet.dataset.open !== 'true') {
-                        navSheet.scrollTop = 0;
-                    }
-                });
-            }
-
-            document.addEventListener('keydown', (event) => {
-                if (event.key === 'Escape') {
-                    setNavState(false);
-                }
-            });
-
-            const desktopPrefTriggers = document.querySelectorAll('[data-desktop-pref="true"]');
-            desktopPrefTriggers.forEach((trigger) => {
-                trigger.addEventListener('click', (event) => {
-                    event.preventDefault();
-                    try {
-                        localStorage.setItem(PREF_KEY, '1');
-                    } catch (storageError) {
-                        console.warn('Unable to persist desktop preference:', storageError);
-                    }
-                    setNavState(false);
-                    const targetHref = trigger.getAttribute('href') || '/?view=desktop';
-                    const nextLocation = targetHref.includes('view=desktop') ? targetHref : '/?view=desktop';
-                    window.location.href = nextLocation;
-                });
-            });
-        })();
-    </script>
 </body>
 </html>

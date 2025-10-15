@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>Chicago's Money — Mobile Salary Lookup</title>
+    <meta name="description" content="Search Chicago city employee salaries, overtime, and departments from your phone. Export CSVs or tap preset filters to prep outreach on the go.">
+    <link rel="canonical" href="https://chicagosmoney.com/mobile-salary.html">
+    <meta property="og:title" content="Chicago Salary Lookup — Mobile">
+    <meta property="og:description" content="35K+ Chicago city payroll records updated nightly for mobile operators, reporters, and civic partners.">
+    <meta property="og:url" content="https://chicagosmoney.com/mobile-salary.html">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://chicagosmoney.com/IMG/chicagos_money_logo_variant_2.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="preload" href="css/mobile.css" as="style">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/mobile.css">
+    <script src="js/mobile-shared.js" defer></script>
+    <script src="js/mobile-salary.js" defer></script>
+</head>
+<body>
+    <header class="mobile-header">
+        <a href="/" class="brand">
+            <span class="brand-logo">
+                <img src="IMG/chicagos_money_logo_variant_1.png" alt="Chicago's Money logo" width="28" height="28">
+            </span>
+            <span class="brand-copy">
+                <span>Chicago, IL</span>
+                <span>Chicago's Money</span>
+            </span>
+        </a>
+        <button type="button" class="nav-toggle" aria-controls="mobile-nav" aria-expanded="false" data-nav-toggle>
+            <span class="nav-toggle-lines">
+                <span></span>
+                <span></span>
+                <span></span>
+            </span>
+        </button>
+    </header>
+
+    <nav id="mobile-nav" class="nav-sheet" data-open="false" aria-hidden="true">
+        <h3>Navigate</h3>
+        <div class="nav-list">
+            <a href="mobile-salary.html" data-close-nav="true" data-nav-link>
+                <div>
+                    <strong>Salary Lookup</strong>
+                    <p>Search payroll, overtime, and departments.</p>
+                </div>
+                <span class="transport-badge">Live</span>
+            </a>
+            <a href="mobile-budget.html" data-close-nav="true" data-nav-link>
+                <div>
+                    <strong>Budget Dashboard</strong>
+                    <p>Ward-ready budget highlights.</p>
+                </div>
+                <span class="transport-badge">Beta</span>
+            </a>
+            <a href="mobile-about.html" data-close-nav="true" data-nav-link>
+                <div>
+                    <strong>About</strong>
+                    <p>Mission, data sources, and team.</p>
+                </div>
+                <span class="transport-badge">Story</span>
+            </a>
+            <a href="mobile-blog.html" data-close-nav="true" data-nav-link>
+                <div>
+                    <strong>Market Intel</strong>
+                    <p>Field notes and outreach playbooks.</p>
+                </div>
+                <span class="transport-badge">Read</span>
+            </a>
+            <a href="mobile-contact.html" data-close-nav="true" data-nav-link>
+                <div>
+                    <strong>Contact</strong>
+                    <p>Request CSV exports or custom alerts.</p>
+                </div>
+                <span class="transport-badge">Hello</span>
+            </a>
+        </div>
+        <div class="nav-foot">
+            <button type="button" class="nav-dismiss" data-close-nav="true">Close menu</button>
+            <button type="button" class="nav-dismiss" data-desktop-pref="true">View desktop site</button>
+            <a href="mailto:info@chicagosmoney.com" data-close-nav="true">info@chicagosmoney.com</a>
+            <a href="mobile-about.html" data-close-nav="true" data-nav-link>About the project</a>
+        </div>
+    </nav>
+
+    <main>
+        <section class="section-card hero-card">
+            <span class="badge">Salary lab</span>
+            <h1 class="hero-title">Search 35K+ Chicago payroll records in seconds</h1>
+            <p class="hero-subtitle">Type a name, department, or job title and we’ll surface salary, overtime, and rank details pulled nightly from the city’s official dataset.</p>
+            <div class="stats-scroll" aria-label="Salary highlights">
+                <article class="stat-chip">
+                    <strong>$300,044</strong>
+                    <span>Top base salary</span>
+                    <p>Police Superintendent (FY2024). Search “Police Superintendent” to view context.</p>
+                </article>
+                <article class="stat-chip">
+                    <strong>873</strong>
+                    <span>$200k+ earners</span>
+                    <p>Many tied to Police, Fire, and Aviation overtime. Use quick filters below.</p>
+                </article>
+                <article class="stat-chip">
+                    <strong>Updated daily</strong>
+                    <span>Fresh data</span>
+                    <p>Records sync within hours of City Hall updates and hiring notices.</p>
+                </article>
+            </div>
+        </section>
+
+        <section class="section-card" id="search">
+            <h2>Run a search</h2>
+            <form class="search-form" data-salary-form>
+                <div class="input-stack">
+                    <label class="search-label" for="lookupQuery">Search term</label>
+                    <input id="lookupQuery" class="search-input" name="query" type="search" placeholder="Type a name, department, or title" autocomplete="off" required data-search-input>
+                </div>
+                <div class="segmented-control" role="group" aria-label="Search field">
+                    <button type="button" class="segment is-active" data-filter="name">Name</button>
+                    <button type="button" class="segment" data-filter="department">Department</button>
+                    <button type="button" class="segment" data-filter="job_titles">Job title</button>
+                </div>
+                <button class="btn btn-primary" type="submit">Search payroll</button>
+                <p class="tiny-label" data-status>Showing top earners citywide.</p>
+            </form>
+        </section>
+
+        <section class="section-card">
+            <h2>Quick filters</h2>
+            <div class="pill-row">
+                <button class="pill" data-preset-filter="department" data-preset-query="POLICE" aria-pressed="false">Police overtime</button>
+                <button class="pill" data-preset-filter="department" data-preset-query="FIRE" aria-pressed="false">Fire Department</button>
+                <button class="pill" data-preset-filter="department" data-preset-query="AVIATION" aria-pressed="false">Aviation</button>
+                <button class="pill" data-preset-filter="job_titles" data-preset-query="TEACHER" aria-pressed="false">Teachers</button>
+                <button class="pill" data-preset-filter="job_titles" data-preset-query="INSPECTOR" aria-pressed="false">Inspectors</button>
+            </div>
+        </section>
+
+        <section class="section-card">
+            <h2>Results</h2>
+            <div class="results-wrapper">
+                <ul class="results-list" data-results-list aria-live="polite" aria-busy="false"></ul>
+                <button class="btn btn-outline" type="button" data-load-more hidden>Load more</button>
+                <a class="inline-link" href="#" target="_blank" rel="noopener" data-download-link hidden>Download current view as CSV ↗</a>
+            </div>
+        </section>
+
+        <section class="section-card">
+            <h2>Dataset details</h2>
+            <div class="supporting-text">
+                <span>Source: <a class="inline-link" href="https://data.cityofchicago.org/Administration-Finance/Current-Employee-Names-Salaries-and-Position-Title/xzkq-xp2w" target="_blank" rel="noopener">City of Chicago • Current Employee Salaries (xzkq-xp2w)</a></span>
+                <span>Fields returned: name, department, job titles, annual salary. Additional columns like `salary_or_hourly`, `typical_hours`, and `annual_salary` are available in the CSV export.</span>
+                <span>For ward-level breakdowns or overtime deep dives, tap contact at the bottom of this page.</span>
+            </div>
+        </section>
+    </main>
+
+    <div class="bottom-dock" role="navigation" aria-label="Primary actions">
+        <a class="dock-btn primary" href="mobile-budget.html" data-nav-link>Budget view</a>
+        <a class="dock-btn secondary" href="mobile-contact.html" data-nav-link>Request CSV</a>
+        <a class="dock-btn secondary" href="/?view=desktop" data-desktop-pref="true">Desktop site</a>
+    </div>
+</body>
+</html>

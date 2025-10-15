@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>Chicago's Money — Mobile Budget Dashboard</title>
+    <meta name="description" content="Swipe-ready Chicago budget intelligence with top-line numbers, department trends, and ward snapshots for meetings on the go.">
+    <link rel="canonical" href="https://chicagosmoney.com/mobile-budget.html">
+    <meta property="og:title" content="Chicago's Money — Budget Dashboard">
+    <meta property="og:description" content="Track the FY2025 Chicago budget, department trends, and ward-specific highlights from your phone.">
+    <meta property="og:url" content="https://chicagosmoney.com/mobile-budget.html">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://chicagosmoney.com/IMG/Google_AI_Studio_2025-09-02T05_13_32.359Z.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="preload" href="css/mobile.css" as="style">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/mobile.css">
+    <script src="js/mobile-shared.js" defer></script>
+</head>
+<body>
+    <header class="mobile-header">
+        <a href="/" class="brand">
+            <span class="brand-logo">
+                <img src="IMG/chicagos_money_logo_variant_1.png" alt="Chicago's Money logo" width="28" height="28">
+            </span>
+            <span class="brand-copy">
+                <span>Chicago, IL</span>
+                <span>Chicago's Money</span>
+            </span>
+        </a>
+        <button type="button" class="nav-toggle" aria-controls="mobile-nav" aria-expanded="false" data-nav-toggle>
+            <span class="nav-toggle-lines">
+                <span></span>
+                <span></span>
+                <span></span>
+            </span>
+        </button>
+    </header>
+
+    <nav id="mobile-nav" class="nav-sheet" data-open="false" aria-hidden="true">
+        <h3>Navigate</h3>
+        <div class="nav-list">
+            <a href="mobile-salary.html" data-close-nav="true" data-nav-link>
+                <div>
+                    <strong>Salary Lookup</strong>
+                    <p>Pull payroll rows, overtime, and exports.</p>
+                </div>
+                <span class="transport-badge">Live</span>
+            </a>
+            <a href="mobile-budget.html" data-close-nav="true" data-nav-link>
+                <div>
+                    <strong>Budget Dashboard</strong>
+                    <p>Top-line numbers and ward-ready snapshots.</p>
+                </div>
+                <span class="transport-badge">Beta</span>
+            </a>
+            <a href="mobile-about.html" data-close-nav="true" data-nav-link>
+                <div>
+                    <strong>About</strong>
+                    <p>Mission and methodology behind the feeds.</p>
+                </div>
+                <span class="transport-badge">Story</span>
+            </a>
+            <a href="mobile-blog.html" data-close-nav="true" data-nav-link>
+                <div>
+                    <strong>Market Intel</strong>
+                    <p>Playbooks and budget breakdowns.</p>
+                </div>
+                <span class="transport-badge">Read</span>
+            </a>
+            <a href="mobile-contact.html" data-close-nav="true" data-nav-link>
+                <div>
+                    <strong>Contact</strong>
+                    <p>Request ward packets or press quotes.</p>
+                </div>
+                <span class="transport-badge">Hello</span>
+            </a>
+        </div>
+        <div class="nav-foot">
+            <button type="button" class="nav-dismiss" data-close-nav="true">Close menu</button>
+            <button type="button" class="nav-dismiss" data-desktop-pref="true">View desktop site</button>
+            <a href="mailto:info@chicagosmoney.com" data-close-nav="true">info@chicagosmoney.com</a>
+            <a href="mobile-about.html" data-close-nav="true" data-nav-link>About the project</a>
+        </div>
+    </nav>
+
+    <main>
+        <section class="section-card hero-card">
+            <span class="badge">FY2025 Budget</span>
+            <h1 class="hero-title">Chicago's $16.6B spending plan, simplified for the field</h1>
+            <p class="hero-subtitle">Stay ahead of Council debates, department shifts, and ward-level investments without opening a laptop. This dashboard refreshes nightly from the Budget Office releases.</p>
+            <div class="stats-scroll" aria-label="Budget highlights">
+                <article class="stat-chip">
+                    <strong>$16.6B</strong>
+                    <span>Total FY2025 plan</span>
+                    <p>Includes corporate, enterprise, grant, and special revenue funds.</p>
+                </article>
+                <article class="stat-chip">
+                    <strong>$680M</strong>
+                    <span>Overtime last year</span>
+                    <p>Police, Fire, Aviation, and Streets &amp; Sanitation drive 82% of overtime costs.</p>
+                </article>
+                <article class="stat-chip">
+                    <strong>11%</strong>
+                    <span>Capital bump</span>
+                    <p>Invest South/West corridors and CTA modernization projects lead the increase.</p>
+                </article>
+            </div>
+        </section>
+
+        <section class="section-card">
+            <h2>Budget watchlist</h2>
+            <div class="section-grid">
+                <div class="card">
+                    <span>General Fund</span>
+                    <strong>$5.7B corporate fund</strong>
+                    <p>Day-to-day operations centered on Police, Fire, Streets &amp; Sanitation, and General Services.</p>
+                </div>
+                <div class="card">
+                    <span>People</span>
+                    <strong>32K funded positions</strong>
+                    <p>Net +412 roles, concentrated in public safety, mental health, and youth programming.</p>
+                </div>
+                <div class="card">
+                    <span>Debt &amp; pensions</span>
+                    <strong>$2.4B allocation</strong>
+                    <p>Accelerated pension payments continue; monitor Council votes on debt refinancing instruments.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section-card">
+            <h2>Ward-ready segments</h2>
+            <div class="feature-list">
+                <article class="feature-card">
+                    <div class="feature-meta">
+                        <span class="inline-icon">🛣️</span>
+                        <span>South &amp; West</span>
+                    </div>
+                    <h3>Invest South/West pipeline</h3>
+                    <p>$486M multi-year spend anchored in Austin, Auburn Gresham, and South Shore for streetscapes, housing, and community hubs.</p>
+                </article>
+                <article class="feature-card">
+                    <div class="feature-meta">
+                        <span class="inline-icon">🚔</span>
+                        <span>Public safety</span>
+                    </div>
+                    <h3>Police &amp; Fire overtime</h3>
+                    <p>Overtime still outpaces hiring; track the Finance Committee's monthly briefing to align staffing stories.</p>
+                </article>
+                <article class="feature-card">
+                    <div class="feature-meta">
+                        <span class="inline-icon">🏗️</span>
+                        <span>Capital slate</span>
+                    </div>
+                    <h3>Infrastructure &amp; transit</h3>
+                    <p>CTA modernization, CREATE rail flyovers, and lead service line replacements dominate the capital agenda.</p>
+                </article>
+            </div>
+        </section>
+
+        <section class="section-card">
+            <h2>Key dates</h2>
+            <div class="insight-list">
+                <article class="insight-item">
+                    <span class="marker"></span>
+                    <div>
+                        <h4>Mar • Mid-year budget forecast</h4>
+                        <p>Budget Office releases FY2025 gap update; subscribe for a same-day mobile breakdown.</p>
+                    </div>
+                </article>
+                <article class="insight-item">
+                    <span class="marker"></span>
+                    <div>
+                        <h4>Jul • Department hearings begin</h4>
+                        <p>Track committee testimony from Police, OHSA, DFSS, and Aviation to surface hiring or overtime variances.</p>
+                    </div>
+                </article>
+                <article class="insight-item">
+                    <span class="marker"></span>
+                    <div>
+                        <h4>Nov • Council vote</h4>
+                        <p>Full City Council adopts the budget. Mobile alerts include roll-call tallies and amendments.</p>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section class="section-card">
+            <h2>Download &amp; share</h2>
+            <div class="cta-actions">
+                <a class="btn btn-primary" href="https://www.chicago.gov/city/en/depts/obm.html" target="_blank" rel="noopener">Official budget portal</a>
+                <a class="btn btn-outline" href="mailto:info@chicagosmoney.com?subject=Ward%20budget%20packet%20request">Request ward packet</a>
+            </div>
+            <p class="cta-note">Custom PDFs include department roll-ups, overtime history, and neighborhood project lists.</p>
+        </section>
+    </main>
+
+    <div class="bottom-dock" role="navigation" aria-label="Primary actions">
+        <a class="dock-btn primary" href="mobile-salary.html" data-nav-link>Salary lab</a>
+        <a class="dock-btn secondary" href="mobile-contact.html" data-nav-link>Ask for ward data</a>
+        <a class="dock-btn secondary" href="/?view=desktop" data-desktop-pref="true">Desktop site</a>
+    </div>
+</body>
+</html>

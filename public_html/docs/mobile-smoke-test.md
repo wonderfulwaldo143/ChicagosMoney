@@ -39,6 +39,10 @@ Use this checklist to validate the new mobile-first experience on real devices. 
 - **Steps**: Scroll hero, stats carousel, and FAQ.
 - **Expected**: No jank or noticeable layout shifts; background gradients should remain smooth.
 
+### 8. Page Coverage
+- **Steps**: Visit `/mobile-salary.html`, `/mobile-budget.html`, `/mobile-blog.html`, `/mobile-about.html`, and `/mobile-contact.html`.
+- **Expected**: Each page loads with active nav highlighting, bottom dock present, and scoped content (search, stats, CTA) functioning. On salary lookup, run a query and download link to confirm Socrata connectivity.
+
 ## Observations
 - _Status_: Not run in this environment (no device simulator). Use the checklist above during the next in-person QA pass and record results here.
 
