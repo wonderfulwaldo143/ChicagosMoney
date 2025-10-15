@@ -2147,8 +2147,10 @@
                     const v = escapeSoql(params.title.trim());
                     conditions.push(`upper(job_titles) like upper('%${v}%')`);
                 }
-                if (params.payType) {
-                    conditions.push(`salary_or_hourly='${params.payType}'`);
+                const payTypeValue = String(params.payType || '').toUpperCase();
+                if (payTypeValue) {
+                    const payTypeEscaped = escapeSoql(payTypeValue);
+                    conditions.push(`upper(salary_or_hourly)='${payTypeEscaped}'`);
                 }
                 if (params.ft) {
                     conditions.push(`full_or_part_time='${params.ft}'`);

@@ -2,7 +2,7 @@
 // Provides offline support and caching for PWA
 // BUMP CACHE_NAME ON EVERY DEPLOY
 
-const CACHE_NAME = 'cm-v1760498504-20251014-222144';
+const CACHE_NAME = 'cm-v1760511940-20251015-020540';
 const urlsToCache = [
   '/',
   '/budget-dashboard.html',
