@@ -7,11 +7,14 @@
   const form = document.querySelector('[data-salary-form]');
   const input = document.querySelector('[data-search-input]');
   const filterButtons = document.querySelectorAll('[data-filter]');
+  const filterValues = Array.from(filterButtons, (btn) => btn.dataset.filter);
   const presetButtons = document.querySelectorAll('[data-preset-filter]');
+  const suggestionButtons = document.querySelectorAll('[data-suggest-filter]');
   const resultList = document.querySelector('[data-results-list]');
   const statusLabel = document.querySelector('[data-status]');
   const loadMoreBtn = document.querySelector('[data-load-more]');
   const downloadLink = document.querySelector('[data-download-link]');
+  const clearButton = document.querySelector('[data-clear-search]');
 
   if (!form || !input || !resultList) {
     return;
@@ -28,14 +31,25 @@
     maximumFractionDigits: 0
   });
 
+  const hourlyCurrency = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  });
+
   const cleanQuery = (value) => value.trim().replace(/\s+/g, ' ').slice(0, 80);
 
   const buildWhere = (filter, query) => {
     if (!query) return '';
     const sanitized = query.replace(/'/g, "''");
-    if (filter === 'annual_salary') {
+    if (filter === 'annual_salary' || filter === 'employee_annual_salary') {
       const numeric = Number(sanitized.replace(/[^0-9.]/g, ''));
-      return Number.isFinite(numeric) ? `annual_salary >= ${numeric}` : '';
+      if (!Number.isFinite(numeric)) {
+        return '';
+      }
+      const column = filter === 'employee_annual_salary' ? 'employee_annual_salary' : 'annual_salary';
+      return `${column} >= ${numeric}`;
     }
     if (filter === 'name') {
       return `upper(name) like upper('%${sanitized}%')`;
@@ -43,9 +57,21 @@
     return `upper(${filter}) like upper('%${sanitized}%')`;
   };
 
+  const setActiveFilter = (filter) => {
+    const fallback = 'name';
+    const resolved = filterValues.includes(filter) ? filter : fallback;
+    activeFilter = resolved;
+    filterButtons.forEach((btn) => {
+      btn.classList.toggle('is-active', btn.dataset.filter === resolved);
+    });
+    return resolved;
+  };
+
+  setActiveFilter(activeFilter);
+
   const buildParams = (where, limit, offset = 0) => {
     const params = new URLSearchParams({
-      $select: 'name,department,job_titles,annual_salary',
+      $select: 'name,department,job_titles,annual_salary,salary_or_hourly,hourly_rate',
       $limit: String(limit),
       $offset: String(offset),
       $order: 'annual_salary DESC'
@@ -61,6 +87,29 @@
       statusLabel.textContent = message;
     }
     resultList.setAttribute('aria-busy', busy ? 'true' : 'false');
+  };
+
+  const resolveCompensation = (row) => {
+    const annualSalary = Number(row.annual_salary);
+    if (Number.isFinite(annualSalary) && annualSalary > 0) {
+      return {
+        display: currency.format(annualSalary),
+        descriptor: 'Salary'
+      };
+    }
+
+    const hourlyRate = Number(row.hourly_rate);
+    if (Number.isFinite(hourlyRate) && hourlyRate > 0) {
+      return {
+        display: `${hourlyCurrency.format(hourlyRate)} / hr`,
+        descriptor: 'Hourly'
+      };
+    }
+
+    return {
+      display: 'Compensation unavailable',
+      descriptor: ''
+    };
   };
 
   const renderResults = (records, append = false) => {
@@ -83,7 +132,28 @@
 
       const header = document.createElement('div');
       header.className = 'result-header';
-      header.innerHTML = `<strong>${row.name ?? 'Name unavailable'}</strong><span>${currency.format(Number(row.annual_salary || 0))}</span>`;
+      const nameEl = document.createElement('strong');
+      nameEl.textContent = row.name ?? 'Name unavailable';
+
+      const comp = resolveCompensation(row);
+      const compWrap = document.createElement('span');
+      compWrap.className = 'result-comp';
+
+      const compValue = document.createElement('span');
+      compValue.className = 'result-comp-value';
+      compValue.textContent = comp.display;
+      compWrap.appendChild(compValue);
+
+      if (comp.descriptor) {
+        const compDescriptor = document.createElement('span');
+        compDescriptor.className = 'result-comp-type';
+        compDescriptor.textContent = comp.descriptor;
+        compWrap.appendChild(compDescriptor);
+      } else {
+        compWrap.classList.add('is-missing');
+      }
+
+      header.append(nameEl, compWrap);
 
       const body = document.createElement('div');
       body.className = 'result-body';
@@ -173,11 +243,11 @@
 
   filterButtons.forEach((button) => {
     button.addEventListener('click', () => {
-      filterButtons.forEach((btn) => btn.classList.remove('is-active'));
-      button.classList.add('is-active');
-      activeFilter = button.dataset.filter ?? 'name';
+      const nextFilter = button.dataset.filter ?? 'name';
+      setActiveFilter(nextFilter);
       if (input.value.trim()) {
-        performSearch({ filter: activeFilter, query: input.value });
+        activeQuery = input.value;
+        performSearch({ filter: activeFilter, query: activeQuery });
       }
     });
   });
@@ -188,15 +258,49 @@
       const presetQuery = button.dataset.presetQuery ?? '';
       if (!presetFilter || !presetQuery) return;
 
-      activeFilter = presetFilter;
-      filterButtons.forEach((btn) => {
-        btn.classList.toggle('is-active', btn.dataset.filter === presetFilter);
-      });
+      setActiveFilter(presetFilter);
 
       input.value = presetQuery;
       activeQuery = presetQuery;
+      if (clearButton) {
+        clearButton.hidden = false;
+      }
       performSearch({ filter: presetFilter, query: presetQuery });
     });
+  });
+
+  suggestionButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+      const suggestFilter = button.dataset.suggestFilter;
+      const suggestQuery = button.dataset.suggestQuery ?? '';
+      if (!suggestFilter || !suggestQuery) return;
+
+      setActiveFilter(suggestFilter);
+      input.value = suggestQuery;
+      activeQuery = suggestQuery;
+      if (clearButton) {
+        clearButton.hidden = false;
+      }
+      performSearch({ filter: suggestFilter, query: suggestQuery });
+      input.focus({ preventScroll: true });
+    });
+  });
+
+  if (clearButton) {
+    clearButton.hidden = true;
+    clearButton.addEventListener('click', () => {
+      input.value = '';
+      activeQuery = '';
+      clearButton.hidden = true;
+      input.focus({ preventScroll: true });
+      performSearch({ filter: activeFilter, query: '' });
+    });
+  }
+
+  input.addEventListener('input', () => {
+    if (clearButton) {
+      clearButton.hidden = input.value.trim().length === 0;
+    }
   });
 
   form.addEventListener('submit', (event) => {
