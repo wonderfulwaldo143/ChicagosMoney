@@ -1,107 +1,100 @@
-# Hostinger Agency Plan - Quick Reference
+# Hostinger Cloud Startup – Quick Reference
 
 ## 🚀 Quick Deployment Commands
 
 ```bash
-# Test deployment setup
+# From the project root
+cd public_html
+
+# Dry-run / verification
 ./test-deployment.sh
 
-# Deploy to Hostinger Agency plan
+# Guided deployment (prompts for rsync command)
+./deploy.sh
+
+# Automated deployment with version + SW updates
 ./deploy-quick.sh
 ```
 
-## 🔧 Hostinger Agency Plan Specs
+## 🔧 Cloud Startup Specs
 
 | Feature | Specification |
 |---------|---------------|
-| **Plan** | Agency Hosting |
-| **Websites** | Up to 200 |
-| **SSH Port** | 22 |
-| **SFTP Port** | 65002 |
-| **Support** | Priority 24/7 |
-| **Isolation** | Full website isolation |
-| **Collaboration** | Client & team access |
+| **Plan** | Cloud Startup |
+| **Websites** | Up to 300 |
+| **Compute** | 2 CPU cores, 3 GB RAM |
+| **Storage** | 200 GB NVMe SSD |
+| **SSH & SFTP Port** | 22 |
+| **Directory** | `~/domains/chicagosmoney.com/public_html/` |
+| **Backups** | Daily automated + on-demand |
+| **Extras** | Staging, CDN toggle, automatic cache |
 
 ## 📋 Deployment Checklist
 
 ### Pre-Deployment
-- [ ] SSH enabled in hPanel
-- [ ] Critical files present
-- [ ] Service worker cache version updated
-- [ ] Version file updated
+- [ ] SSH access enabled in hPanel (Account → SSH Access)
+- [ ] Critical files present (`index.html`, `mobile.html`, `styles.css`, `script.js`, `sw.js`, `manifest.json`, `version.txt`)
+- [ ] Service worker cache + `version.txt` will update via script
+- [ ] Image and asset optimizations complete
+- [ ] Optional: download/manual backup before release
 
 ### During Deployment
-- [ ] Choose SSH (port 22) or SFTP (port 65002)
-- [ ] Enter SSH credentials
-- [ ] Confirm deployment
+- [ ] Run `./deploy-quick.sh` or `./deploy.sh`
+- [ ] Enter SSH target `user@chicagosmoney.com` (or server IP)
+- [ ] Confirm rsync command to `~/domains/chicagosmoney.com/public_html/`
+- [ ] Monitor rsync output for errors (permissions, disk usage, etc.)
 
 ### Post-Deployment
-- [ ] Clear Hostinger cache (hPanel → Advanced → Website → Clear Website Cache)
-- [ ] Test: `https://chicagosmoney.com/deploy-info.php`
-- [ ] Verify version timestamp
-- [ ] Test site functionality
+- [ ] Clear cache: hPanel → Websites → Manage → CDN & Cache → Clear cache
+- [ ] Verify production URLs render (`/`, `/deploy-info.php`)
+- [ ] Confirm `version.txt` timestamp + service worker cache bump
+- [ ] Test forms, salary lookup, mobile redirect
+- [ ] Run PageSpeed Insights (mobile + desktop)
 
 ## 🔑 SSH/SFTP Credentials
 
-**SSH Connection:**
-- Host: `your-server-ip` or `chicagosmoney.com`
-- Port: `22`
-- Username: `your-hostinger-username`
-- Password: `your-hostinger-password`
+- **Host**: `chicagosmoney.com` or server IP
+- **Port**: `22`
+- **Username**: Hostinger account username
+- **Auth**: Password or SSH key (recommended)
+- **Remote Path**: `~/domains/chicagosmoney.com/public_html/`
 
-**SFTP Connection:**
-- Host: `your-server-ip` or `chicagosmoney.com`
-- Port: `65002`
-- Username: `your-hostinger-username`
-- Password: `your-hostinger-password`
+Use the same port (22) for SFTP if connecting via tools like FileZilla.
 
-## 📁 File Structure
+## 📁 File Structure Reminder
 
 ```
-public_html/
-├── index.html          # Main page
-├── styles.css          # Stylesheet
-├── script.js           # JavaScript
-├── sw.js              # Service worker
-├── manifest.json       # PWA manifest
-├── version.txt        # Version tracking
-├── deploy-info.php    # Deployment verification
-├── IMG/              # Images
-├── icons/             # Favicons
-├── api/               # PHP APIs
-└── css/               # Additional styles
+~/domains/chicagosmoney.com/public_html/
+├── index.html
+├── mobile.html
+├── styles.css
+├── script.js
+├── sw.js
+├── manifest.json
+├── version.txt
+├── deploy-info.php
+├── IMG/
+├── icons/
+├── api/
+└── css/
 ```
 
 ## 🛠️ Troubleshooting
 
-**Connection Issues:**
-- Try SFTP port 65002 instead of SSH port 22
-- Verify SSH is enabled in hPanel
-- Check username/password
+| Symptom | Fix |
+|---------|-----|
+| Permission denied | Re-enable SSH, ensure correct username, verify key permissions |
+| Files out of date | Clear Hostinger cache and browser cache; ensure service worker cache version updated |
+| Wrong directory | Confirm rsync path is `~/domains/chicagosmoney.com/public_html/` |
+| Slow performance | Enable CDN, review caching headers, optimize large images |
+| SSH disabled | hPanel → SSH Access → enable; regenerate keys if necessary |
 
-**Files Not Updating:**
-- Clear Hostinger cache
-- Check file permissions
-- Verify correct directory
+## 📞 Support & Resources
 
-**Performance Issues:**
-- Use Agency plan CDN
-- Optimize images
-- Check performance metrics
-
-## 📞 Support
-
-- **Priority Support**: 24/7 multilingual
-- **WordPress Experts**: Specialized assistance
-- **Agency Features**: Client collaboration tools
-
-## 🔄 Alternative Deployment Methods
-
-1. **hPanel File Manager**: Manual upload via web interface
-2. **DeployHQ**: Automated Git deployments
-3. **DeployBot**: Third-party deployment service
-4. **FTP Client**: Traditional FTP/SFTP upload
+- Hostinger Knowledge Base: [support.hostinger.com](https://support.hostinger.com/)
+- Cloud Startup product page: [hostinger.com/cloud-hosting](https://www.hostinger.com/cloud-hosting)
+- Internal docs: `HOSTINGER_CLOUD_DEPLOYMENT.md`, `DEPLOYHQ_SETUP.md`
 
 ---
 
-**Ready to deploy?** Run `./deploy-quick.sh` and follow the prompts!
+Ready to ship? Run `./deploy-quick.sh`, aim at `~/domains/chicagosmoney.com/public_html/`, and you're live! 🚀

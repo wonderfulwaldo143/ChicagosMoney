@@ -3,18 +3,25 @@
     "name": "Chicago's Money",
     "url": "chicagosmoney.com",
     "local_path": ".",
-    "remote_path": "public_html"
+    "remote_path": "~/domains/chicagosmoney.com/public_html"
+  },
+  "ftp": {
+    "host": "ftp.chicagosmoney.com",
+    "port": 21,
+    "username_hint": "u419904569.chicagosmoney.com",
+    "root_directory": "public_html",
+    "notes": "Set password in hPanel. lftp mirror -R --delete ./ public_html/"
   },
   "hostinger": {
-    "plan": "Agency",
+    "plan": "Cloud Startup",
     "features": [
-      "Client & Team Collaboration",
-      "Full Website Isolation", 
-      "Up to 200 websites",
-      "Priority 24/7 Support",
-      "SSH/SFTP Access"
+      "Dedicated Cloud Resources",
+      "Automatic Scaling & Caching",
+      "Up to 300 Websites",
+      "Daily Backups & Staging",
+      "SSH/SFTP Access (Port 22)"
     ],
-    "ssh_port": 22,
+    "ssh_port": 65002,
     "sftp_port": 65002,
     "deployment_methods": [
       "hPanel File Manager",
@@ -26,7 +33,7 @@
   },
   "deployment": {
     "method": "rsync",
-    "ssh_port": 22,
+    "ssh_port": 65002,
     "sftp_port": 65002,
     "backup_before_deploy": true,
     "excludes": [
@@ -87,10 +94,10 @@
     "notify_success": true,
     "update_sitemap": false
   },
-  "agency_features": {
-    "client_collaboration": true,
-    "website_isolation": true,
+  "cloud_features": {
+    "auto_scaling": true,
+    "dedicated_resources": true,
     "priority_support": true,
-    "referral_program": true
+    "global_cdn": true
   }
 }

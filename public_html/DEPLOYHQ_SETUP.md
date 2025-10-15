@@ -1,4 +1,4 @@
-# DeployHQ Configuration for Hostinger Agency Plan
+# DeployHQ Configuration for Hostinger Cloud Startup
 
 ## Setup Instructions
 
@@ -11,20 +11,20 @@
 In DeployHQ, add a new server with these settings:
 
 **Server Details:**
-- **Name**: Chicago's Money - Hostinger Agency
+- **Name**: Chicago's Money - Hostinger Cloud
 - **Protocol**: SSH/SFTP
 - **Hostname**: Your Hostinger server IP or domain
 - **Username**: Your Hostinger username
 - **Password**: Your Hostinger password
-- **Port**: 22 (SSH) or 65002 (SFTP)
-- **Deployment Path**: `public_html/`
+- **Port**: 22 (SSH/SFTP)
+- **Deployment Path**: `~/domains/chicagosmoney.com/public_html/`
 
 ### 3. Project Configuration
 **Repository Settings:**
 - **Repository**: `wonderfulwaldo143/ChicagosMoney`
 - **Branch**: `main`
 - **Build Command**: (leave empty for static site)
-- **Deployment Path**: `public_html/`
+- **Deployment Path**: `~/domains/chicagosmoney.com/public_html/`
 
 **Exclude Files:**
 ```
@@ -38,7 +38,7 @@ deploy-config.json
 deploy-quick.sh
 test-deployment.sh
 DEPLOYMENT_GUIDE.md
-HOSTINGER_AGENCY_DEPLOYMENT.md
+HOSTINGER_CLOUD_DEPLOYMENT.md
 HOSTINGER_QUICK_REFERENCE.md
 docs
 *.md
@@ -64,4 +64,4 @@ backups
 - ✅ Easy rollback to previous versions
 - ✅ Deployment history and logs
 - ✅ Team collaboration features
-- ✅ Integration with Hostinger Agency plan
+- ✅ Integration with Hostinger Cloud Startup plan

@@ -8,7 +8,11 @@ set -euo pipefail
 # Configuration
 SITE_URL="chicagosmoney.com"
 WEB_ROOT="."
-DEFAULT_REMOTE_DIR="public_html"
+DEFAULT_REMOTE_DIR="~/domains/${SITE_URL}/public_html"
+FTP_HOST_DEFAULT="ftp.${SITE_URL}"
+FTP_PORT_DEFAULT="21"
+SSH_PORT_DEFAULT="65002"
+FTP_ROOT_DEFAULT="public_html"
 # Default rsync excludes (non-web/dev files)
 RSYNC_EXCLUDES=(
   --exclude='.git' \
@@ -46,35 +50,41 @@ normalize_remote_path() {
     normalized="$DEFAULT_REMOTE_DIR"
   fi
 
-  local default_dir_lower
-  default_dir_lower=$(to_lower "$DEFAULT_REMOTE_DIR")
+  local parts=()
+  IFS='/' read -r -a parts <<< "$normalized"
 
-  while [[ "$normalized" == */* ]]; do
-    local last_segment="${normalized##*/}"
-    local parent="${normalized%/*}"
-    local parent_last_segment="${parent##*/}"
+  local cleaned=()
+  for segment in "${parts[@]}"; do
+    if [[ -n "$segment" ]]; then
+      cleaned+=("$segment")
+    fi
+  done
 
-    if [[ $(to_lower "$last_segment") == "$default_dir_lower" && $(to_lower "$parent_last_segment") == "$default_dir_lower" ]]; then
-      normalized="$parent"
+  local last_default="public_html"
+  while (( ${#cleaned[@]} >= 2 )); do
+    local last_index=$(( ${#cleaned[@]} - 1 ))
+    local prev_index=$(( last_index - 1 ))
+    local last_lower
+    local prev_lower
+    last_lower=$(to_lower "${cleaned[$last_index]}")
+    prev_lower=$(to_lower "${cleaned[$prev_index]}")
+
+    if [[ "$last_lower" == "$last_default" && "$prev_lower" == "$last_default" ]]; then
+      unset 'cleaned[last_index]'
+      cleaned=("${cleaned[@]}")
     else
       break
     fi
   done
 
-  if [[ "$normalized" == */* ]]; then
-    local last_segment="${normalized##*/}"
-    if [[ $(to_lower "$last_segment") == "$default_dir_lower" ]]; then
-      local prefix="${normalized%/*}"
-      if [[ -z "$prefix" ]]; then
-        normalized="/$DEFAULT_REMOTE_DIR"
-      else
-        normalized="${prefix%/}/$DEFAULT_REMOTE_DIR"
-      fi
-    fi
-  else
-    if [[ $(to_lower "$normalized") == "$default_dir_lower" ]]; then
-      normalized="$DEFAULT_REMOTE_DIR"
-    fi
+  normalized=$(IFS='/'; echo "${cleaned[*]}")
+
+  if [[ "$path" == /* ]]; then
+    normalized="/$normalized"
+  fi
+
+  if [[ -z "$normalized" ]]; then
+    normalized="$DEFAULT_REMOTE_DIR"
   fi
 
   echo "$normalized"
@@ -84,6 +94,8 @@ print_header() {
   echo "=========================================="
   echo "   Chicago's Money - Deployment Script    "
   echo "=========================================="
+  echo ""
+  echo "Target platform: Hostinger Cloud Startup (~/domains/$SITE_URL/public_html)"
   echo ""
 }
 
@@ -160,9 +172,14 @@ print_deployment_options() {
   echo ""
   echo "1) FTP/SFTP: Upload all contents of the repository root to your web root"
   echo "   (Do not nest the files inside an extra directory on the server.)"
+  echo "   Host: ${FTP_HOST_DEFAULT}  Port: ${FTP_PORT_DEFAULT}  Directory: ${FTP_ROOT_DEFAULT}/"
   echo ""
   echo "2) rsync (recommended):"
-  echo "   rsync -avz --delete ./ user@$SITE_URL:/path/to/web/root/"
+  echo "   rsync -avz --delete ./ user@$SITE_URL:~/domains/$SITE_URL/public_html/"
+  echo ""
+  echo "3) lftp mirror (FTP fallback):"
+  echo "   lftp -u \"FTP_USER\" -p ${FTP_PORT_DEFAULT} ${FTP_HOST_DEFAULT}"
+  echo "     mirror -R --delete ./ ${FTP_ROOT_DEFAULT}/"
   echo ""
 }
 
@@ -181,7 +198,7 @@ sync_with_rsync() {
   fi
 
   read -r -p "SSH port [22]: " ssh_port
-  ssh_port=${ssh_port:-22}
+  ssh_port=${ssh_port:-$SSH_PORT_DEFAULT}
 
   read -r -p "Remote web root path [${DEFAULT_REMOTE_DIR}]: " remote_path
   local normalized_path
@@ -208,15 +225,84 @@ sync_with_rsync() {
   fi
 }
 
-prompt_remote_sync() {
-  read -r -p "Would you like to sync the repository to a remote server now? (y/N): " deploy_now
-  if [[ "$deploy_now" =~ ^[Yy]$ ]]; then
-    if ! sync_with_rsync; then
-      echo -e "${YELLOW}!${NC} Remote sync skipped or failed. Upload manually when ready."
-    fi
-  else
-    echo "Skipping automatic remote sync. Upload the repository contents manually when ready."
+sync_with_lftp() {
+  if ! command_exists lftp; then
+    echo -e "${RED}✗ lftp is not installed. Install it to enable FTP uploads (e.g. brew install lftp).${NC}"
+    return 1
   fi
+
+  echo ""
+  echo "🔐 FTP Mirror Setup"
+  read -r -p "FTP hostname [${FTP_HOST_DEFAULT}]: " ftp_host
+  ftp_host=${ftp_host:-$FTP_HOST_DEFAULT}
+
+  read -r -p "FTP port [${FTP_PORT_DEFAULT}]: " ftp_port
+  ftp_port=${ftp_port:-$FTP_PORT_DEFAULT}
+
+  read -r -p "FTP username: " ftp_user
+  if [[ -z "$ftp_user" ]]; then
+    echo -e "${YELLOW}!${NC} No username provided. Aborting FTP sync."
+    return 1
+  fi
+
+  read -r -s -p "FTP password: " ftp_pass
+  echo ""
+  if [[ -z "$ftp_pass" ]]; then
+    echo -e "${YELLOW}!${NC} No password provided. Aborting FTP sync."
+    return 1
+  fi
+
+  read -r -p "Remote directory relative to login root [${FTP_ROOT_DEFAULT}]: " ftp_remote_dir
+  ftp_remote_dir=${ftp_remote_dir:-$FTP_ROOT_DEFAULT}
+
+  echo ""
+  echo "The following lftp mirror command will run:"
+  echo "  mirror -R --delete ${WEB_ROOT}/ -> ${ftp_remote_dir}/"
+  read -r -p "Proceed with FTP deployment? (y/N): " confirmation
+  if [[ ! "$confirmation" =~ ^[Yy]$ ]]; then
+    echo -e "${YELLOW}!${NC} FTP deployment cancelled."
+    return 1
+  fi
+
+  lftp -u "$ftp_user","$ftp_pass" -p "$ftp_port" "$ftp_host" <<EOF
+set ftp:ssl-force true
+set ftp:ssl-protect-data true
+set ftp:passive-mode true
+mirror -R --delete --verbose "${WEB_ROOT}/" "${ftp_remote_dir}/"
+bye
+EOF
+
+  if [[ $? -eq 0 ]]; then
+    echo -e "${GREEN}✅ FTP deployment complete. Files mirrored to ${ftp_remote_dir}/.${NC}"
+    return 0
+  else
+    echo -e "${RED}❌ FTP deployment failed. Review the output above and try again.${NC}"
+    return 1
+  fi
+}
+
+prompt_remote_sync() {
+  echo "Choose a deployment transport:"
+  echo "  1) rsync over SSH (recommended)"
+  echo "  2) FTP mirror via lftp"
+  echo "  3) Skip automated sync"
+  read -r -p "Selection [3]: " transport_choice
+
+  case "${transport_choice:-3}" in
+    1)
+      if ! sync_with_rsync; then
+        echo -e "${YELLOW}!${NC} Remote sync skipped or failed. Upload manually when ready."
+      fi
+      ;;
+    2)
+      if ! sync_with_lftp; then
+        echo -e "${YELLOW}!${NC} Remote sync skipped or failed. Upload manually when ready."
+      fi
+      ;;
+    *)
+      echo "Skipping automatic remote sync. Upload the repository contents manually when ready."
+      ;;
+  esac
 }
 
 print_post_deployment_tasks() {

@@ -1,240 +1,130 @@
-# GitHub Deployment Guide - Hostinger Agency Plan
+# GitHub Deployment Guide – Hostinger Cloud Startup
 
 ## 🚀 Deployment Options from GitHub
 
-You have **3 main ways** to deploy your Chicago's Money website from GitHub to Hostinger Agency plan:
+You can ship Chicago's Money to the Hostinger Cloud Startup server in three primary ways:
 
-### **Option 1: Local Clone + Manual Deployment**
-**Best for**: Full control, testing before deployment
+1. **Local clone + manual deploy** – maximum control, run scripts from your machine.
+2. **GitHub Actions** – automated deploy on push (recommended once secrets are set).
+3. **DeployHQ** – hosted deployment pipeline with rollback/history.
+
+---
+
+## Option 1: Local Clone + Manual Deployment
+
+**Best for:** full control, local testing before pushing live.
 
 ```bash
-# Clone repository locally
 git clone https://github.com/wonderfulwaldo143/ChicagosMoney.git
-cd ChicagosMoney
+cd ChicagosMoney/public_html
 
-# Test deployment setup
+# Sanity check
 ./test-deployment.sh
 
-# Deploy to Hostinger
+# Guided deployment (interactive)
+./deploy.sh
+
+# Or fully automated with version + SW updates
 ./deploy-quick.sh
 ```
 
-**Pros:**
-- ✅ Full control over deployment process
-- ✅ Can test locally before deploying
-- ✅ Interactive prompts for credentials
-- ✅ Immediate feedback and error handling
+**Pros**
+- ✅ Works anywhere you can run Bash + rsync
+- ✅ Manual verification before syncing
+- ✅ Immediate feedback on errors
 
-**Cons:**
-- ❌ Requires local setup
-- ❌ Manual process each time
-
----
-
-### **Option 2: GitHub Actions (Automated)**
-**Best for**: Automatic deployments on every push
-
-#### Setup Steps:
-
-1. **Add GitHub Secrets** (in your GitHub repository):
-   - Go to: Settings → Secrets and variables → Actions
-   - Add these secrets:
-     ```
-     HOSTINGER_HOST=your-server-ip-or-domain
-     HOSTINGER_USER=your-hostinger-username
-     HOSTINGER_SSH_KEY=your-ssh-private-key
-     HOSTINGER_SSH_PORT=22
-     HOSTINGER_PATH=public_html
-     ```
-
-2. **Push the workflow file**:
-   ```bash
-   git add .github/workflows/deploy.yml
-   git commit -m "feat: add GitHub Actions deployment workflow"
-   git push origin main
-   ```
-
-3. **Deploy automatically**:
-   - Every push to `main` branch triggers deployment
-   - Or manually trigger via GitHub Actions tab
-
-**Pros:**
-- ✅ Fully automated
-- ✅ Deploys on every push
-- ✅ No local setup required
-- ✅ Deployment history in GitHub
-
-**Cons:**
-- ❌ Requires SSH key setup
-- ❌ Less control over deployment process
+**Cons**
+- ❌ Requires local shell + SSH access
+- ❌ You must trigger deployments manually
 
 ---
 
-### **Option 3: DeployHQ Integration**
-**Best for**: Professional deployment management
+## Option 2: GitHub Actions (Automated)
 
-#### Setup Steps:
+**Best for:** push-to-deploy, consistent releases, audit trail in GitHub.
 
-1. **Create DeployHQ Account**:
-   - Go to [DeployHQ.com](https://www.deployhq.com)
-   - Sign up and connect GitHub
+### Step 1 – Add Secrets
+In your GitHub repo: **Settings → Secrets and variables → Actions → New repository secret**
 
-2. **Configure Hostinger Server**:
-   ```
-   Protocol: SSH/SFTP
-   Hostname: your-server-ip-or-domain
-   Username: your-hostinger-username
-   Password: your-hostinger-password
-   Port: 22 (SSH) or 65002 (SFTP)
-   Deployment Path: public_html/
-   ```
+| Secret | Example Value | Purpose |
+|--------|---------------|---------|
+| `HOSTINGER_HOST` | `chicagosmoney.com` | SSH host / server IP |
+| `HOSTINGER_USER` | `your-username` | Hostinger account username |
+| `HOSTINGER_SSH_KEY` | `-----BEGIN OPENSSH PRIVATE KEY-----...` | Private key with no passphrase (Base64 literal) |
+| `HOSTINGER_SSH_PORT` | `22` | Cloud Startup uses port 22 for SSH/SFTP |
+| `HOSTINGER_PATH` | `~/domains/chicagosmoney.com/public_html` | Deployment target |
 
-3. **Set Up Project**:
-   - Repository: `wonderfulwaldo143/ChicagosMoney`
-   - Branch: `main`
-   - Auto-deploy on push: ✅
+Add the accompanying **public** key to hPanel → SSH Access.
 
-**Pros:**
-- ✅ Professional deployment management
-- ✅ Easy rollbacks
-- ✅ Deployment history and logs
-- ✅ Team collaboration features
+### Step 2 – Commit Workflow
+Ensure `.github/workflows/deploy.yml` is staged, then:
 
-**Cons:**
-- ❌ Third-party service (costs money)
-- ❌ Additional setup required
-
----
-
-## 🔧 GitHub Actions Setup (Recommended)
-
-### Step 1: Generate SSH Key
-```bash
-# Generate SSH key pair
-ssh-keygen -t rsa -b 4096 -C "github-actions@chicagosmoney.com"
-
-# Copy public key to Hostinger
-cat ~/.ssh/id_rsa.pub
-# Add this to your Hostinger SSH keys in hPanel
-```
-
-### Step 2: Add GitHub Secrets
-In your GitHub repository:
-1. Go to **Settings** → **Secrets and variables** → **Actions**
-2. Click **New repository secret**
-3. Add these secrets:
-
-| Secret Name | Value | Description |
-|-------------|-------|-------------|
-| `HOSTINGER_HOST` | `your-server-ip` | Your Hostinger server IP or domain |
-| `HOSTINGER_USER` | `your-username` | Your Hostinger username |
-| `HOSTINGER_SSH_KEY` | `-----BEGIN OPENSSH PRIVATE KEY-----...` | Your SSH private key |
-| `HOSTINGER_SSH_PORT` | `22` | SSH port (22) or SFTP port (65002) |
-| `HOSTINGER_PATH` | `public_html` | Deployment directory |
-
-### Step 3: Commit and Push
 ```bash
 git add .github/workflows/deploy.yml
-git commit -m "feat: add automated deployment to Hostinger Agency plan"
+git commit -m "chore: enable GitHub Actions deploy to Hostinger cloud"
 git push origin main
 ```
 
-### Step 4: Monitor Deployment
-- Go to **Actions** tab in GitHub
-- Watch the deployment workflow run
-- Check deployment status and logs
+Every push to `main` will now trigger the workflow (manual dispatch via Actions tab also available).
+
+**Pros**
+- ✅ Fully automated once configured
+- ✅ Deployment history + logs in GitHub
+- ✅ Integrates with required reviews / PRs
+
+**Cons**
+- ❌ Requires SSH key management
+- ❌ Debugging is via CI logs
 
 ---
 
-## 📋 Deployment Workflow
+## Option 3: DeployHQ Integration
 
-### What Happens During Deployment:
+**Best for:** teams wanting UI-driven deployments, scheduled releases, and GUI diffing.
 
-1. **Code Checkout**: GitHub Actions checks out your code
-2. **SSH Setup**: Configures SSH connection to Hostinger
-3. **Version Update**: Updates `version.txt` with timestamp
-4. **Cache Busting**: Updates service worker cache version
-5. **File Sync**: Uses rsync to upload files to Hostinger
-6. **Testing**: Tests deployed URLs
-7. **Notification**: Reports deployment success/failure
-
-### Post-Deployment Steps:
-
-1. **Clear Hostinger Cache**: hPanel → Advanced → Website → Clear Website Cache
-2. **Verify Deployment**: Visit `https://chicagosmoney.com/deploy-info.php`
-3. **Test Functionality**: Ensure all features work correctly
+Key settings (full guide in `DEPLOYHQ_SETUP.md`):
+- Protocol: SSH/SFTP
+- Host: `chicagosmoney.com` (or server IP)
+- Port: `22`
+- Path: `~/domains/chicagosmoney.com/public_html/`
+- Repository: `wonderfulwaldo143/ChicagosMoney`
 
 ---
 
-## 🛠️ Troubleshooting
+## GitHub Actions Workflow – What It Does
 
-### GitHub Actions Issues:
+1. Checks out `main`.
+2. Configures SSH with the provided key.
+3. Runs the same version + service-worker bump as `deploy-quick.sh`.
+4. rsyncs the repository to `~/domains/chicagosmoney.com/public_html/`.
+5. Optionally curls health-check URLs (`/` and `/deploy-info.php`).
 
-**SSH Connection Failed**:
-- Verify SSH key is added to Hostinger
-- Check `HOSTINGER_HOST` secret is correct
-- Ensure SSH is enabled in hPanel
-
-**Deployment Failed**:
-- Check GitHub Actions logs
-- Verify all secrets are set correctly
-- Test SSH connection manually
-
-**Files Not Updating**:
-- Clear Hostinger cache via hPanel
-- Check file permissions
-- Verify deployment path is correct
-
-### Manual Deployment Fallback:
-
-If automated deployment fails:
-```bash
-# Clone locally and deploy manually
-git clone https://github.com/wonderfulwaldo143/ChicagosMoney.git
-cd ChicagosMoney
-./deploy-quick.sh
-```
+### Post-Deployment Reminders
+- Clear cache: hPanel → Websites → Manage → CDN & Cache → Clear cache.
+- Visit `https://chicagosmoney.com/` & `/deploy-info.php` to confirm.
+- Test mobile redirect, salary lookup, contact flows.
+- Run PageSpeed Insights (mobile + desktop).
 
 ---
 
-## 🎯 Recommended Workflow
+## Troubleshooting Cheat Sheet
 
-### For Development:
-1. **Make changes** locally
-2. **Test locally** with `python3 -m http.server 8000`
-3. **Commit and push** to GitHub
-4. **GitHub Actions** automatically deploys
-5. **Clear Hostinger cache** via hPanel
-6. **Test live site**
-
-### For Quick Fixes:
-1. **Make changes** directly in GitHub (or locally)
-2. **Push to main** branch
-3. **Wait for deployment** (2-3 minutes)
-4. **Clear cache** and test
+| Problem | Quick Fix |
+|---------|-----------|
+| **GitHub Actions: SSH failed** | Ensure SSH key public half is in hPanel; verify hostname/IP; confirm SSH enabled. |
+| **Permissions denied** | Regenerate key pair; ensure correct username; check file ownership on server. |
+| **Files appear stale** | Clear Hostinger cache and browser cache; confirm workflow bumped service worker cache. |
+| **Wrong directory** | Confirm `HOSTINGER_PATH` or rsync target equals `~/domains/chicagosmoney.com/public_html`. |
+| **Need manual deploy** | Fallback to `git clone` locally and run `./deploy-quick.sh`. |
 
 ---
 
-## 📊 Monitoring
+## Recommended Workflow
 
-### GitHub Actions:
-- **Deployment History**: Actions tab shows all deployments
-- **Success/Failure**: Clear status indicators
-- **Logs**: Detailed deployment logs for debugging
+1. Develop locally, open PRs, pass checks.
+2. Merge into `main`.
+3. GitHub Actions deploys automatically.
+4. Verify production + clear cache.
+5. Tag release if desired.
 
-### Hostinger Agency Plan:
-- **Performance Metrics**: Monitor site performance
-- **Client Access**: Track client usage
-- **Resource Usage**: Monitor resource consumption
-
----
-
-## 🚀 Next Steps
-
-1. **Choose your deployment method** (GitHub Actions recommended)
-2. **Set up GitHub secrets** for automated deployment
-3. **Test deployment** with a small change
-4. **Monitor** deployment process
-5. **Set up notifications** for deployment status
-
-**Ready to deploy?** Choose your preferred method and follow the setup steps!
+Keep `deploy-config.json`, docs, and GitHub secrets aligned with hosting changes to avoid drift. Happy shipping! 🚀

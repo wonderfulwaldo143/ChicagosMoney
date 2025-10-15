@@ -54,7 +54,7 @@ done
 # Test 3: Check critical files
 echo ""
 echo "🔍 Testing critical files..."
-critical_files=("index.html" "styles.css" "script.js" "sw.js" "manifest.json" "version.txt" "deploy-info.php")
+critical_files=("index.html" "mobile.html" "styles.css" "script.js" "sw.js" "manifest.json" "version.txt" "deploy-info.php")
 all_good=true
 
 for file in "${critical_files[@]}"; do

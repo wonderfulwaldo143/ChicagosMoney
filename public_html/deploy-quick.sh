@@ -13,11 +13,11 @@ if [[ ! -f "$CONFIG_FILE" ]]; then
 fi
 
 # Parse JSON config (simple approach)
-SITE_URL=$(grep -o '"url": "[^"]*"' "$CONFIG_FILE" | cut -d'"' -f4)
-LOCAL_PATH=$(grep -o '"local_path": "[^"]*"' "$CONFIG_FILE" | cut -d'"' -f4)
-REMOTE_PATH=$(grep -o '"remote_path": "[^"]*"' "$CONFIG_FILE" | cut -d'"' -f4)
-SSH_PORT=$(grep -o '"ssh_port": [0-9]*' "$CONFIG_FILE" | cut -d':' -f2 | tr -d ' ')
-SFTP_PORT=$(grep -o '"sftp_port": [0-9]*' "$CONFIG_FILE" | cut -d':' -f2 | tr -d ' ')
+SITE_URL=$(grep -o '"url": "[^"]*"' "$CONFIG_FILE" | head -n 1 | cut -d'"' -f4)
+LOCAL_PATH=$(grep -o '"local_path": "[^"]*"' "$CONFIG_FILE" | head -n 1 | cut -d'"' -f4)
+REMOTE_PATH=$(grep -o '"remote_path": "[^"]*"' "$CONFIG_FILE" | head -n 1 | cut -d'"' -f4)
+SSH_PORT=$(grep -o '"ssh_port": [0-9]*' "$CONFIG_FILE" | head -n 1 | cut -d':' -f2 | tr -d ' ')
+SFTP_PORT=$(grep -o '"sftp_port": [0-9]*' "$CONFIG_FILE" | head -n 1 | cut -d':' -f2 | tr -d ' ')
 HOSTINGER_PLAN=$(grep -o '"plan": "[^"]*"' "$CONFIG_FILE" | cut -d'"' -f4)
 
 # Colors
@@ -38,7 +38,7 @@ pre_deploy_checks() {
     log_info "Running pre-deployment checks..."
     
     # Check critical files
-    local critical_files=("index.html" "styles.css" "script.js" "sw.js" "manifest.json")
+    local critical_files=("index.html" "mobile.html" "styles.css" "script.js" "sw.js" "manifest.json")
     for file in "${critical_files[@]}"; do
         if [[ -f "$file" ]]; then
             log_success "$file exists"
