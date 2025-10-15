@@ -7,11 +7,14 @@
   const form = document.querySelector('[data-salary-form]');
   const input = document.querySelector('[data-search-input]');
   const filterButtons = document.querySelectorAll('[data-filter]');
+  const filterValues = Array.from(filterButtons, (btn) => btn.dataset.filter);
   const presetButtons = document.querySelectorAll('[data-preset-filter]');
+  const suggestionButtons = document.querySelectorAll('[data-suggest-filter]');
   const resultList = document.querySelector('[data-results-list]');
   const statusLabel = document.querySelector('[data-status]');
   const loadMoreBtn = document.querySelector('[data-load-more]');
   const downloadLink = document.querySelector('[data-download-link]');
+  const clearButton = document.querySelector('[data-clear-search]');
 
   if (!form || !input || !resultList) {
     return;
@@ -42,6 +45,18 @@
     }
     return `upper(${filter}) like upper('%${sanitized}%')`;
   };
+
+  const setActiveFilter = (filter) => {
+    const fallback = 'name';
+    const resolved = filterValues.includes(filter) ? filter : fallback;
+    activeFilter = resolved;
+    filterButtons.forEach((btn) => {
+      btn.classList.toggle('is-active', btn.dataset.filter === resolved);
+    });
+    return resolved;
+  };
+
+  setActiveFilter(activeFilter);
 
   const buildParams = (where, limit, offset = 0) => {
     const params = new URLSearchParams({
@@ -173,11 +188,11 @@
 
   filterButtons.forEach((button) => {
     button.addEventListener('click', () => {
-      filterButtons.forEach((btn) => btn.classList.remove('is-active'));
-      button.classList.add('is-active');
-      activeFilter = button.dataset.filter ?? 'name';
+      const nextFilter = button.dataset.filter ?? 'name';
+      setActiveFilter(nextFilter);
       if (input.value.trim()) {
-        performSearch({ filter: activeFilter, query: input.value });
+        activeQuery = input.value;
+        performSearch({ filter: activeFilter, query: activeQuery });
       }
     });
   });
@@ -188,15 +203,49 @@
       const presetQuery = button.dataset.presetQuery ?? '';
       if (!presetFilter || !presetQuery) return;
 
-      activeFilter = presetFilter;
-      filterButtons.forEach((btn) => {
-        btn.classList.toggle('is-active', btn.dataset.filter === presetFilter);
-      });
+      setActiveFilter(presetFilter);
 
       input.value = presetQuery;
       activeQuery = presetQuery;
+      if (clearButton) {
+        clearButton.hidden = false;
+      }
       performSearch({ filter: presetFilter, query: presetQuery });
     });
+  });
+
+  suggestionButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+      const suggestFilter = button.dataset.suggestFilter;
+      const suggestQuery = button.dataset.suggestQuery ?? '';
+      if (!suggestFilter || !suggestQuery) return;
+
+      setActiveFilter(suggestFilter);
+      input.value = suggestQuery;
+      activeQuery = suggestQuery;
+      if (clearButton) {
+        clearButton.hidden = false;
+      }
+      performSearch({ filter: suggestFilter, query: suggestQuery });
+      input.focus({ preventScroll: true });
+    });
+  });
+
+  if (clearButton) {
+    clearButton.hidden = true;
+    clearButton.addEventListener('click', () => {
+      input.value = '';
+      activeQuery = '';
+      clearButton.hidden = true;
+      input.focus({ preventScroll: true });
+      performSearch({ filter: activeFilter, query: '' });
+    });
+  }
+
+  input.addEventListener('input', () => {
+    if (clearButton) {
+      clearButton.hidden = input.value.trim().length === 0;
+    }
   });
 
   form.addEventListener('submit', (event) => {

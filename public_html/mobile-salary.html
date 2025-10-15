@@ -115,17 +115,39 @@
             </div>
         </section>
 
-        <section class="section-card" id="search">
-            <h2>Run a search</h2>
+        <section class="section-card search-card" id="search">
+            <div class="search-intro">
+                <span class="search-icon" aria-hidden="true">🔎</span>
+                <div class="search-copy">
+                    <h2>Run a search</h2>
+                    <p class="search-subtitle">Find salary, overtime, and rank details by name, department, or job title. Pick a quick example or type your own.</p>
+                </div>
+            </div>
             <form class="search-form" data-salary-form>
                 <div class="input-stack">
                     <label class="search-label" for="lookupQuery">Search term</label>
-                    <input id="lookupQuery" class="search-input" name="query" type="search" placeholder="Type a name, department, or title" autocomplete="off" required data-search-input>
+                    <div class="search-input-wrap">
+                        <span class="input-icon" aria-hidden="true">⌕</span>
+                        <input id="lookupQuery" class="search-input" name="query" type="search" placeholder="Type a name, department, or title" autocomplete="off" required aria-describedby="lookupHint" data-search-input>
+                        <button type="button" class="search-clear" data-clear-search hidden>
+                            <span aria-hidden="true">✕</span>
+                            <span class="sr-only">Clear search</span>
+                        </button>
+                    </div>
+                    <p class="input-hint" id="lookupHint">Examples: “Garcia”, “POLICE”, “Engineer”. Records refresh nightly from the City of Chicago.</p>
                 </div>
                 <div class="segmented-control" role="group" aria-label="Search field">
                     <button type="button" class="segment is-active" data-filter="name">Name</button>
                     <button type="button" class="segment" data-filter="department">Department</button>
                     <button type="button" class="segment" data-filter="job_titles">Job title</button>
+                </div>
+                <div class="search-suggestions" aria-label="Popular quick searches">
+                    <p class="search-suggestions-title">Popular quick searches</p>
+                    <div class="search-suggestion-row">
+                        <button type="button" class="suggestion-chip" data-suggest-filter="name" data-suggest-query="Johnson">Johnson · Superintendent</button>
+                        <button type="button" class="suggestion-chip" data-suggest-filter="department" data-suggest-query="POLICE">POLICE · Department</button>
+                        <button type="button" class="suggestion-chip" data-suggest-filter="job_titles" data-suggest-query="ENGINEER">ENGINEER · Title</button>
+                    </div>
                 </div>
                 <button class="btn btn-primary" type="submit">Search payroll</button>
                 <p class="tiny-label" data-status>Showing top earners citywide.</p>
