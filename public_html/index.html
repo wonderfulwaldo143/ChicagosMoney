@@ -13,6 +13,7 @@
     <!-- End Google Tag Manager -->
     <meta name="description" content="Search 35,847+ Chicago city employee salaries FREE. Get daily business leads from permits, violations, and new registrations. Your competitive edge starts here.">
     <link rel="canonical" href="https://chicagosmoney.com/">
+    <link rel="alternate" media="only screen and (max-width: 900px)" href="https://chicagosmoney.com/mobile.html">
     <meta property="og:title" content="Chicago's Money - Chicago Business Intelligence & Salary Insights">
     <meta property="og:description" content="Unlock Chicago salary data and premium local business intelligence feeds for new businesses, construction permits, and restaurant violations.">
     <meta property="og:type" content="website">
@@ -207,6 +208,42 @@
     <link rel="stylesheet" href="styles.css">
     <link rel="icon" href="/IMG/chicagos_money_logo_variant_1.png" type="image/png">
     
+    <script>
+        (function () {
+            var PREF_KEY = 'cm-prefers-desktop';
+            try {
+                var params = new URLSearchParams(window.location.search);
+                var viewPref = params.get('view');
+                if (viewPref === 'desktop') {
+                    localStorage.setItem(PREF_KEY, '1');
+                }
+                if (viewPref === 'mobile') {
+                    localStorage.removeItem(PREF_KEY);
+                }
+                if (viewPref !== null) {
+                    params.delete('view');
+                    var updatedQuery = params.toString();
+                    var nextUrl = window.location.pathname + (updatedQuery ? '?' + updatedQuery : '') + window.location.hash;
+                    window.history.replaceState({}, '', nextUrl);
+                }
+                if (window.location.pathname === '/mobile.html') {
+                    return;
+                }
+                var prefersDesktop = localStorage.getItem(PREF_KEY) === '1';
+                if (prefersDesktop) {
+                    return;
+                }
+                var matchesMobile = window.matchMedia && window.matchMedia('(max-width: 900px)').matches;
+                var mobileUA = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+                if (mobileUA || matchesMobile) {
+                    window.location.replace('/mobile.html');
+                }
+            } catch (error) {
+                console.warn('Mobile redirect check failed:', error);
+            }
+        })();
+    </script>
+
     <style>
         :root {
             --navbar-height: 72px;
@@ -3536,6 +3573,7 @@
                 <a href="#blog" class="nav-link">Blog</a>
                 <a href="/about.html" class="nav-link">About</a>
                 <a href="#contact" class="nav-link">Contact</a>
+                <a href="/mobile.html?view=mobile" class="nav-link" data-mobile-opt-in>Mobile</a>
                 <a href="#leads" class="nav-cta">Get Leads →</a>
             </div>
             
@@ -5105,6 +5143,22 @@
                     ticking = true;
                 }
             }, { passive: true });
+        })();
+    </script>
+
+    <script>
+        (function () {
+            var PREF_KEY = 'cm-prefers-desktop';
+            var optInLinks = document.querySelectorAll('[data-mobile-opt-in]');
+            optInLinks.forEach(function (link) {
+                link.addEventListener('click', function () {
+                    try {
+                        localStorage.removeItem(PREF_KEY);
+                    } catch (error) {
+                        console.warn('Unable to clear desktop preference:', error);
+                    }
+                });
+            });
         })();
     </script>
 
