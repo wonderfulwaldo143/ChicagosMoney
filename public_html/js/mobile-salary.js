@@ -30,7 +30,6 @@
     currency: 'USD',
     maximumFractionDigits: 0
   });
-
   const hourlyCurrency = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',
@@ -157,9 +156,21 @@
 
       const body = document.createElement('div');
       body.className = 'result-body';
+      const payType = (row.salary_or_hourly || '').toUpperCase();
+      const departmentText = row.department ?? 'Department unavailable';
+      const metaParts = [];
+      if (comp.descriptor) {
+        metaParts.push(comp.descriptor);
+      } else if (payType) {
+        metaParts.push(payType === 'HOURLY' ? 'Hourly' : 'Salary');
+      }
+      if (metaParts.length) {
+        metaParts.push(departmentText);
+      }
+
       body.innerHTML = `
         <p><span class="mono">${row.job_titles ?? 'Job title unavailable'}</span></p>
-        <p class="result-meta">${row.department ?? 'Department unavailable'}</p>
+        <p class="result-meta">${metaParts.length ? metaParts.join(' • ') : departmentText}</p>
       `;
 
       item.append(header, body);
