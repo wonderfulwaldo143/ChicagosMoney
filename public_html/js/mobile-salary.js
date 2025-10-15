@@ -31,14 +31,25 @@
     maximumFractionDigits: 0
   });
 
+  const hourlyCurrency = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  });
+
   const cleanQuery = (value) => value.trim().replace(/\s+/g, ' ').slice(0, 80);
 
   const buildWhere = (filter, query) => {
     if (!query) return '';
     const sanitized = query.replace(/'/g, "''");
-    if (filter === 'annual_salary') {
+    if (filter === 'annual_salary' || filter === 'employee_annual_salary') {
       const numeric = Number(sanitized.replace(/[^0-9.]/g, ''));
-      return Number.isFinite(numeric) ? `annual_salary >= ${numeric}` : '';
+      if (!Number.isFinite(numeric)) {
+        return '';
+      }
+      const column = filter === 'employee_annual_salary' ? 'employee_annual_salary' : 'annual_salary';
+      return `${column} >= ${numeric}`;
     }
     if (filter === 'name') {
       return `upper(name) like upper('%${sanitized}%')`;
@@ -60,7 +71,7 @@
 
   const buildParams = (where, limit, offset = 0) => {
     const params = new URLSearchParams({
-      $select: 'name,department,job_titles,annual_salary',
+      $select: 'name,department,job_titles,annual_salary,salary_or_hourly,hourly_rate',
       $limit: String(limit),
       $offset: String(offset),
       $order: 'annual_salary DESC'
@@ -76,6 +87,29 @@
       statusLabel.textContent = message;
     }
     resultList.setAttribute('aria-busy', busy ? 'true' : 'false');
+  };
+
+  const resolveCompensation = (row) => {
+    const annualSalary = Number(row.annual_salary);
+    if (Number.isFinite(annualSalary) && annualSalary > 0) {
+      return {
+        display: currency.format(annualSalary),
+        descriptor: 'Salary'
+      };
+    }
+
+    const hourlyRate = Number(row.hourly_rate);
+    if (Number.isFinite(hourlyRate) && hourlyRate > 0) {
+      return {
+        display: `${hourlyCurrency.format(hourlyRate)} / hr`,
+        descriptor: 'Hourly'
+      };
+    }
+
+    return {
+      display: 'Compensation unavailable',
+      descriptor: ''
+    };
   };
 
   const renderResults = (records, append = false) => {
@@ -98,7 +132,28 @@
 
       const header = document.createElement('div');
       header.className = 'result-header';
-      header.innerHTML = `<strong>${row.name ?? 'Name unavailable'}</strong><span>${currency.format(Number(row.annual_salary || 0))}</span>`;
+      const nameEl = document.createElement('strong');
+      nameEl.textContent = row.name ?? 'Name unavailable';
+
+      const comp = resolveCompensation(row);
+      const compWrap = document.createElement('span');
+      compWrap.className = 'result-comp';
+
+      const compValue = document.createElement('span');
+      compValue.className = 'result-comp-value';
+      compValue.textContent = comp.display;
+      compWrap.appendChild(compValue);
+
+      if (comp.descriptor) {
+        const compDescriptor = document.createElement('span');
+        compDescriptor.className = 'result-comp-type';
+        compDescriptor.textContent = comp.descriptor;
+        compWrap.appendChild(compDescriptor);
+      } else {
+        compWrap.classList.add('is-missing');
+      }
+
+      header.append(nameEl, compWrap);
 
       const body = document.createElement('div');
       body.className = 'result-body';
