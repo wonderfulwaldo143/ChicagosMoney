@@ -28,7 +28,7 @@ on:
 
 jobs:
   deploy:
-    name: Deploy via SFTP
+    name: Deploy via SSH rsync
     runs-on: ubuntu-latest
     timeout-minutes: 20
     concurrency:
@@ -40,11 +40,6 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 1
-
-      - name: Install lftp
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y lftp
 
       - name: Generate version file and add cache busting
         run: |
@@ -74,80 +69,46 @@ jobs:
           echo "Deployed: $VERSION at $TIMESTAMP" > public_html/.last-deploy
           echo "📝 Created .last-deploy marker"
 
-      - name: Deploy to Hostinger
+      - name: Prepare SSH key
         env:
-          HOST: ${{ secrets.HOSTINGER_FTP_SERVER }}
-          PORT: ${{ secrets.HOSTINGER_FTP_PORT }}
-          USER: ${{ secrets.HOSTINGER_FTP_USERNAME }}
-          PASS: ${{ secrets.HOSTINGER_FTP_PASSWORD }}
-          REMOTE_DIR: ${{ secrets.HOSTINGER_REMOTE_DIR }}
+          SSH_KEY: ${{ secrets.HOSTINGER_SSH_KEY }}
         run: |
-          set +e
-          echo "🚀 Starting deployment..."
-          echo "📋 Connection details:"
-          echo "   Host: $HOST"
-          echo "   Port: $PORT"
-          echo "   User: $USER"
-          echo "   Remote Dir: $REMOTE_DIR"
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$SSH_KEY" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
 
-          lftp -u "$USER","$PASS" sftp://"$HOST":"$PORT" <<EOF
-          set net:timeout 30
-          set net:max-retries 3
-          set net:reconnect-interval-base 5
-          set sftp:auto-confirm yes
-          set xfer:clobber on
+      - name: Add Hostinger host key
+        env:
+          HOST: ${{ secrets.HOSTINGER_HOST }}
+          PORT: ${{ secrets.HOSTINGER_SSH_PORT }}
+        run: |
+          ssh-keyscan -p "$PORT" "$HOST" >> ~/.ssh/known_hosts
 
-          # Change to the correct document root
-          cd $REMOTE_DIR
-          pwd
-          ls -la | head -20
+      - name: Deploy to Hostinger via rsync
+        env:
+          HOST: ${{ secrets.HOSTINGER_HOST }}
+          PORT: ${{ secrets.HOSTINGER_SSH_PORT }}
+          USER: ${{ secrets.HOSTINGER_USER }}
+          REMOTE_DIR: ${{ secrets.HOSTINGER_PATH }}
+        run: |
+          RSYNC_SSH="ssh -i ~/.ssh/id_ed25519 -p $PORT -o StrictHostKeyChecking=yes"
+          echo "🚀 Starting rsync deployment to $USER@$HOST:$REMOTE_DIR"
 
-          # Set local directory to public_html subdirectory in repo
-          lcd $GITHUB_WORKSPACE/public_html
-
-          # First, remove problem directories if they exist on server
-          rm -rf .git .github .vscode .claude ChicagosMoenyRepo node_modules docs backups logs
-
-          # Then sync with excludes - mirror local public_html to remote current directory
-          mirror -R \
-            --parallel=4 \
-            --continue \
-            --verbose \
-            --delete \
-            --exclude-glob=.git \
-            --exclude-glob=.git/** \
-            --exclude-glob=.github \
-            --exclude-glob=.github/** \
-            --exclude-glob=.vscode \
-            --exclude-glob=.vscode/** \
-            --exclude-glob=.claude \
-            --exclude-glob=.claude/** \
-            --exclude-glob=node_modules/** \
-            --exclude-glob=docs/** \
-            --exclude-glob=backups/** \
-            --exclude-glob=logs/** \
-            --exclude-glob=ChicagosMoenyRepo \
-            --exclude-glob=ChicagosMoenyRepo/** \
-            --exclude-glob=*.map \
-            --exclude-glob=*.md \
-            --exclude-glob=deploy.sh \
-            --exclude-glob=.DS_Store \
-            --exclude-glob=.deploy-trigger \
-            --exclude-glob=.gitignore \
-            --exclude-glob=.gitattributes \
-            . \
-            .
-
-          bye
-          EOF
-
-          STATUS=$?
-          # lftp exit 1 is commonly benign (e.g., trying to remove non-existent file).
-          if [ $STATUS -ne 0 ] && [ $STATUS -ne 1 ]; then
-            echo "::error::lftp failed with exit code $STATUS"
-            exit $STATUS
-          fi
-          echo "✅ Deployment complete (exit=$STATUS)"
+          rsync -avz --delete \
+            --exclude='.git' \
+            --exclude='.github' \
+            --exclude='.gitignore' \
+            --exclude='.gitattributes' \
+            --exclude='.vscode' \
+            --exclude='.DS_Store' \
+            --exclude='node_modules' \
+            --exclude='backups' \
+            --exclude='docs' \
+            --exclude='*.log' \
+            --exclude='*.tmp' \
+            -e "$RSYNC_SSH" \
+            public_html/ \
+            "$USER@$HOST:$REMOTE_DIR/"
 
       - name: Verify live site updated
         run: |
