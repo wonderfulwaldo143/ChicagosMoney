@@ -41,19 +41,45 @@
 
   const buildWhere = (filter, query) => {
     if (!query) return '';
-    const sanitized = query.replace(/'/g, "''");
+    const trimmed = query.trim();
+    const sanitizedFull = trimmed.replace(/'/g, "''");
+
     if (filter === 'annual_salary' || filter === 'employee_annual_salary') {
-      const numeric = Number(sanitized.replace(/[^0-9.]/g, ''));
+      const numeric = Number(sanitizedFull.replace(/[^0-9.]/g, ''));
       if (!Number.isFinite(numeric)) {
         return '';
       }
       const column = filter === 'employee_annual_salary' ? 'employee_annual_salary' : 'annual_salary';
       return `${column} >= ${numeric}`;
     }
+
     if (filter === 'name') {
-      return `upper(name) like upper('%${sanitized}%')`;
+      const rawTokens = trimmed.split(/[\s,]+/).filter(Boolean);
+      const sanitizedTokens = rawTokens.map((token) => token.replace(/'/g, "''"));
+
+      if (sanitizedTokens.length > 1) {
+        const tokenConditions = sanitizedTokens.map((token) => `upper(name) like upper('%${token}%')`);
+        const reversedName = sanitizedTokens.slice().reverse().join(', ');
+
+        const orConditions = [
+          `upper(name) like upper('%${sanitizedFull}%')`
+        ];
+
+        if (reversedName) {
+          orConditions.push(`upper(name) like upper('%${reversedName}%')`);
+        }
+
+        if (tokenConditions.length) {
+          orConditions.push(`(${tokenConditions.join(' AND ')})`);
+        }
+
+        return `(${orConditions.join(' OR ')})`;
+      }
+
+      return `upper(name) like upper('%${sanitizedFull}%')`;
     }
-    return `upper(${filter}) like upper('%${sanitized}%')`;
+
+    return `upper(${filter}) like upper('%${sanitizedFull}%')`;
   };
 
   const setActiveFilter = (filter) => {
