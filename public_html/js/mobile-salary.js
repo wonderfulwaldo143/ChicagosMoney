@@ -15,6 +15,22 @@
   const loadMoreBtn = document.querySelector('[data-load-more]');
   const downloadLink = document.querySelector('[data-download-link]');
   const clearButton = document.querySelector('[data-clear-search]');
+  const resultsSection = resultList.closest('[data-results-anchor]');
+  const headerElement = document.querySelector('.mobile-header');
+
+  const scrollToResults = () => {
+    if (!resultsSection) return;
+    const prefersReducedMotion = typeof window.matchMedia === 'function'
+      ? window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      : false;
+    const rect = resultsSection.getBoundingClientRect();
+    const headerHeight = headerElement ? headerElement.getBoundingClientRect().height : 0;
+    const offset = rect.top + window.scrollY - headerHeight - 20;
+    window.scrollTo({
+      top: Math.max(offset, 0),
+      behavior: prefersReducedMotion ? 'auto' : 'smooth'
+    });
+  };
 
   if (!form || !input || !resultList) {
     return;
@@ -211,7 +227,7 @@
     return `${CSV_ENDPOINT}?${params.toString()}`;
   };
 
-  const performSearch = async ({ filter, query, append = false } = {}) => {
+  const performSearch = async ({ filter, query, append = false, scroll = false } = {}) => {
     const activeFilterKey = filter ?? activeFilter;
     const cleanedQuery = cleanQuery(query ?? activeQuery);
     const whereClause = buildWhere(activeFilterKey, cleanedQuery);
@@ -256,6 +272,9 @@
         } else {
           renderStatus('Top compensated employees citywide.', false);
         }
+        if (scroll && resultList.childElementCount > 0) {
+          scrollToResults();
+        }
       }
     } catch (error) {
       console.error('Lookup failed', error);
@@ -284,7 +303,7 @@
       setActiveFilter(nextFilter);
       if (input.value.trim()) {
         activeQuery = input.value;
-        performSearch({ filter: activeFilter, query: activeQuery });
+        performSearch({ filter: activeFilter, query: activeQuery, scroll: true });
       }
     });
   });
@@ -302,7 +321,7 @@
       if (clearButton) {
         clearButton.hidden = false;
       }
-      performSearch({ filter: presetFilter, query: presetQuery });
+      performSearch({ filter: presetFilter, query: presetQuery, scroll: true });
     });
   });
 
@@ -318,7 +337,7 @@
       if (clearButton) {
         clearButton.hidden = false;
       }
-      performSearch({ filter: suggestFilter, query: suggestQuery });
+      performSearch({ filter: suggestFilter, query: suggestQuery, scroll: true });
       input.focus({ preventScroll: true });
     });
   });
@@ -330,7 +349,7 @@
       activeQuery = '';
       clearButton.hidden = true;
       input.focus({ preventScroll: true });
-      performSearch({ filter: activeFilter, query: '' });
+      performSearch({ filter: activeFilter, query: '', scroll: true });
     });
   }
 
@@ -343,7 +362,7 @@
   form.addEventListener('submit', (event) => {
     event.preventDefault();
     activeQuery = input.value;
-    performSearch({ filter: activeFilter, query: activeQuery });
+    performSearch({ filter: activeFilter, query: activeQuery, scroll: true });
   });
 
   if (loadMoreBtn) {
